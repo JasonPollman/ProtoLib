@@ -1,0 +1,20 @@
+{
+    "name": "jpc-utils",
+    "version": "0.0.0",
+    "description": "Utility methods and functions. Many (gracefully) modify the prototype chains for Object, String, and Number",
+    "author": "Jason Pollman <jasonjpollman@gmail.com>",
+    "keywords": [
+        "utility",
+        "dev tools",
+        "prototype"
+    ],
+    "dependencies": {
+        "minimist": "*"
+    },
+    "devDependencies": {
+        "chai": "3.5.0",
+        "mocha": "2.4.5"
+    },
+    "main": "index.js",
+    "liscense": "MIT"
+}
