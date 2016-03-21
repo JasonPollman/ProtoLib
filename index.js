@@ -83,7 +83,7 @@ if(IS_NODE) {
      * A reference to the JPCConsole
      * @constructor
      */
-    exports.Console = require('jp-console');
+    exports.Console = require('jpc-console');
 
     /**
      * A replacer function for JSON, to replace functions with '[Function (function name|anonymous)]'. A callback for
@@ -224,34 +224,40 @@ if(IS_NODE) {
 
     /**
      * Parses the special 'jpc' JSON config file
-     * @param {String} file The jpc JSON config file path
+     * @param {String} source The jpc JSON config file path, or an object
      * @param {Object} user User passed options, which can overwrite the jpc config file
      * @return {Object<*>} Options based on the debug flag, the environment, etc. etc.
      */
-    exports.parseJPCConfigFile = function parseJPCConfigFile (file, user) {
+    exports.parseJPCConfigFile = function parseJPCConfigFile (source, user) {
         var jpc     = null,
             options = {};
 
-        // Try to parse the jpc.json configuration file...
-        try {
-            jpc = require(path.resolve(file));
-            if(typeof jpc !== 'object') throw new Error();
+        if(typeof source === 'string') {
+            // Try to parse the jpc.json configuration file...
+            try {
+                jpc = require(path.resolve(source));
+                if(typeof jpc !== 'object') throw new Error();
+            }
+            // Config file didn't exist, just pass back the user object, if we were given one...
+            catch (e) {
+                return typeof user === 'object' ? user : options;
+            }
+        }
+        else if(typeof source === 'object') {
+            jpc = source;
+        }
+        
+        // Loop through the jpc config file and choose the correct option based on the the debug flag, environment, then default...
+        (jpc || {}).each(function (c, k) {
+            if(typeof c === 'object' && (c.default !== undefined || c[exports.ENV] !== undefined  || (c.debug !== undefined && exports.DEBUG))) {
+                options[k] = exports.DEBUG && c.debug !== undefined ? c.debug : c[exports.ENV] ? c[exports.ENV] : c.default;
+                if(typeof options[k] === 'string') options[k] = options[k].tildeToHome();
+            }
+            else {
+                options[k] = c;
+            }
+        });
 
-            // Loop through the jpc config file and choose the correct option based on the the debug flag, environment, then default...
-            jpc.each(function (c, k) {
-                if(typeof c === 'object' && (c.value !== undefined || c[exports.ENV] !== undefined  || (c.debug !== undefined && exports.DEBUG))) {
-                    options[k] = exports.DEBUG && c.debug !== undefined ? c.debug : c[exports.ENV] ? c[exports.ENV] : c.value;
-                    if(typeof options[k] === 'string') options[k] = options[k].tildeToHome();
-                }
-                else {
-                    options[k] = c;
-                }
-            });
-        }
-        // Config file didn't exist, just pass back the user object, if we were given one...
-        catch (e) {
-            return typeof user === 'object' ? user : options;
-        }
         // Overwrite config file options, or other options with user specified options
         if(typeof user === 'object') {
             user.each((u, k) => { options[k] = u; });
