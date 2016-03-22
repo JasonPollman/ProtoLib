@@ -246,7 +246,7 @@ if(IS_NODE) {
         else if(typeof source === 'object') {
             jpc = source;
         }
-        
+
         // Loop through the jpc config file and choose the correct option based on the the debug flag, environment, then default...
         (jpc || {}).each(function (c, k) {
             if(typeof c === 'object' && (c.default !== undefined || c[exports.ENV] !== undefined  || (c.debug !== undefined && exports.DEBUG))) {
