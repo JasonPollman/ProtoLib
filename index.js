@@ -149,6 +149,16 @@
                 },
 
                 /**
+                 * Replaces tokens (snippets of text wrapped in brackets) with their values/
+                 * @return {String} The token replaced values.
+                 */
+                replaceTokens: function replaceTokens () {
+                    return performWithCurrent(function (s) {
+                        return JLib.replaceStringTokens(s);
+                    });
+                },
+
+                /**
                  * Returns only the characters common to both strings
                  * @param {String} other The string to compute the intersection against.
                  * @return {String} The intersection between the two strings.
@@ -1785,12 +1795,13 @@
                  .replace(/\[\$DATE]/g         , new Date().toLocaleDateString())
                  .replace(/\[\$(HOME|~)]/g     , exports.USER_HOME.withoutTrailingSlash())
                  .replace(/\[\$TMPDIR]/g       , exports.TMPDIR);
+
+                for(var i in customTokens) {
+                    if(customTokens.hasOwnProperty(i))
+                        s = s.replace(new RegExp('\\[\\$' + customTokens[i].name + ']', 'g'), customTokens[i].value);
+                }
             }
 
-            for(var i in customTokens) {
-                if(customTokens.hasOwnProperty(i))
-                    s = s.replace(new RegExp('\\[\\$' + customTokens[i].name + ']', 'g'), customTokens[i].value);
-            }
             return s;
         };
 
