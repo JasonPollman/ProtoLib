@@ -3,7 +3,7 @@
 var expect = require('chai').expect,
     path   = require('path');
 
-describe('String#splice', function () {
+describe('String#j.splice', function () {
 
     before(function () {
         require(path.join(__dirname, '..'))('jlib');

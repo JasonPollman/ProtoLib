@@ -3,7 +3,7 @@
 var expect = require('chai').expect,
     path   = require('path');
 
-describe('Object#last', function () {
+describe('Object#j.last', function () {
 
     // Create some test data
     var obj = { foo: 'bar', num: 2, bool: false },

@@ -201,7 +201,7 @@
                  * Escapes HTML special characters
                  * @return {String} The HTML escaped string
                  */
-                htmlEncodeSpecialCharacters: function htmlEncodeSpecialCharacters () {
+                htmlEncode: function htmlEncode () {
                     return performWithCurrent(function (s) {
                         var map = {
                             '&'  : '&amp;',
@@ -218,7 +218,7 @@
                  * Un-escapes HTML special characters
                  * @return {String} The HTML escaped string
                  */
-                htmlDecodeSpecialCharacters: function htmlDecodeSpecialCharacters () {
+                htmlDecode: function htmlDecode () {
                     return performWithCurrent(function (s) {
                         var map = {
                             '&amp;'  : '&',
@@ -232,7 +232,8 @@
                 },
 
                 /**
-                 * Adds slashes.
+                 * Created an 'eval' safe string, by adding slashes to ", ', \t, \n, \f, \r, and the NULL byte.
+                 * @return {String} A string with slashes
                  */
                 addSlashes: function addSlashes () {
                     return performWithCurrent(function (s) {
@@ -241,7 +242,7 @@
                 },
 
                 /**
-                 * Returns a string with the first letter capitalized
+                 * Returns a string with the first letter capitalized.
                  * @return {String} The string with the first letter upper cased.
                  * @function
                  */
@@ -252,7 +253,7 @@
                 },
 
                 /**
-                 * Returns a string with the first letter lowercased
+                 * Returns a string with the first letter lowercased.
                  * @return {String} The string with the first letter lower cased.
                  * @function
                  */
@@ -649,7 +650,7 @@
                 shuffle: function shuffle () {
                     return performWithCurrent(function (a) {
                         for(var i = a.length - 1; i > 0; i--) {
-                            var j   = Math.floor(Math.random() * (i + 1)), tmp = a[i];
+                            var j = Math.floor(Math.random() * (i + 1)), tmp = a[i];
                             a[i] = a[j];
                             a[j] = tmp;
                         }
@@ -659,7 +660,7 @@
 
                 /**
                  * Computes the union between the current array, and all the array objects passed in. That is,
-                 * the set of unique objects present in any of the arrays.
+                 * the set of unique objects present in all of the arrays.
                  * @param {...Array} arr A list of array objects
                  * @return {Array<*>} The union set of the provided arrays.
                  */
@@ -679,9 +680,9 @@
                 },
 
                 /**
-                 * Returns all the items not common to both arrays
-                 * @param {...Array} other The array to compute the difference from
-                 * @return {Array} A new array with items unique to each array
+                 * Returns all the items not common to both arrays.
+                 * @param {Array} other The array to compute the difference from.
+                 * @return {Array} A new array with items unique to each array.
                  */
                 differenceFromArray: function differenceFromArray (other) {
                     return performWithCurrent(function (a) {
@@ -701,9 +702,9 @@
                 },
 
                 /**
-                 * Returns all the items common to both arrays
-                 * @param {Array} other The array to compute the intersection from
-                 * @return {Array} A new array with items common to both arrays
+                 * Returns all the items common to both arrays.
+                 * @param {Array} other The array to compute the intersection from.
+                 * @return {Array} A new array with items common to both arrays.
                  */
                 intersectArray: function intersectArray (other) {
                     return performWithCurrent(function (a) {
@@ -761,8 +762,9 @@
 
                 /**
                  * Rotates the array left the specified number of times.
+                 * This is useful if trying to create a circular queue.
                  * @param {Number=} [amount=1] The number of times to rotate the array left.
-                 * @return {Array<*>} The current array, rotated.
+                 * @return {Array<*>} The current array, rotated left.
                  * @function
                  */
                 rotateLeft: function rotateLeft (amount) {
@@ -773,8 +775,9 @@
 
                 /**
                  * Rotates the array right the specified number of times.
+                 * This is useful if trying to create a circular queue.
                  * @param {Number=} [amount=1] The number of times to rotate the array left.
-                 * @return {Array<*>} The current array, rotated.
+                 * @return {Array<*>} The current array, rotated right.
                  * @function
                  */
                 rotateRight: function rotateLeft (amount) {
@@ -786,7 +789,7 @@
                 /**
                  * Removes duplicates from the current array.
                  * This is a destructive action, and will modify the array in place.
-                 * @returns {Array<*>} The current array, with duplicates removed
+                 * @returns {Array<*>} The current array, with duplicates removed.
                  * @function
                  */
                 makeUnique: function makeUnique () {
@@ -798,7 +801,7 @@
                             }
                             else {
                                 a.splice(i, 1);
-                                i--;
+                                i--; // Splice will affect the internal array pointer, so fix it...
                             }
                         }
                         return a;
@@ -806,8 +809,8 @@
                 },
 
                 /**
-                 * Gets an array of unique items from the current array
-                 * @returns {Array} A new array with no duplicates
+                 * Gets an array of unique items from the current array.
+                 * @returns {Array} A new array with no duplicate values.
                  * @function
                  */
                 unique: function unique () {
@@ -826,9 +829,9 @@
                 },
 
                 /**
-                 * Sorts the array in ascending order
+                 * Sorts the array in ascending order.
                  * This is a destructive action, and will modify the array in place.
-                 * @returns {Array} The array sorted in ascending order
+                 * @returns {Array} The array sorted in ascending order.
                  * @function
                  */
                 ascending: function ascending () {
@@ -840,9 +843,9 @@
                 },
 
                 /**
-                 * Sorts the array in descending order
+                 * Sorts the array in descending order.
                  * This is a destructive action, and will modify the array in place.
-                 * @returns {Array} The array sorted in descending order
+                 * @returns {Array} The array sorted in descending order.
                  * @function
                  */
                 descending: function descending () {
@@ -861,11 +864,11 @@
             object: {
 
                 /**
-                 * Returns the object's key set.
+                 * Returns the object's keys.
                  * @returns {Array<String|Number>} The object's key set
                  * @function
                  */
-                keyset : function keyset () {
+                keys : function keys () {
                     return performWithCurrent(function (o) {
                         return Object.keys(o);
                     });
@@ -884,7 +887,7 @@
                  * @returns {Number} The number of items within the object.
                  * @function
                  */
-                members: function members () {
+                size: function size () {
                     return performWithCurrent(function (o) {
                         switch(true) {
                             case o instanceof Array:
@@ -935,7 +938,7 @@
                  */
                 isEmpty: function isEmpty () {
                     return performWithCurrent(function (o) {
-                        return o[protoIdentifier].members() === 0;
+                        return o[protoIdentifier].size() === 0;
                     });
                 },
 
@@ -1160,7 +1163,7 @@
                         }
                         else {
                             v = {};
-                            var len = o[protoIdentifier].members();
+                            var len = o[protoIdentifier].size();
 
                             o[protoIdentifier].each(len - n, len, function (item, key) { v[key] = item; });
                             var keys = Object.keys(v);

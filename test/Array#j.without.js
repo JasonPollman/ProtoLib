@@ -3,7 +3,7 @@
 var expect = require('chai').expect,
     path   = require('path');
 
-describe('Array#without', function () {
+describe('Array#j.without', function () {
 
     before(function () {
         require(path.join(__dirname, '..'))('jlib');

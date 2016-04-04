@@ -3,7 +3,7 @@
 var expect = require('chai').expect,
     path   = require('path');
 
-describe('Object#random', function () {
+describe('Object#j.random', function () {
     before(function () {
         require(path.join(__dirname, '..'))('jlib');
     });

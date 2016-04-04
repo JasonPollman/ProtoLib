@@ -3,7 +3,7 @@
 var expect = require('chai').expect,
     path   = require('path');
 
-describe('String#withoutTrailingSlash', function () {
+describe('String#j.withoutTrailingSlash', function () {
 
     before(function () {
         require(path.join(__dirname, '..'))('jlib');

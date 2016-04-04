@@ -3,7 +3,7 @@
 var expect = require('chai').expect,
     path   = require('path');
 
-describe('Object#findChildAtPath', function () {
+describe('Object#j.findChildAtPath', function () {
 
     // Create some test data
     var a = {

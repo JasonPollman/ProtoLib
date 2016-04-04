@@ -3,7 +3,7 @@
 var expect = require('chai').expect,
     path   = require('path');
 
-describe('Object#members', function () {
+describe('Object#j.members', function () {
 
     // Create some test data
     var obj    = { foo: 'bar', num: 2, bool: false },
@@ -21,39 +21,39 @@ describe('Object#members', function () {
     });
 
     it('It should return the correct number of members given an object', function () {
-        var o = obj.jlib.members();
+        var o = obj.jlib.size();
         expect(o).to.equal(3);
 
-        o = eobj.jlib.members();
+        o = eobj.jlib.size();
         expect(o).to.equal(0);
     });
 
     it('It should return the correct number of members given an array', function () {
-        var o = subarr.jlib.members();
+        var o = subarr.jlib.size();
         expect(o).to.equal(3);
 
-        o = earr.jlib.members();
+        o = earr.jlib.size();
         expect(o).to.equal(0);
     });
 
     it('It should return the correct number of members given a string', function () {
-        var o = string.jlib.members();
+        var o = string.jlib.size();
         expect(o).to.equal(6);
 
-        o = estr.jlib.members();
+        o = estr.jlib.size();
         expect(o).to.equal(0);
     });
 
     it('It should return the correct number of members given a number', function () {
-        var o = number.jlib.members();
+        var o = number.jlib.size();
         expect(o).to.equal(6);
 
-        o = float.jlib.members();
+        o = float.jlib.size();
         expect(o).to.equal(8);
     });
 
     it('It should return the correct number of members given a function', function () {
-        var o = func.jlib.members();
+        var o = func.jlib.size();
         expect(o).to.equal(1);
     });
 });
