@@ -49,13 +49,13 @@
          */
         var JLib = null,
 
-            /**
-             * The object stack. When a JLib function is executed the current (or "this") object is pushed onto the stack,
-             * then when performWithCurrent is called, it is popped from the stack. This allows us to use jlib functions
-             * within other jlib functions.
-             * @type {Array}
-             */
-            ostack = [];
+        /**
+         * The object stack. When a JLib function is executed the current (or "this") object is pushed onto the stack,
+         * then when performWithCurrent is called, it is popped from the stack. This allows us to use jlib functions
+         * within other jlib functions.
+         * @type {Array}
+         */
+        ostack = [];
 
         /**
          * Executes the given callback with the current object from the object stack. Then pops the object off the
@@ -71,6 +71,7 @@
 
         /**
          * Adds all the 'object' prototype classes to the other prototypes j objects.
+         * @return {undefined}
          */
         function addToOtherPrototypes () {
             for(var n = ['string', 'number', 'array', 'date'], o = n.shift(); o; o = n.shift()) {
@@ -163,7 +164,7 @@
                  */
                 repeat: function repeat (times) {
                     times = parseInt(times, 10);
-                    times = isNaN(times) || times <= 0 ? 1 : times;
+                    times = isNaN(times) || !isFinite(times) || times <= 0 ? 1 : times;
 
                     return performWithCurrent(function (s) {
                         var os = s;
@@ -181,7 +182,7 @@
                 rtrim: function rtrim (what) {
                     return performWithCurrent(function (s) {
                         what = typeof what === 'string' ? what : '\\s+';
-                        return s.replace(new RegExp(what + '$', 'g'), '');
+                        return s.replace(new RegExp(what + '$'), '');
                     });
                 },
 
@@ -193,7 +194,7 @@
                 ltrim: function ltrim (what) {
                     return performWithCurrent(function (s) {
                         what = typeof what === 'string' ? what : '\\s+';
-                        return s.replace(new RegExp('^' + what, 'g'), '');
+                        return s.replace(new RegExp('^' + what), '');
                     });
                 },
 
@@ -304,7 +305,7 @@
                 ellipses: function ellipses (length, place, ellipses) {
                     return performWithCurrent(function (s) {
                         if(isNaN(parseInt(length, 10))) length = s.length;
-                        if(length < 0) length = 0;
+                        if(length < 0 || !isFinite(length)) length = 0;
 
                         ellipses = typeof ellipses === 'string' ? ellipses : '...';
                         if(s.length <= length) return s;
@@ -609,6 +610,206 @@
                 pad: function pad (length) {
                     return performWithCurrent(function (n) {
                         return n.toString()[protoIdentifier].pad(length, '0', true);
+                    });
+                },
+
+                /**
+                 * Advances (or reverses) the date the specified number of days.
+                 * @param {Date} date The date to change.
+                 * @return {Date} The modified date.
+                 */
+                daysFrom: function daysFrom (date) {
+                    return performWithCurrent(function (n) {
+                        if(typeof date === 'number') date = new Date(date);
+                        if(!(date instanceof Date))  date = new Date();
+
+                        date.setDate(date.getDate() + n);
+                        return date;
+                    });
+                },
+
+                /**
+                 * Advances (or reverses) the current date the specified number of days.
+                 * @return {Date} A date object
+                 */
+                daysFromNow: function daysFromNow () {
+                    return performWithCurrent(function (n) {
+                        return n[protoIdentifier].daysFrom(new Date());
+                    });
+                },
+
+                /**
+                 * Advances (or reverses) the date the specified number of days.
+                 * @param {Date} date The date to change.
+                 * @return {Date} The modified date.
+                 */
+                secondsFrom: function secondsFrom (date) {
+                    return performWithCurrent(function (n) {
+                        if(typeof date === 'number') date = new Date(date);
+                        if(!(date instanceof Date))  date = new Date();
+
+                        date.setSeconds(date.getSeconds() + n);
+                        return date;
+                    });
+                },
+
+                /**
+                 * Advances (or reverses) the current date the specified number of days.
+                 * @return {Date} A date object
+                 */
+                secondsFromNow: function secondsFromNow () {
+                    return performWithCurrent(function (n) {
+                        return n[protoIdentifier].secondsFrom(new Date());
+                    });
+                },
+
+                /**
+                 * Advances (or reverses) the date the specified number of years.
+                 * @param {Date} date The date to change.
+                 * @return {Date} The modified date.
+                 */
+                yearsFrom: function yearsFrom (date) {
+                    return performWithCurrent(function (n) {
+                        if(typeof date === 'number') date = new Date(date);
+                        if(!(date instanceof Date))  date = new Date();
+
+                        date.setFullYear(date.getFullYear() + n);
+                        return date;
+                    });
+                },
+
+                /**
+                 * Advances (or reverses) the current date the specified number of years.
+                 * @return {Date} A date object
+                 */
+                yearsFromNow: function yearsFromNow () {
+                    return performWithCurrent(function (n) {
+                        return n[protoIdentifier].yearsFrom(new Date());
+                    });
+                },
+
+                /**
+                 * Advances (or reverses) the date the specified number of months.
+                 * @param {Date} date The date to change.
+                 * @return {Date} The modified date.
+                 */
+                monthsFrom: function monthsFrom (date) {
+                    return performWithCurrent(function (n) {
+                        if(typeof date === 'number') date = new Date(date);
+                        if(!(date instanceof Date))  date = new Date();
+
+                        date.setMonth(date.getMonth() + n);
+                        return date;
+                    });
+                },
+
+                /**
+                 * Advances (or reverses) the current date the specified number of months.
+                 * @return {Date} A date object
+                 */
+                monthsFromNow: function monthsFromNow () {
+                    return performWithCurrent(function (n) {
+                        return n[protoIdentifier].monthsFrom(new Date());
+                    });
+                },
+
+                /**
+                 * Advances (or reverses) the date the specified number of hours.
+                 * @param {Date} date The date to change.
+                 * @return {Date} The modified date.
+                 */
+                hoursFrom: function hoursFrom (date) {
+                    return performWithCurrent(function (n) {
+                        if(typeof date === 'number') date = new Date(date);
+                        if(!(date instanceof Date))  date = new Date();
+
+                        date.setHours(date.getHours() + n);
+                        return date;
+                    });
+                },
+
+                /**
+                 * Advances (or reverses) the current date the specified number of hours.
+                 * @return {Date} A date object
+                 */
+                hoursFromNow: function hoursFromNow () {
+                    return performWithCurrent(function (n) {
+                        return n[protoIdentifier].hoursFrom(new Date());
+                    });
+                },
+
+                /**
+                 * Advances (or reverses) the date the specified number of minutes.
+                 * @param {Date} date The date to change.
+                 * @return {Date} A modified date.
+                 */
+                minutesFrom: function minutesFrom (date) {
+                    return performWithCurrent(function (n) {
+                        if(typeof date === 'number') date = new Date(date);
+                        if(!(date instanceof Date))  date = new Date();
+
+                        date.setMinutes(date.getMinutes() + n);
+                        return date;
+                    });
+                },
+
+                /**
+                 * Advances (or reverses) the current date the specified number of minutes.
+                 * @return {Date} The date object
+                 */
+                minutesFromNow: function minutesFromNow () {
+                    return performWithCurrent(function (n) {
+                        return (-n)[protoIdentifier].minutesFrom(new Date());
+                    });
+                },
+
+                /**
+                 * The time, months in the past.
+                 * @return {Date} A Date object.
+                 */
+                monthsAgo: function monthsAgo () {
+                    return performWithCurrent(function (n) {
+                        return (-n)[protoIdentifier].monthsFromNow();
+                    });
+                },
+
+                /**
+                 * The time, days in the past.
+                 * @return {Date} A Date object.
+                 */
+                daysAgo: function daysAgo () {
+                    return performWithCurrent(function (n) {
+                        return (-n)[protoIdentifier].daysFromNow();
+                    });
+                },
+
+                /**
+                 * The time, seconds in the past.
+                 * @return {Date} A Date object.
+                 */
+                secondsAgo: function secondsAgo () {
+                    return performWithCurrent(function (n) {
+                        return (-n)[protoIdentifier].secondsFromNow();
+                    });
+                },
+
+                /**
+                 * The time, minutes in the past.
+                 * @return {Date} A Date object.
+                 */
+                minutesAgo: function minutesAgo () {
+                    return performWithCurrent(function (n) {
+                        return (-n)[protoIdentifier].minutesFromNow();
+                    });
+                },
+
+                /**
+                 * The time, years in the past.
+                 * @return {Date} A Date object.
+                 */
+                yearsAgo: function yearsAgo () {
+                    return performWithCurrent(function (n) {
+                        return (-n)[protoIdentifier].yearsFromNow();
                     });
                 },
 
@@ -1078,10 +1279,10 @@
                         keys = Object.keys(self);
 
                         rangeA = parseInt(rangeA);
-                        rangeA = (isNaN(rangeA) || rangeA < 0) ? 0 : rangeA;
+                        rangeA = (isNaN(rangeA) || rangeA < 0 || !isFinite(rangeA)) ? 0 : rangeA;
 
                         rangeB = parseInt(rangeB);
-                        rangeB = (isNaN(rangeB) || rangeB + 1 > keys.length) ? keys.length : rangeB + 1; // End range is inclusive...
+                        rangeB = (isNaN(rangeB) || rangeB + 1 > keys.length || !isFinite(rangeB)) ? keys.length : rangeB + 1; // End range is inclusive...
                         rangeB = rangeB < 0 ? 0 : rangeB;
 
                         var i = 0;
@@ -1122,7 +1323,7 @@
                 first: function first (n) {
                     return performWithCurrent(function (o) {
                         n = parseInt(n, 10);
-                        n = isNaN(n) ? 1 : n;
+                        n = isNaN(n) || !isFinite(n) ? 1 : n;
                         var v = null;
 
                         if(typeof o !== 'object') {
@@ -1152,7 +1353,7 @@
                 last: function last (n) {
                     return performWithCurrent(function (o) {
                         n = parseInt(n, 10);
-                        n = isNaN(n) ? 1 : n;
+                        n = isNaN(n) || !isFinite(n) ? 1 : n;
                         var v = null;
 
                         if(typeof o !== 'object') {
@@ -1622,3 +1823,8 @@
         module.exports = jInit :
         window.JLib    = jInit ;
 }());
+
+var x = module.exports('j');
+
+console.log((2).j.daysAgo());
+console.log((2).j.yearsAgo());
