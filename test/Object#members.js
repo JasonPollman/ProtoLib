@@ -17,43 +17,43 @@ describe('Object#members', function () {
         earr   = [];
 
     before(function () {
-        require(path.join(__dirname, '..'));
+        require(path.join(__dirname, '..'))('jlib');
     });
 
     it('It should return the correct number of members given an object', function () {
-        var o = obj.members();
+        var o = obj.jlib.members();
         expect(o).to.equal(3);
 
-        o = eobj.members();
+        o = eobj.jlib.members();
         expect(o).to.equal(0);
     });
 
     it('It should return the correct number of members given an array', function () {
-        var o = subarr.members();
+        var o = subarr.jlib.members();
         expect(o).to.equal(3);
 
-        o = earr.members();
+        o = earr.jlib.members();
         expect(o).to.equal(0);
     });
 
     it('It should return the correct number of members given a string', function () {
-        var o = string.members();
+        var o = string.jlib.members();
         expect(o).to.equal(6);
 
-        o = estr.members();
+        o = estr.jlib.members();
         expect(o).to.equal(0);
     });
 
     it('It should return the correct number of members given a number', function () {
-        var o = number.members();
+        var o = number.jlib.members();
         expect(o).to.equal(6);
 
-        o = float.members();
+        o = float.jlib.members();
         expect(o).to.equal(8);
     });
 
     it('It should return the correct number of members given a function', function () {
-        var o = func.members();
+        var o = func.jlib.members();
         expect(o).to.equal(1);
     });
 });

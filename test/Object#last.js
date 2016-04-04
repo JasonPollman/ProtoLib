@@ -14,34 +14,34 @@ describe('Object#last', function () {
         subarr = [1, 2, 3];
 
     before(function () {
-        require(path.join(__dirname, '..'));
+        require(path.join(__dirname, '..'))('jl');
     });
 
     it('It should return the last item in an object', function () {
-        var o = obj.last();
+        var o = obj.jl.last();
         expect(o).to.equal(false);
     });
 
     it('It should return the last item in an array', function () {
-        var o = subarr.last();
+        var o = subarr.jl.last();
         expect(o).to.equal(3);
     });
 
     it('It should return the last character in a string', function () {
-        var o = string.last();
+        var o = string.jl.last();
         expect(o).to.equal('g');
     });
 
     it('It should return the last digit in a number', function () {
-        var o = number.last();
+        var o = number.jl.last();
         expect(o).to.equal('3');
 
-        o = float.last();
+        o = float.jl.last();
         expect(o).to.equal('4');
     });
 
     it('It should return the last charcter of a function cast to a string', function () {
-        var o = func.last();
+        var o = func.jl.last();
         expect(o).to.equal('}');
     });
 });

@@ -1,12 +1,14 @@
 {
-    "name": "jpc-utils",
-    "version": "0.0.0",
-    "description": "Utility methods and functions. Many (gracefully) modify the prototype chains for Object, String, and Number",
+    "name": "jlibrary",
+    "version": "0.1.0",
+    "description": "A feature packed JavaScript standard library, that attaches to the prototype chains using a single (customizable) namespace.",
     "author": "Jason Pollman <jasonjpollman@gmail.com>",
     "keywords": [
         "utility",
         "dev tools",
-        "prototype"
+        "prototype",
+        "stdlib",
+        "library"
     ],
     "dependencies": {
         "minimist": "*"

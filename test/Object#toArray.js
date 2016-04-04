@@ -19,7 +19,7 @@ describe('Object#toArray', function () {
     });
 
     it('It should convert objects to arrays', function () {
-        var arr = obj.toArray();
+        var arr = obj.jlib.toArray();
         expect(arr).to.be.instanceof(Array);
         expect(arr[0]).to.be.a('string');
         expect(arr[1]).to.be.a('number');
@@ -27,7 +27,7 @@ describe('Object#toArray', function () {
     });
 
     it('It should convert strings to a char arrays', function () {
-        var arr = string.toArray();
+        var arr = string.jlib.toArray();
         expect(arr).to.be.instanceof(Array);
         expect(arr[0]).to.equal('s');
         expect(arr[1]).to.equal('t');
@@ -38,7 +38,7 @@ describe('Object#toArray', function () {
     });
 
     it('It should convert numbers to a char arrays', function () {
-        var arr = number.toArray();
+        var arr = number.jlib.toArray();
         expect(arr).to.be.instanceof(Array);
         expect(arr[0]).to.equal('1');
         expect(arr[1]).to.equal('2');
@@ -47,7 +47,7 @@ describe('Object#toArray', function () {
         expect(arr[4]).to.equal('2');
         expect(arr[5]).to.equal('3');
 
-        arr = float.toArray();
+        arr = float.jlib.toArray();
         expect(arr).to.be.instanceof(Array);
         expect(arr[0]).to.equal('1');
         expect(arr[1]).to.equal('3');
@@ -60,14 +60,14 @@ describe('Object#toArray', function () {
     });
 
     it('It should convert booleans to a char arrays', function () {
-        var arr = true.toArray();
+        var arr = true.jlib.toArray();
         expect(arr).to.be.instanceof(Array);
         expect(arr[0]).to.equal('t');
         expect(arr[1]).to.equal('r');
         expect(arr[2]).to.equal('u');
         expect(arr[3]).to.equal('e');
 
-        arr = false.toArray();
+        arr = false.jlib.toArray();
         expect(arr).to.be.instanceof(Array);
         expect(arr[0]).to.equal('f');
         expect(arr[1]).to.equal('a');
@@ -77,7 +77,7 @@ describe('Object#toArray', function () {
     });
 
     it('It should convert functions to a char arrays', function () {
-        var arr = func.toArray();
+        var arr = func.jlib.toArray();
         expect(arr).to.be.instanceof(Array);
         expect(arr[0]).to.equal('f');
         expect(arr[1]).to.equal('u');
@@ -86,7 +86,7 @@ describe('Object#toArray', function () {
     });
 
     it('It should simply return arrays', function () {
-        var arr = array.toArray();
+        var arr = array.jlib.toArray();
         expect(arr).to.be.instanceof(Array);
         expect(arr).to.equal(array);
         expect(arr[0]).to.equal(1);
