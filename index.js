@@ -74,11 +74,11 @@
          * @return {undefined}
          */
         function addToOtherPrototypes () {
-            for(var n = ['string', 'number', 'array', 'date'], o = n.shift(); o; o = n.shift()) {
-                var keys = Object.keys(JLib.object);
+            for(var n = ['_string', '_number', '_array', '_date'], o = n.shift(); o; o = n.shift()) {
+                var keys = Object.keys(JLib._object);
                 for(var i = 0; i < keys.length; i++) {
-                    if(JLib.object.hasOwnProperty(keys[i]) && !JLib[o][keys[i]])
-                        JLib[o][keys[i]] = JLib.object[keys[i]];
+                    if(JLib._object.hasOwnProperty(keys[i]) && !JLib[o][keys[i]])
+                        JLib[o][keys[i]] = JLib._object[keys[i]];
                 }
             }
         }
@@ -106,30 +106,34 @@
              * @param {String} toPrototype The prototype to add the function to
              * @param {String} name The name of the method
              * @param {Function} func The function to invoke
-             * @return {Obejct} The current JLib object
+             * @return {Boolean} True if the extension was successful, false otherwise.
              */
             extend: function (toPrototype, name, func) {
                 if(typeof toPrototype !== 'string') return false;
                 if(typeof name !== 'string') return false;
 
-                toPrototype = toPrototype.toLowerCase();
-                JLib[toPrototype][name] = function () {
-                    var args = arguments[protoIdentifier].toArray();
+                toPrototype = toPrototype.toLowerCase().replace(/^_/, '') + '_';
 
-                    return performWithCurrent(function (c) {
-                        func.apply(c, args);
-                    });
-                };
+                if(JLib[toPrototype]) {
+                    JLib[toPrototype][name] = function () {
+                        var args = arguments[protoIdentifier].toArray();
+                        return performWithCurrent(function (c) {
+                            func.apply(c, args);
+                        });
+                    };
 
-                if(toPrototype === 'object') addToOtherPrototypes();
-                return true;
+                    if(toPrototype === 'object') addToOtherPrototypes();
+                    return true;
+                }
+
+                return false;
             },
 
             /**
              * Functions available to String.prototype.j
              * @type {Object}
              */
-            string: {
+            _string: {
 
                 /**
                  * Returns all the characters found in one string but not the other.
@@ -501,7 +505,7 @@
              * Functions available to Date.prototype.j.
              * @type {Object}
              */
-            date: {
+            _date: {
                 /**
                  * Moves a date forward 'daysInTheFuture' days.
                  * @param {Number} daysInTheFuture The number of days in the future to advance the date
@@ -600,7 +604,7 @@
              * Functions available to Number.prototype.j.
              * @type {Object}
              */
-            number: {
+            _number: {
                 /**
                  * Pads a number with preceeding zeros.
                  * @param {Number} length The final length of the string
@@ -842,7 +846,7 @@
              * Functions available to Array.prototype.j.
              * @type {Object}
              */
-            array: {
+            _array: {
 
                 /**
                  * Shuffles an array
@@ -1062,7 +1066,7 @@
              * Functions available to Object.prototype.j.
              * @type {Object}
              */
-            object: {
+            _object: {
 
                 /**
                  * Returns the object's keys.
@@ -1680,7 +1684,7 @@
             enumerable   : false,
             get          : function () {
                 ostack.push(this);
-                return JLib.object;
+                return JLib._object;
             }
         });
 
@@ -1690,7 +1694,7 @@
             enumerable   : false,
             get          : function () {
                 ostack.push(this);
-                return JLib.string;
+                return JLib._string;
             }
         });
 
@@ -1700,7 +1704,7 @@
             enumerable   : false,
             get          : function () {
                 ostack.push(this);
-                return JLib.number;
+                return JLib._number;
             }
         });
 
@@ -1710,7 +1714,7 @@
             enumerable   : false,
             get          : function () {
                 ostack.push(this);
-                return JLib.date;
+                return JLib._date;
             }
         });
 
@@ -1720,7 +1724,7 @@
             enumerable   : false,
             get          : function () {
                 ostack.push(this);
-                return JLib.array;
+                return JLib._array;
             }
         });
 
