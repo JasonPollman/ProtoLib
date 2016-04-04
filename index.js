@@ -1164,6 +1164,36 @@
                 },
 
                 /**
+                 * True if the object is a string, false otherwise.
+                 * @return {Boolean} True if the object is a string, false otherwise.
+                 */
+                isString: function isString () {
+                    return performWithCurrent(function (o) {
+                        return typeof o === 'string';
+                    });
+                },
+
+                /**
+                 * True if the object is a boolean, false otherwise.
+                 * @return {Boolean} True if the object is a boolean, false otherwise.
+                 */
+                isBoolean: function isBoolean () {
+                    return performWithCurrent(function (o) {
+                        return typeof o === 'boolean';
+                    });
+                },
+
+                /**
+                 * True if the object is a function, false otherwise.
+                 * @return {Boolean} True if the object is a function, false otherwise.
+                 */
+                isFunction: function isFunction () {
+                    return performWithCurrent(function (o) {
+                        return typeof o === 'function';
+                    });
+                },
+
+                /**
                  * True if the object is an arguments object, false otherwise
                  * @return {Boolean} True if the object is an arguments object, false otherwise
                  */
@@ -1295,6 +1325,33 @@
                             }
                         }
                         return ret;
+                    });
+                },
+
+                /**
+                 * Invokes the callback 'f' for every property the object contains. If the callback returns false, the
+                 * loop is broken and false is returned; otherwise true is returned.
+                 * @param {Function} f The callback to invoke for each item within the object
+                 * @returns {Boolean} True if none of the callback invocations returned false.
+                 * @function
+                 */
+                every: function every (f) {
+                    f = f instanceof Function ? f : undefined;
+
+                    return performWithCurrent(function (o) {
+                        var self = o, keys, property, value;
+                        if(typeof self === 'number' || typeof self === 'function' || typeof self === 'boolean') self = o.toString();
+                        keys = Object.keys(self);
+
+                        var i = 0;
+                        if(f instanceof Function) {
+                            for(var n = 0; n < keys.length; n++) {
+                                property = keys[n];
+                                value    = (typeof o === 'number' && !isNaN(parseFloat(self[property]))) ? parseFloat(self[property]) : self[property];
+                                if(f.call(o, value, property, n, i++) === false) return false;
+                            }
+                        }
+                        return true;
                     });
                 },
 
@@ -1803,6 +1860,44 @@
             return text;
         };
 
+        /**
+         * True if and only if all objects provided are null.
+         * @param {...*} o The objects to evaluate
+         * @return {Boolean}
+         */
+        JLib.isNull = function () {
+            return arguments[protoIdentifier].every(function (item) {
+                if(item !== null) return false;
+            });
+        };
+
+        /**
+         * True if and only if all objects provided are undefined.
+         * @param {...*} o The objects to evaluate
+         * @return {Boolean}
+         */
+        JLib.isUndefined = function () {
+            return arguments[protoIdentifier].every(function (item) {
+                if(item !== undefined) return false;
+            });
+        };
+
+        // Apply the following to the JLib object.
+        var staticIdentityFunction = function () {
+            var args   = arguments[protoIdentifier].makeArray(),
+                method = this;
+
+            args.shift();
+            return arguments[protoIdentifier].every(function (item) {
+                if(item) return item[protoIdentifier][method]();
+                return false;
+            });
+        };
+
+        for(var n = ['isArray', 'isEmpty', 'isNumeric', 'isPureObject', 'isString', 'isBoolean', 'isFunction'], o = n.shift(); o; o = n.shift()) {
+            JLib[o] = staticIdentityFunction.bind(o);
+        }
+
         if(IS_NODE) require(require('path').join(__dirname, 'lib', 'NodeAddons'))(JLib);
         return JLib;
     };
@@ -1823,8 +1918,3 @@
         module.exports = jInit :
         window.JLib    = jInit ;
 }());
-
-var x = module.exports('j');
-
-console.log((2).j.daysAgo());
-console.log((2).j.yearsAgo());
