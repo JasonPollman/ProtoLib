@@ -1063,7 +1063,7 @@
                         var ret       = null,
                             broken    = false,
                             self      = o,
-                            keys, property,
+                            keys, property, value,
 
                             exit = function () {
                                 var args = arguments[protoIdentifier].toArray();
@@ -1085,7 +1085,8 @@
                         if(f instanceof Function) {
                             for(var n = rangeA; n < rangeB; n++) {
                                 property = keys[n];
-                                f.call(o, self[property], property, n, exit, i++);
+                                value    = (typeof o === 'number' && !isNaN(parseFloat(self[property]))) ? parseFloat(self[property]) : self[property];
+                                f.call(o, value, property, n, exit, i++);
                                 if(broken) break;
                             }
                         }
@@ -1110,7 +1111,8 @@
                 },
 
                 /**
-                 * Returns the first n elements of an object.
+                 * Returns the first n elements of an object. If the object is an array, and only one items is retrieved,
+                 * that item will be returned, rather than an array.
                  * @param {Number=} [n=1] The number of elements to return
                  * @return {Array<*>} The first n elements of the array.
                  */
@@ -1127,8 +1129,10 @@
                             v = o.slice(0, n);
                         }
                         else {
-                            var a = o[protoIdentifier].toArray();
-                            v = a.slice(0, n);
+                            v = {};
+                            o[protoIdentifier].each(0, n - 1, function (item, key) { v[key] = item; });
+                            var keys = Object.keys(v);
+                            return keys.length === 1 ? v[keys[0]] : v;
                         }
 
                         return v.length === 1 ? v[0] : v;
@@ -1136,10 +1140,11 @@
                 },
 
                 /**
-                 * Returns the last member of an object (or array). If passed a string, number, or function
-                 * to last character of the .toString() value will be returned.
+                 * Returns the last n elements of an object. If the object is an array, and only one items is retrieved,
+                 * that item will be returned, rather than an array.
+                 * @param {Number=} [n=1] The number of elements to return
+                 * @return {Array<*>} The last n elements of the array.
                  * @function
-                 * @memberof Object.prototype
                  */
                 last: function last (n) {
                     return performWithCurrent(function (o) {
@@ -1154,8 +1159,12 @@
                             v = o.slice(-n);
                         }
                         else {
-                            var a = o[protoIdentifier].toArray();
-                            v = a.slice(-n);
+                            v = {};
+                            var len = o[protoIdentifier].members();
+
+                            o[protoIdentifier].each(len - n, len, function (item, key) { v[key] = item; });
+                            var keys = Object.keys(v);
+                            return keys.length === 1 ? v[keys[0]] : v;
                         }
 
                         return v.length === 1 ? v[0] : v;
@@ -1249,6 +1258,55 @@
                 },
 
                 /**
+                 * Filters an object using the given predicate function. For objects, a new object will be returned, with
+                 * the values that passed the predicate function. For strings, a new string will be returned with the characters
+                 * that passed the predicate function. For numbers, a new number will be returned with the digits that passed
+                 * the predicate function. Functions will be operated on as strings.
+                 * @param {Function} predicate The function used to filter the object.
+                 * @return {*} The filtered object
+                 */
+                where: function where (predicate) {
+                    return performWithCurrent(function (o) {
+                        if(!(predicate instanceof Function)) return o;
+
+                        var isObject = typeof o === 'object' && !(o instanceof Array) ? true : false,
+                            filtered = !isObject ? [] : {};
+
+                        o[protoIdentifier].each(function (item, key) {
+                            if(predicate.call(item, item)) {
+                                if(isObject) filtered[key] = item; else filtered.push(item);
+                            }
+                        });
+
+                        if(typeof o !== 'object') filtered = filtered.join('');
+                        return filtered;
+                    });
+                },
+
+                /**
+                 * Filters an object by keys using the given predicate function.
+                 * @param {Function} predicate The function used to filter the object.
+                 * @return {*} The filtered object
+                 */
+                whereKeys: function whereKeys (predicate) {
+                    return performWithCurrent(function (o) {
+                        if(!(predicate instanceof Function)) return o;
+
+                        var isObject = typeof o === 'object' && !(o instanceof Array) ? true : false,
+                            filtered = !isObject ? [] : {};
+
+                        o[protoIdentifier].each(function (item, key) {
+                            if(predicate.call(key, key)) {
+                                if(isObject) filtered[key] = item; else filtered.push(item);
+                            }
+                        });
+
+                        if(typeof o !== 'object') filtered = filtered.join('');
+                        return filtered;
+                    });
+                },
+
+                /**
                  * For objects, inverts the objects keys/values. If the value isn't a number or array, it will be omitted.
                  * For strings, it will reverse the string.
                  * For number, it will compute the number's inverse (i.e. 1 / x).
@@ -1268,6 +1326,11 @@
                     });
                 },
 
+                /**
+                 * Returns the maximum item in the object.
+                 * @param {Function=} func If passed, the function will be invoked for each item in the object collection.
+                 * @return {*} The maximum item in the object collection.
+                 */
                 max: function max (func) {
                     if(!(func instanceof Function)) func = undefined;
 
@@ -1293,6 +1356,11 @@
                     });
                 },
 
+                /**
+                 * Returns the minimum item in the object.
+                 * @param {Function=} func If passed, the function will be invoked for each item in the object collection.
+                 * @return {*} The minimum item in the object collection.
+                 */
                 min: function min (func) {
                     if(!(func instanceof Function)) func = undefined;
 
@@ -1315,6 +1383,28 @@
                             });
                         }
                         return min;
+                    });
+                },
+
+                /**
+                 * Tests whether or not the object has a method called 'method'.
+                 * @param {String} method The name of the method to test existence for.
+                 * @return {Boolean} True if the object has a function called 'method', false otherwise.
+                 */
+                implements: function _implements (method) {
+                    return performWithCurrent(function (o) {
+                        return o && o[method] instanceof Function;
+                    });
+                },
+
+                /**
+                 * Same as Object.j.implements, excepct with a hasOwnProperty check.
+                 * @param {String} method The name of the method to test existence for.
+                 * @return {Boolean} True if the object has its own function called 'method', false otherwise.
+                 */
+                implementsOwn: function implementsOwn (method) {
+                    return performWithCurrent(function (o) {
+                        return o && o[method] instanceof Function && o.hasOwnProperty(method);
                     });
                 }
             }
@@ -1529,3 +1619,13 @@
         module.exports = jInit :
         window.JLib    = jInit ;
 }());
+
+var j = module.exports('j');
+
+var x = [1,2,3,4],
+    y = { a: 4, b: 5, c: 6, d: 7 },
+    z = -0.123242526272829,
+    q = 'jasonpollman';
+
+console.log(x.j.whereKeys(function (k) { console.log(k); return k < 2; }));
+console.log(y.j.whereKeys(function (k) { console.log(k); return k === 'a'; }));
