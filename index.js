@@ -1619,13 +1619,3 @@
         module.exports = jInit :
         window.JLib    = jInit ;
 }());
-
-var j = module.exports('j');
-
-var x = [1,2,3,4],
-    y = { a: 4, b: 5, c: 6, d: 7 },
-    z = -0.123242526272829,
-    q = 'jasonpollman';
-
-console.log(x.j.whereKeys(function (k) { console.log(k); return k < 2; }));
-console.log(y.j.whereKeys(function (k) { console.log(k); return k === 'a'; }));

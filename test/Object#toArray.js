@@ -37,26 +37,26 @@ describe('Object#toArray', function () {
         expect(arr[5]).to.equal('g');
     });
 
-    it('It should convert numbers to a char arrays', function () {
+    it('It should convert numbers to an array of digits', function () {
         var arr = number.jlib.toArray();
         expect(arr).to.be.instanceof(Array);
-        expect(arr[0]).to.equal('1');
-        expect(arr[1]).to.equal('2');
-        expect(arr[2]).to.equal('4');
-        expect(arr[3]).to.equal('3');
-        expect(arr[4]).to.equal('2');
-        expect(arr[5]).to.equal('3');
+        expect(arr[0]).to.equal(1);
+        expect(arr[1]).to.equal(2);
+        expect(arr[2]).to.equal(4);
+        expect(arr[3]).to.equal(3);
+        expect(arr[4]).to.equal(2);
+        expect(arr[5]).to.equal(3);
 
         arr = float.jlib.toArray();
         expect(arr).to.be.instanceof(Array);
-        expect(arr[0]).to.equal('1');
-        expect(arr[1]).to.equal('3');
-        expect(arr[2]).to.equal('2');
-        expect(arr[3]).to.equal('4');
+        expect(arr[0]).to.equal(1);
+        expect(arr[1]).to.equal(3);
+        expect(arr[2]).to.equal(2);
+        expect(arr[3]).to.equal(4);
         expect(arr[4]).to.equal('.');
-        expect(arr[5]).to.equal('2');
-        expect(arr[6]).to.equal('3');
-        expect(arr[7]).to.equal('4');
+        expect(arr[5]).to.equal(2);
+        expect(arr[6]).to.equal(3);
+        expect(arr[7]).to.equal(4);
     });
 
     it('It should convert booleans to a char arrays', function () {

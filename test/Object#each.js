@@ -241,9 +241,9 @@ describe('Object#each', function () {
         var numberCallback = function (digit, k, i) {
             expect(this).to.equal(currentNumber);
             if(digit !== '.' && digit !== '-' && digit !== 'e' && digit !== '+') {
-                expect(digit).to.be.a('string');
-                expect(parseInt(digit, 10)).lt(10);
-                expect(parseInt(digit, 10)).gte(0);
+                expect(digit).to.be.a('number');
+                expect(digit).lt(10);
+                expect(digit).gte(0);
             }
             else if(this < 0 && i === 0) {
                 expect(digit).to.equal('-');
