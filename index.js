@@ -1277,20 +1277,44 @@
 
                         if(!func) {
                             max = o[protoIdentifier].first();
-                            o[protoIdentifier].each(function (item) {
+                            o[protoIdentifier].each(1, function (item) {
                                 if(item >= max) max = item;
                             });
                         }
                         else {
                             max = o[protoIdentifier].first();
-                            maxValue = func(max);
+                            maxValue = func.call(max, max);
 
                             o[protoIdentifier].each(1, function (item) {
-                                if(func(item) >= maxValue) max = item;
+                                if(func.call(item, item) >= maxValue) max = item;
                             });
                         }
-
                         return max;
+                    });
+                },
+
+                min: function min (func) {
+                    if(!(func instanceof Function)) func = undefined;
+
+                    return performWithCurrent(function (o) {
+                        if(typeof o !== 'object') return o;
+                        var min, minValue;
+
+                        if(!func) {
+                            min = o[protoIdentifier].first();
+                            o[protoIdentifier].each(1, function (item) {
+                                if(item <= min) min = item;
+                            });
+                        }
+                        else {
+                            min = o[protoIdentifier].first();
+                            minValue = func.call(min, min);
+
+                            o[protoIdentifier].each(1, function (item) {
+                                if(func.call(item, item) <= minValue) min = item;
+                            });
+                        }
+                        return min;
                     });
                 }
             }
