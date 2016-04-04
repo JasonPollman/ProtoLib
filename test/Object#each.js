@@ -131,13 +131,13 @@ describe('Object#each', function () {
         string.jlib.each(function (char) {
             expect(this).to.equal('somereallyreallyreallylongstring');
             expect(char).to.be.a('string');
-            expect(char).to.be.have.length(1);
+            expect(char).to.have.length(1);
         });
 
         var c = string.jlib.each(function (char, k, i, exit) {
             expect(this).to.equal('somereallyreallyreallylongstring');
             expect(char).to.be.a('string');
-            expect(char).to.be.have.length(1);
+            expect(char).to.have.length(1);
             if(i === 9) exit(char);
         });
 
@@ -146,7 +146,7 @@ describe('Object#each', function () {
         c = string.jlib.each(function (char, k, i, exit) {
             expect(this).to.equal('somereallyreallyreallylongstring');
             expect(char).to.be.a('string');
-            expect(char).to.be.have.length(1);
+            expect(char).to.have.length(1);
             if(i === 9) exit(char, 'arg2', 'arg3');
         });
 
@@ -154,6 +154,74 @@ describe('Object#each', function () {
         expect(c[0]).to.be.equal('y');
         expect(c[1]).to.be.equal('arg2');
         expect(c[2]).to.be.equal('arg3');
+    });
+
+    it('It should iterate over start and end ranges as expected', function () {
+        expect(Object.jlib.each).to.be.an.instanceof(Function);
+        var string = 'somereallyreallyreallylongstring';
+
+        var val = '';
+        string.jlib.each(1, 2, function (char) {
+            val += char;
+            expect(this).to.equal('somereallyreallyreallylongstring');
+            expect(char).to.be.a('string');
+            expect(char).to.have.length(1);
+        });
+        expect(val).to.equal('om');
+
+        val = '';
+        string.jlib.each(2, function (char) {
+            val += char;
+            expect(this).to.equal('somereallyreallyreallylongstring');
+            expect(char).to.be.a('string');
+            expect(char).to.have.length(1);
+        });
+        expect(val).to.equal('mereallyreallyreallylongstring');
+
+        val = '';
+        string.jlib.each(-20, function (char) {
+            val += char;
+            expect(this).to.equal('somereallyreallyreallylongstring');
+            expect(char).to.be.a('string');
+            expect(char).to.have.length(1);
+        });
+        expect(val).to.equal('somereallyreallyreallylongstring');
+
+        val = '';
+        string.jlib.each(-20, 2000, function (char) {
+            val += char;
+            expect(this).to.equal('somereallyreallyreallylongstring');
+            expect(char).to.be.a('string');
+            expect(char).to.have.length(1);
+        });
+        expect(val).to.equal('somereallyreallyreallylongstring');
+
+        val = '';
+        string.jlib.each(-20, -1000, function (char) {
+            val += char;
+            expect(this).to.equal('somereallyreallyreallylongstring');
+            expect(char).to.be.a('string');
+            expect(char).to.have.length(1);
+        });
+        expect(val).to.equal('');
+
+        val = '';
+        string.jlib.each(100000, 1, function (char) {
+            val += char;
+            expect(this).to.equal('somereallyreallyreallylongstring');
+            expect(char).to.be.a('string');
+            expect(char).to.have.length(1);
+        });
+        expect(val).to.equal('');
+
+        val = '';
+        string.jlib.each(200, -100, function (char) {
+            val += char;
+            expect(this).to.equal('somereallyreallyreallylongstring');
+            expect(char).to.be.a('string');
+            expect(char).to.have.length(1);
+        });
+        expect(val).to.equal('');
     });
 
     it('It should iterate over numbers as expected', function () {

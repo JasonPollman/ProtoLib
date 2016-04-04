@@ -40,7 +40,7 @@
      * the JLibrary, should '.jl' be taken by another libaray.
      */
     var JLibrary = function JLibrary (protoIdentifier) {
-        protoIdentifier = typeof protoIdentifier === 'string' ? protoIdentifier : 'jl';
+        protoIdentifier = typeof protoIdentifier === 'string' ? protoIdentifier : 'j';
 
         /**
          * The JLib library. An object that contains all of the functions/getters which will be namespaced under each
@@ -70,7 +70,20 @@
         }
 
         /**
-         * Properties and methods that will be added to the String.prototype.jlib object.
+         * Adds all the 'object' prototype classes to the other prototypes j objects.
+         */
+        function addToOtherPrototypes () {
+            for(var n = ['string', 'number', 'array', 'date'], o = n.shift(); o; o = n.shift()) {
+                var keys = Object.keys(JLib.object);
+                for(var i = 0; i < keys.length; i++) {
+                    if(JLib.object.hasOwnProperty(keys[i]) && !JLib[o][keys[i]])
+                        JLib[o][keys[i]] = JLib.object[keys[i]];
+                }
+            }
+        }
+
+        /**
+         * Properties and methods that will be added to the String.prototype.j object.
          * @type {Object}
          */
         JLib = {
@@ -95,6 +108,10 @@
              * @return {Obejct} The current JLib object
              */
             extend: function (toPrototype, name, func) {
+                if(typeof toPrototype !== 'string') return false;
+                if(typeof name !== 'string') return false;
+
+                toPrototype = toPrototype.toLowerCase();
                 JLib[toPrototype][name] = function () {
                     var args = arguments[protoIdentifier].toArray();
 
@@ -102,11 +119,13 @@
                         func.apply(c, args);
                     });
                 };
-                return JLib;
+
+                if(toPrototype === 'object') addToOtherPrototypes();
+                return true;
             },
 
             /**
-             * Functions available to String.prototype.jlib
+             * Functions available to String.prototype.j
              * @type {Object}
              */
             string: {
@@ -303,7 +322,7 @@
 
                 /**
                  * Shuffles a string
-                 * @return {String} The mixed up string
+                 * @return {String} The mixed up string.
                  */
                 shuffle: function shuffle () {
                     return performWithCurrent(function (s) {
@@ -319,6 +338,23 @@
                         }
 
                         return a.join('');
+                    });
+                },
+
+                /**
+                 * Reverses a string.
+                 * @return {String} The reversed string.
+                 */
+                reverse: function reverse () {
+                    return performWithCurrent(function (s) {
+                        if(s.length < 64) {
+                            var str = '';
+                            for(var i = s.length; i >= 0; i--) str += s.charAt(i);
+                            return str;
+                        }
+                        else {
+                            return s.split('').reverse().join('');
+                        }
                     });
                 },
 
@@ -374,8 +410,8 @@
                  * @function
                  */
                 pad: function pad (length, delim, pre) {
-                    return performWithCurrent(function (current) {
-                        var s = current, i, thisLength = s.length;
+                    return performWithCurrent(function (s) {
+                        var i, thisLength = s.length;
 
                         if(!delim) delim = ' ';
                         if(length === 0) return ''; else if(isNaN(parseInt(length, 10))) return s;
@@ -398,8 +434,8 @@
                  * @return {String} The string with newlines converted to br tags.
                  */
                 newlineToBreak: function newlineToBreak () {
-                    return performWithCurrent(function (current) {
-                        return current.replace(/(\r\n|\n)/g, '<br/>');
+                    return performWithCurrent(function (s) {
+                        return s.replace(/(\r\n|\n)/g, '<br/>');
                     });
                 },
 
@@ -408,8 +444,8 @@
                  * @return {String} The string with tabs converted to spans with the class 'tab'
                  */
                 tabsToSpan: function tabsToSpan () {
-                    return performWithCurrent(function (current) {
-                        return current.replace(/\t/g, '<span class="tab"></span>');
+                    return performWithCurrent(function (s) {
+                        return s.replace(/\t/g, '<span class="tab"></span>');
                     });
                 },
 
@@ -423,7 +459,7 @@
                  * @function
                  */
                 wordWrapToLength: function wordWrapToLength (width, padleft, padright, omitFirst) {
-                    return performWithCurrent(function (current) {
+                    return performWithCurrent(function (s) {
                         if(padright === undefined && padleft) padright = padleft;
 
                         padleft  = !isNaN(parseInt(padleft,  10)) ? parseInt(padleft, 10)  : 0;
@@ -433,7 +469,7 @@
                         for(var n = 0; n < padleft;  n++) paddingLeft  += ' ';
 
                         var cols   = !isNaN(parseInt(width, 10)) ? length : 120,
-                            arr    = current.split(' '),
+                            arr    = s.split(' '),
                             item   = null,
                             len    = !omitFirst ? cols - padright - padleft : cols - padright,
                             str    = !omitFirst ? paddingLeft : '',
@@ -460,7 +496,7 @@
             },
 
             /**
-             * Functions available to Date.prototype.jlib.
+             * Functions available to Date.prototype.j.
              * @type {Object}
              */
             date: {
@@ -472,8 +508,7 @@
                  * @function
                  */
                 advanceDays: function advanceDays (daysInTheFuture, adjustForWeekend) {
-                    return performWithCurrent(function (current) {
-                        var d = current;
+                    return performWithCurrent(function (d) {
                         daysInTheFuture = daysInTheFuture && daysInTheFuture[protoIdentifier].isNumeric() ? daysInTheFuture : 1;
                         d.setTime(d.getTime() + (daysInTheFuture * 86400000));
 
@@ -481,7 +516,7 @@
                             while(d.getDay() === 0 || d.getDay() === 6)
                                 d.setTime(d.getTime() + 86400000);
                         }
-                        return current;
+                        return d;
                     });
                 },
 
@@ -560,7 +595,7 @@
             },
 
             /**
-             * Functions available to Number.prototype.jlib.
+             * Functions available to Number.prototype.j.
              * @type {Object}
              */
             number: {
@@ -602,7 +637,7 @@
             },
 
             /**
-             * Functions available to Array.prototype.jlib.
+             * Functions available to Array.prototype.j.
              * @type {Object}
              */
             array: {
@@ -623,39 +658,12 @@
                 },
 
                 /**
-                 * Returns the first n elements of an array.
-                 * @param {Number=} [n=1] The number of elements to return
-                 * @return {Array<*>} The first n elements of the array.
-                 */
-                first: function first (n) {
-                    return performWithCurrent(function (a) {
-                        n = parseInt(n, 10);
-                        n = isNaN(n) ? 1 : n;
-
-                        return a.slice(0, n);
-                    });
-                },
-
-                /**
-                 * Returns the last n elements of an array.
-                 * @param {Number=} [n=1] The number of elements to return
-                 * @return {Array<*>} The last n elements of the array.
-                 */
-                last: function last (n) {
-                    return performWithCurrent(function (a) {
-                        n = parseInt(n, 10);
-                        n = isNaN(n) ? 1 : n;
-                        return a.slice(-n);
-                    });
-                },
-
-                /**
                  * Computes the union between the current array, and all the array objects passed in. That is,
                  * the set of unique objects present in any of the arrays.
                  * @param {...Array} arr A list of array objects
                  * @return {Array<*>} The union set of the provided arrays.
                  */
-                union: function union (arr) {
+                union: function union () {
                     var args = arguments[protoIdentifier].makeArray()[protoIdentifier].only('array');
 
                     return performWithCurrent(function (a) {
@@ -847,7 +855,7 @@
             },
 
             /**
-             * Functions available to Object.prototype.jlib.
+             * Functions available to Object.prototype.j.
              * @type {Object}
              */
             object: {
@@ -932,6 +940,36 @@
                 },
 
                 /**
+                 * True if the object is an array, false otherwise.
+                 * @return {Boolean} True if the object is an array, false otherwise.
+                 */
+                isArray: function isArray () {
+                    return performWithCurrent(function (o) {
+                        return o[protoIdentifier] instanceof Array;
+                    });
+                },
+
+                /**
+                 * True if the object is an object and not an array, false otherwise.
+                 * @return {Boolean} True if the object is an object and not an array, false otherwise.
+                 */
+                isPureObject: function isPureObject () {
+                    return performWithCurrent(function (o) {
+                        return !(o[protoIdentifier] instanceof Array) && typeof o === 'object';
+                    });
+                },
+
+                /**
+                 * True if the object is an arguments object, false otherwise
+                 * @return {Boolean} True if the object is an arguments object, false otherwise
+                 */
+                isArguments: function isArguments () {
+                    return performWithCurrent(function (o) {
+                        return Object.prototype.toString.call(o) === '[object Arguments]';
+                    });
+                },
+
+                /**
                  * Convers an object to a number, if possible.
                  * @returns {Number} The object as a float or NaN.
                  * @function
@@ -1011,14 +1049,21 @@
                  * </ul>
                  * @function
                  * @memberof Object.prototype
+                 * @param {Number=} [rangeA=0] The iteration start index
+                 * @param {Number=} [rangeB='length of the item'] The iteration end index
                  * @param {Function} f The callback to invoke for each item within the object
                  * @returns {*} The value passed to the exit parameter of the callback...
                  */
-                each: function each (f) {
+                each: function each (rangeA, rangeB, f) {
+                    var kf = Object.keys(arguments);
+                    f = arguments[kf[kf.length - 1]];
+                    f = f instanceof Function ? f : undefined;
+
                     return performWithCurrent(function (o) {
-                        var i      = 0,
-                            ret    = null,
-                            broken = false,
+                        var ret       = null,
+                            broken    = false,
+                            self      = o,
+                            keys, property,
 
                             exit = function () {
                                 var args = arguments[protoIdentifier].toArray();
@@ -1026,28 +1071,22 @@
                                 ret      = args.length > 1 ? args : args[0];
                             };
 
-                        var self      = o,
-                            gotNumber = false;
+                        if(typeof self === 'number' || typeof self === 'function' || typeof self === 'boolean') self = o.toString();
+                        keys = Object.keys(self);
 
-                        if(typeof self === 'number') {
-                            self      = o.toString();
-                            gotNumber = true;
-                        }
-                        else if(typeof self === 'function' || typeof self === 'boolean') {
-                            self = o.toString();
-                        }
+                        rangeA = parseInt(rangeA);
+                        rangeA = (isNaN(rangeA) || rangeA < 0) ? 0 : rangeA;
 
+                        rangeB = parseInt(rangeB);
+                        rangeB = (isNaN(rangeB) || rangeB + 1 > keys.length) ? keys.length : rangeB + 1; // End range is inclusive...
+                        rangeB = rangeB < 0 ? 0 : rangeB;
+
+                        var i = 0;
                         if(f instanceof Function) {
-                            for(var property in self) {
-                                if(self.hasOwnProperty(property) && !broken) {
-                                    if(gotNumber) {
-                                        f.call(parseFloat(self), self[property], property, i, exit);
-                                    }
-                                    else {
-                                        f.call(o, self[property], property, i, exit);
-                                    }
-                                    i++;
-                                }
+                            for(var n = rangeA; n < rangeB; n++) {
+                                property = keys[n];
+                                f.call(o, self[property], property, n, exit, i++);
+                                if(broken) break;
                             }
                         }
                         return ret;
@@ -1071,24 +1110,55 @@
                 },
 
                 /**
+                 * Returns the first n elements of an object.
+                 * @param {Number=} [n=1] The number of elements to return
+                 * @return {Array<*>} The first n elements of the array.
+                 */
+                first: function first (n) {
+                    return performWithCurrent(function (o) {
+                        n = parseInt(n, 10);
+                        n = isNaN(n) ? 1 : n;
+                        var v = null;
+
+                        if(typeof o !== 'object') {
+                            v = o.toString().slice(0, n);
+                        }
+                        else if(o instanceof Array) {
+                            v = o.slice(0, n);
+                        }
+                        else {
+                            var a = o[protoIdentifier].toArray();
+                            v = a.slice(0, n);
+                        }
+
+                        return v.length === 1 ? v[0] : v;
+                    });
+                },
+
+                /**
                  * Returns the last member of an object (or array). If passed a string, number, or function
                  * to last character of the .toString() value will be returned.
                  * @function
                  * @memberof Object.prototype
                  */
-                last: function last () {
+                last: function last (n) {
                     return performWithCurrent(function (o) {
+                        n = parseInt(n, 10);
+                        n = isNaN(n) ? 1 : n;
+                        var v = null;
+
                         if(typeof o !== 'object') {
-                            var s = o.toString();
-                            return s[s.length - 1];
+                            v = o.toString().slice(-n);
                         }
                         else if(o instanceof Array) {
-                            return o[o.length - 1];
+                            v = o.slice(-n);
                         }
                         else {
                             var a = o[protoIdentifier].toArray();
-                            return a[a.length - 1];
+                            v = a.slice(-n);
                         }
+
+                        return v.length === 1 ? v[0] : v;
                     });
                 },
 
@@ -1161,15 +1231,15 @@
                 only: function only (types) {
                     types = arguments[protoIdentifier].makeArray();
 
-                    return performWithCurrent(function (a) {
+                    return performWithCurrent(function (o) {
                         // Allows the 'plural' form of the type...
                         types[protoIdentifier].each(function (type, key) { this[key] = type.replace(/s$/, ''); });
 
-                        if(typeof a !== 'object') return a;
-                        var isArray  = a instanceof Array ? true : false,
+                        if(typeof o !== 'object') return o;
+                        var isArray  = o instanceof Array ? true : false,
                             filtered = isArray ? [] : {};
 
-                        a[protoIdentifier].each(function (item, key) {
+                        o[protoIdentifier].each(function (item, key) {
                             if(types.indexOf(typeof item) !== -1 || (item instanceof Array && types.indexOf('array') !== -1)) {
                                 if(isArray) filtered.push(item); else filtered[key] = item;
                             }
@@ -1177,16 +1247,57 @@
                         return filtered;
                     });
                 },
+
+                /**
+                 * For objects, inverts the objects keys/values. If the value isn't a number or array, it will be omitted.
+                 * For strings, it will reverse the string.
+                 * For number, it will compute the number's inverse (i.e. 1 / x).
+                 * @return {*} The inverse, as described above.
+                 */
+                invert: function invert () {
+                    return performWithCurrent(function (o) {
+                        if(typeof o === 'string') return o[protoIdentifier].reverse();
+                        if(typeof o === 'number') return 1 / o;
+
+                        var obj = {};
+                        o[protoIdentifier].each(function (item, key) {
+                            if(typeof item === 'string' || typeof item === 'number') obj[item] = key;
+                        });
+
+                        return obj;
+                    });
+                },
+
+                max: function max (func) {
+                    if(!(func instanceof Function)) func = undefined;
+
+                    return performWithCurrent(function (o) {
+                        if(typeof o !== 'object') return o;
+                        var max, maxValue;
+
+                        if(!func) {
+                            max = o[protoIdentifier].first();
+                            o[protoIdentifier].each(function (item) {
+                                if(item >= max) max = item;
+                            });
+                        }
+                        else {
+                            max = o[protoIdentifier].first();
+                            maxValue = func(max);
+
+                            o[protoIdentifier].each(1, function (item) {
+                                if(func(item) >= maxValue) max = item;
+                            });
+                        }
+
+                        return max;
+                    });
+                }
             }
         };
 
         // Add all the object functions to each of the other types
-        for(var n = ['string', 'number', 'array', 'date'], o = n.shift(); o; o = n.shift()) {
-            var keys = Object.keys(JLib.object);
-            for(var i = 0; i < keys.length; i++) {
-                if(JLib.object.hasOwnProperty(keys[i])) JLib[o][keys[i]] = JLib.object[keys[i]];
-            }
-        }
+        addToOtherPrototypes();
 
         // Append the JLib library to the object prototype
         Object.defineProperty(Object.prototype, protoIdentifier, {
