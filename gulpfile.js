@@ -7,7 +7,12 @@ var gulp       = require('gulp'),
     grename    = require('gulp-rename');
 
 gulp.task('default', function () {
-    return gulp.src('./jlib.js')
+    return gulp.src('./index.js')
+        .pipe(grename({
+            basename : 'jlib',
+            extname  : '.js'
+        }))
+        .pipe(gulp.dest('./dist'))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(uglify()).on('error', gutil.log)

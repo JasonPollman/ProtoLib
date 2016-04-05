@@ -12,23 +12,22 @@
     "standard lib"
   ],
   "scripts": {
-      "postinstall": "gulp"
+      "prepublish": "gulp",
+      "test": "mocha"
   },
   "dependencies": {
     "minimist": "1.2.0",
     "uglify-js": "2.4.10"
   },
   "devDependencies": {
-    "browserify": "^13.0.0",
-    "chai": "3.5.0",
+    "chai": "^3.5.0",
     "gulp": "^3.9.1",
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.5.3",
-    "mocha": "2.4.5",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
+    "mocha": "^2.4.5",
+    "vinyl-buffer": "^1.0.0"
   },
-  "main": "jlib.js",
+  "main": "index.js",
   "license": "MIT"
 }
