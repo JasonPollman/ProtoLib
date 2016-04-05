@@ -64,7 +64,7 @@
          * @return {*} The value returned from the callback execution
          */
         function performWithCurrent (callback) {
-            var value = callback(ostack[ostack.length - 1]);
+            var value = callback(ostack[ostack.length - 1] ? ostack[ostack.length - 1].valueOf() : ostack[ostack.length - 1]);
             ostack.pop();
             return value;
         }
@@ -252,7 +252,6 @@
 
                     return performWithCurrent(function (s) {
                         var os = s;
-
                         for(var i = 1; i < times; i++) s += os;
                         return s;
                     });
@@ -1174,21 +1173,21 @@
                 size: function size () {
                     return performWithCurrent(function (o) {
                         switch(true) {
-                            case JLib.isArguments(o) && o.indexOf('length') > -1:
-                                return o.length - 1;
-
-                            case o instanceof Array:
-                            case typeof o === 'string':
-                                return o.length;
-
-                            case typeof o === 'object':
-                                return Object.keys(o).length;
-
                             case typeof o === 'function':
                                 return 1;
 
                             case typeof o === 'number':
                                 return o.toString().length;
+
+                            case o instanceof Array:
+                            case typeof o === 'string':
+                                return o.length;
+
+                            case JLib.isArguments(o) && o.indexOf('length') > -1:
+                                return o.length - 1;
+
+                            case typeof o === 'object':
+                                return Object.keys(o).length;
 
                             default:
                                 return o;
@@ -1374,11 +1373,9 @@
                  * @returns {*} The value passed to the exit parameter of the callback...
                  */
                 each: function each (rangeA, rangeB, f) {
-
                     // Can't use last here.. would cause circular ref...
                     f = undefined;
-                    for(var k = arguments.length - 1; k >= 0; k--)
-                        if(arguments[k] instanceof Function) f = arguments[k];
+                    for(var k = arguments.length - 1; k >= 0; k--) if(arguments[k] instanceof Function) f = arguments[k];
 
                     return performWithCurrent(function (o) {
                         var ret       = null,
@@ -1393,6 +1390,10 @@
                             };
 
                         if(typeof self === 'number' || typeof self === 'function' || typeof self === 'boolean') self = o.toString();
+
+                        // Firefox does some funky stuff here...
+                        if(typeof o === 'function') self = self.replace(/(?:\r)?\n+/g, '').replace(/"use strict";|'use strict';/g, '');
+
                         var isArgs = Object.prototype.toString.call(o) === '[object Arguments]', idx = -1;
                         keys = Object.keys(self);
                         idx  = keys.indexOf('length');
@@ -1526,8 +1527,6 @@
                             keys = Object.keys(v);
                             return keys.length === 1 ? v[keys[0]] : v;
                         }
-
-                        console.log(v);
                         return v.length === 1 ? v[0] : v.length > 0 ? v : null;
                     });
                 },
@@ -1930,6 +1929,11 @@
             });
         };
 
+        /**
+         * True if the object is an arguments object, false otherwise.
+         * @param {*} o The object to evaluate
+         * @return {Boolean} True if the object is an arguments object, false otherwise.
+         */
         JLib.isArguments = function (o) {
             return Object.prototype.toString.call(o) === '[object Arguments]';
         };

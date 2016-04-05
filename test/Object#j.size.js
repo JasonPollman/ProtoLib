@@ -3,7 +3,7 @@
 var expect = require('chai').expect,
     path   = require('path');
 
-describe('Object#j.members', function () {
+describe('Object#j.size', function () {
 
     // Create some test data
     var obj    = { foo: 'bar', num: 2, bool: false },
