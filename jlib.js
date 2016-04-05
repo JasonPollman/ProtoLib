@@ -108,7 +108,7 @@
              * @param {Function} func The function to invoke
              * @return {Boolean} True if the extension was successful, false otherwise.
              */
-            extend: function (toPrototype, name, func) {
+            extend: function extend (toPrototype, name, func) {
                 if(typeof toPrototype !== 'string') return false;
                 if(typeof name !== 'string') return false;
 
@@ -117,16 +117,86 @@
                 if(JLib[toPrototype]) {
                     JLib[toPrototype][name] = function () {
                         var args = arguments[protoIdentifier].toArray();
-                        return performWithCurrent(function (c) {
-                            func.apply(c, args);
-                        });
+                        return performWithCurrent(function (c) { func.apply(c, args); });
                     };
 
-                    if(toPrototype === 'object') addToOtherPrototypes();
+                    if(toPrototype === '_object') addToOtherPrototypes();
                     return true;
                 }
-
                 return false;
+            },
+
+            /**
+             * Initializes the jLib library by attaching the j object to the prototypes.
+             * @return {[type]} [description]
+             */
+            init: function init () {
+                // Add all the object functions to each of the other types
+                addToOtherPrototypes();
+
+                // Append the JLib library to the object prototype
+                Object.defineProperty(Object.prototype, protoIdentifier, {
+                    configurable : false,
+                    enumerable   : false,
+                    get          : function () {
+                        ostack.push(this);
+                        return JLib._object;
+                    }
+                });
+
+                // Append the JLib library to the string prototype
+                Object.defineProperty(String.prototype, protoIdentifier, {
+                    configurable : true,
+                    enumerable   : false,
+                    get          : function () {
+                        ostack.push(this);
+                        return JLib._string;
+                    }
+                });
+
+                // Append the JLib library to the number prototype
+                Object.defineProperty(Number.prototype, protoIdentifier, {
+                    configurable : true,
+                    enumerable   : false,
+                    get          : function () {
+                        ostack.push(this);
+                        return JLib._number;
+                    }
+                });
+
+                // Append the JLib library to the date prototype
+                Object.defineProperty(Date.prototype, protoIdentifier, {
+                    configurable : true,
+                    enumerable   : false,
+                    get          : function () {
+                        ostack.push(this);
+                        return JLib._date;
+                    }
+                });
+
+                // Append the JLib library to the array prototype
+                Object.defineProperty(Array.prototype, protoIdentifier, {
+                    configurable : true,
+                    enumerable   : false,
+                    get          : function () {
+                        ostack.push(this);
+                        return JLib._array;
+                    }
+                });
+                return JLib;
+            },
+
+            /**
+             * Removes jlib from the prototype chain
+             * @return {Jlib} The current JLib instance
+             */
+            unload: function unload () {
+                delete String.prototype[protoIdentifier];
+                delete Array.prototype[protoIdentifier];
+                delete Date.prototype[protoIdentifier];
+                delete Object.prototype[protoIdentifier];
+                delete Number.prototype[protoIdentifier];
+                return JLib;
             },
 
             /**
@@ -316,7 +386,7 @@
                  * @returns {String} A truncated string with ellipses (if its length is greater than 'length')
                  * @function
                  */
-                ellipses: function ellipses (length, place, ellipses) {
+                ellipses: function ellipses_ (length, place, ellipses) {
                     return performWithCurrent(function (s) {
                         if(isNaN(parseInt(length, 10))) length = s.length;
                         if(length < 0 || !isFinite(length)) length = 0;
@@ -944,8 +1014,7 @@
                 without: function without () {
                     var args = arguments[protoIdentifier].makeArray();
                     return performWithCurrent(function (a) {
-                        var res  = [];
-
+                        var res = [];
                         a[protoIdentifier].each(function (v) { if(args.indexOf(v) === -1) res.push(v); });
                         return res;
                     });
@@ -1065,7 +1134,7 @@
                  */
                 descending: function descending () {
                     return performWithCurrent(function (a) {
-                        return a.sort((a, b) => {
+                        return a.sort(function (a, b) {
                             return a > b ? -1 : a < b ? 1 : 0;
                         });
                     });
@@ -1105,6 +1174,9 @@
                 size: function size () {
                     return performWithCurrent(function (o) {
                         switch(true) {
+                            case JLib.isArguments(o) && o.indexOf('length') > -1:
+                                return o.length - 1;
+
                             case o instanceof Array:
                             case typeof o === 'string':
                                 return o.length;
@@ -1248,7 +1320,6 @@
                 makeArray: function makeArray () {
                     return performWithCurrent(function (o) {
                         var arr = [];
-
                         if(o instanceof Array) return o;
                         o[protoIdentifier].each(function (obj) { arr.push(obj); });
                         return arr;
@@ -1303,9 +1374,11 @@
                  * @returns {*} The value passed to the exit parameter of the callback...
                  */
                 each: function each (rangeA, rangeB, f) {
-                    var kf = Object.keys(arguments);
-                    f = arguments[kf[kf.length - 1]];
-                    f = f instanceof Function ? f : undefined;
+
+                    // Can't use last here.. would cause circular ref...
+                    f = undefined;
+                    for(var k = arguments.length - 1; k >= 0; k--)
+                        if(arguments[k] instanceof Function) f = arguments[k];
 
                     return performWithCurrent(function (o) {
                         var ret       = null,
@@ -1320,7 +1393,11 @@
                             };
 
                         if(typeof self === 'number' || typeof self === 'function' || typeof self === 'boolean') self = o.toString();
+                        var isArgs = Object.prototype.toString.call(o) === '[object Arguments]', idx = -1;
                         keys = Object.keys(self);
+                        idx  = keys.indexOf('length');
+
+                        if(isArgs && idx > -1) keys.splice(idx, 1);
 
                         rangeA = parseInt(rangeA);
                         rangeA = (isNaN(rangeA) || rangeA < 0 || !isFinite(rangeA)) ? 0 : rangeA;
@@ -1425,24 +1502,33 @@
                     return performWithCurrent(function (o) {
                         n = parseInt(n, 10);
                         n = isNaN(n) || !isFinite(n) ? 1 : n;
-                        var v = null;
+                        var v = null, keys, len, idx;
 
-                        if(typeof o !== 'object') {
+                        if(JLib.isArguments(o)) {
+                            keys = Object.keys(o);
+                            idx  = keys.indexOf('length');
+
+                            if(idx > -1) keys.splice(idx, 1);
+                            v = []; len = keys.length;
+                            keys[protoIdentifier].each(len - n, len, function (k) { v.push(o[k]); });
+                        }
+                        else if(typeof o !== 'object') {
                             v = o.toString().slice(-n);
                         }
                         else if(o instanceof Array) {
                             v = o.slice(-n);
                         }
                         else {
-                            v = {};
-                            var len = o[protoIdentifier].size();
+                            v   = {};
+                            len = o[protoIdentifier].size();
 
                             o[protoIdentifier].each(len - n, len, function (item, key) { v[key] = item; });
-                            var keys = Object.keys(v);
+                            keys = Object.keys(v);
                             return keys.length === 1 ? v[keys[0]] : v;
                         }
 
-                        return v.length === 1 ? v[0] : v;
+                        console.log(v);
+                        return v.length === 1 ? v[0] : v.length > 0 ? v : null;
                     });
                 },
 
@@ -1685,59 +1771,6 @@
             }
         };
 
-        // Add all the object functions to each of the other types
-        addToOtherPrototypes();
-
-        // Append the JLib library to the object prototype
-        Object.defineProperty(Object.prototype, protoIdentifier, {
-            configurable : false,
-            enumerable   : false,
-            get          : function () {
-                ostack.push(this);
-                return JLib._object;
-            }
-        });
-
-        // Append the JLib library to the string prototype
-        Object.defineProperty(String.prototype, protoIdentifier, {
-            configurable : false,
-            enumerable   : false,
-            get          : function () {
-                ostack.push(this);
-                return JLib._string;
-            }
-        });
-
-        // Append the JLib library to the number prototype
-        Object.defineProperty(Number.prototype, protoIdentifier, {
-            configurable : false,
-            enumerable   : false,
-            get          : function () {
-                ostack.push(this);
-                return JLib._number;
-            }
-        });
-
-        // Append the JLib library to the date prototype
-        Object.defineProperty(Date.prototype, protoIdentifier, {
-            configurable : false,
-            enumerable   : false,
-            get          : function () {
-                ostack.push(this);
-                return JLib._date;
-            }
-        });
-
-        // Append the JLib library to the array prototype
-        Object.defineProperty(Array.prototype, protoIdentifier, {
-            configurable : false,
-            enumerable   : false,
-            get          : function () {
-                ostack.push(this);
-                return JLib._array;
-            }
-        });
-
         // ------------------------------------------- OTHER HELPER FUNCTIONS ------------------------------------------- //
         // These will be attached to the exports object in Node.js, or the window object in the browser.
 
@@ -1897,6 +1930,10 @@
             });
         };
 
+        JLib.isArguments = function (o) {
+            return Object.prototype.toString.call(o) === '[object Arguments]';
+        };
+
         // Apply the following to the JLib object.
         var staticIdentityFunction = function () {
             var args   = arguments[protoIdentifier].makeArray(),
@@ -1914,7 +1951,7 @@
         }
 
         if(IS_NODE) require(require('path').join(__dirname, 'lib', 'NodeAddons'))(JLib);
-        return JLib;
+        return JLib.init();
     };
 
     // ------------------------------------------------ EXPORT JLIB ------------------------------------------------- //

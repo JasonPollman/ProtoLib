@@ -1,22 +1,30 @@
 {
-    "name": "jlibrary",
-    "version": "0.1.0",
-    "description": "A feature packed JavaScript standard library, that attaches to the prototype chains using a single (customizable) namespace.",
-    "author": "Jason Pollman <jasonjpollman@gmail.com>",
-    "keywords": [
-        "utility",
-        "dev tools",
-        "prototype",
-        "stdlib",
-        "library"
-    ],
-    "dependencies": {
-        "minimist": "*"
-    },
-    "devDependencies": {
-        "chai": "3.5.0",
-        "mocha": "2.4.5"
-    },
-    "main": "index.js",
-    "liscense": "MIT"
+  "name": "jlib",
+  "version": "0.1.0",
+  "description": "A feature packed JavaScript standard library, that modifies various prototype chains using a single (customizable) namespace.",
+  "author": "Jason Pollman <jasonjpollman@gmail.com>",
+  "keywords": [
+    "utility",
+    "dev tools",
+    "prototype",
+    "stdlib",
+    "library",
+    "standard lib"
+  ],
+  "dependencies": {
+    "minimist": "1.2.0",
+    "uglify-js": "2.4.10"
+  },
+  "devDependencies": {
+    "browserify": "^13.0.0",
+    "chai": "3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.3",
+    "mocha": "2.4.5",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "main": "jlib.js",
+  "license": "MIT"
 }
