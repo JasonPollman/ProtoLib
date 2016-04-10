@@ -1,10 +1,10 @@
 'use strict';
 /**
  * A massive prototype standard library, which prevents prototype namespace collisions by "tucking" the library
- * under the namespace 'jlib'.
+ * under the namespace 'p' by default.
  *
  * Browser and Node.js compatible. Compatible with both *nix and Windows.
- * Adds a bunch of helper functions to String, Object, Number, Function, and Array prototypes under the object 'jlib'.
+ * Adds a bunch of helper functions to String, Object, Number, Function, and Array prototypes under the object 'stdp'.
  *
  * Prototyping is achieved without using any performance degredating calls to 'bind', and uses a simple object to store the
  * current objects being operated on.
@@ -12,11 +12,10 @@
  * This file *avoids* ES6 features wherever possible, for browser compatibility.
  *
  * @author Jason Pollman <jasonjpollman@gmail.com>
- * @module jLib
+ * @module stdp
  */
 
 (function addJLibrary () { // To Prevent window contamination in the browser, we'll wrap this in an AIIF.
-
     /**
      * Determines if the current JS framework is Node.js or not.
      * @return {Boolean} True if Node.js, false otherwise
@@ -36,26 +35,26 @@
 
     /**
      * The JLibrary
-     * @param {String} [protoIdentifier='jl'] A "name" of the namespace to attach to object prototypes. This allows us to re-name
+     * @param {String} [protoid='p'] A "name" of the namespace to attach to object prototypes. This allows us to re-name
      * the JLibrary, should '.jl' be taken by another libaray.
      */
-    var JLibrary = function JLibrary (protoIdentifier) {
-        protoIdentifier = typeof protoIdentifier === 'string' ? protoIdentifier : 'j';
+    var StdPseudoLib = function StdPseudoLib (protoid) {
+        protoid = typeof protoid === 'string' ? protoid : 'p';
 
         /**
-         * The JLib library. An object that contains all of the functions/getters which will be namespaced under each
-         * instance prototype using the name 'jlib'.
+         * The stdp library. An object that contains all of the functions/getters which will be namespaced under each
+         * instance prototype using the name 'stdp'.
          * @type {Object}
          */
-        var JLib = null,
+        var stdp = null,
 
         /**
-         * The object stack. When a JLib function is executed the current (or "this") object is pushed onto the stack,
-         * then when performWithCurrent is called, it is popped from the stack. This allows us to use jlib functions
-         * within other jlib functions.
+         * The object stack. When a stdp function is executed the current (or "this") object is pushed onto the stack,
+         * then when getThisValueAndInvoke is called, it is popped from the stack. This allows us to use stdp functions
+         * within other stdp functions.
          * @type {Array}
          */
-        ostack = [];
+        thisPointerStack = [];
 
         /**
          * Executes the given callback with the current object from the object stack. Then pops the object off the
@@ -63,9 +62,12 @@
          * @param {Function} cb The callback to be performed.
          * @return {*} The value returned from the callback execution
          */
-        function performWithCurrent (callback) {
-            var value = callback(ostack[ostack.length - 1] ? ostack[ostack.length - 1].valueOf() : ostack[ostack.length - 1]);
-            ostack.pop();
+        function getThisValueAndInvoke (callback) {
+            var idx   = thisPointerStack.length - 1,
+                value = callback(thisPointerStack[idx] !== undefined && thisPointerStack[idx] !== null ?
+                    thisPointerStack[idx].valueOf() : thisPointerStack[idx]);
+
+            thisPointerStack.pop();
             return value;
         }
 
@@ -73,130 +75,166 @@
          * Adds all the 'object' prototype classes to the other prototypes j objects.
          * @return {undefined}
          */
-        function addToOtherPrototypes () {
-            for(var n = ['_string', '_number', '_array', '_date'], o = n.shift(); o; o = n.shift()) {
-                var keys = Object.keys(JLib._object);
+        function attachToAllNonObjectPesudoPrototypes () {
+            for(var n = ['_string', '_number', '_array', '_date', '_function'], o = n.shift(); o; o = n.shift()) {
+                var keys = Object.keys(stdp._object);
                 for(var i = 0; i < keys.length; i++) {
-                    if(JLib._object.hasOwnProperty(keys[i]) && !JLib[o][keys[i]])
-                        JLib[o][keys[i]] = JLib._object[keys[i]];
+                    if(stdp._object.hasOwnProperty(keys[i]) && !stdp[o][keys[i]])
+                        stdp[o][keys[i]] = stdp._object[keys[i]];
                 }
             }
+        }
+
+        function addStaticMethodToLibrary (staticTarget, protoSource, methodName) {
+            stdp[staticTarget][methodName] = function (obj) {
+                var args = arguments;
+                return stdp.invokeInStaticContext(obj, function () {
+                    return stdp[protoSource][methodName].apply(stdp, args);
+                });
+            };
+        }
+
+        /**
+         * Invokes a stdp function in the static context.
+         * @param {*} obj The object to operate on.
+         * @param {Function} callback The callback to invoke using the object.
+         * @return {*} The results of the invocation of the callback.
+         */
+        function invokeInStaticContext (obj, callback) {
+            thisPointerStack.push(obj);
+            return getThisValueAndInvoke(callback);
         }
 
         /**
          * Properties and methods that will be added to the String.prototype.j object.
          * @type {Object}
          */
-        JLib = {
+        stdp = {
+
+            /**
+             * Whether or not the library is loaded. True is init() has been called, false if unload() has been called.
+             * @type {Boolean}
+             */
+            _loaded: false,
 
             /**
              * The prototype namespace identifier
              * @type {String}
              */
-            PROTO_IDENTIFIER: protoIdentifier,
+            PROTO_IDENTIFIER: protoid,
 
             /**
-             * Exposes the private function JLibrary~performWithCurrent.
-             * @type {[type]}
+             * Exposes the private function JLibrary~getThisValueAndInvoke.
+             * @type {Function}
              */
-            performWithCurrent: performWithCurrent,
+            getThisValueAndInvoke: getThisValueAndInvoke,
 
             /**
-             * Add to the JLib library
+             * Initializes the stdp library by attaching the j object to the prototypes.
+             * @return {[type]} [description]
+             */
+            init: function init () {
+                if(!stdp._loaded) {
+                    // Add all the object functions to each of the other types
+                    attachToAllNonObjectPesudoPrototypes();
+
+                    // Append the stdp library to the object prototype
+                    Object.defineProperty(Object.prototype, protoid, {
+                        configurable : false,
+                        enumerable   : false,
+                        get          : function () {
+                            thisPointerStack.push(this);
+                            return stdp._object;
+                        }
+                    });
+
+                    // Append the stdp library to the string prototype
+                    Object.defineProperty(String.prototype, protoid, {
+                        configurable : true,
+                        enumerable   : false,
+                        get          : function () {
+                            thisPointerStack.push(this);
+                            return stdp._string;
+                        }
+                    });
+
+                    // Append the stdp library to the number prototype
+                    Object.defineProperty(Number.prototype, protoid, {
+                        configurable : true,
+                        enumerable   : false,
+                        get          : function () {
+                            thisPointerStack.push(this);
+                            return stdp._number;
+                        }
+                    });
+
+                    // Append the stdp library to the date prototype
+                    Object.defineProperty(Date.prototype, protoid, {
+                        configurable : true,
+                        enumerable   : false,
+                        get          : function () {
+                            thisPointerStack.push(this);
+                            return stdp._date;
+                        }
+                    });
+
+                    // Append the stdp library to the array prototype
+                    Object.defineProperty(Array.prototype, protoid, {
+                        configurable : true,
+                        enumerable   : false,
+                        get          : function () {
+                            thisPointerStack.push(this);
+                            return stdp._array;
+                        }
+                    });
+                }
+                return stdp;
+            },
+
+            /**
+             * Removes stdp from the prototype chain
+             * @return {stdp} The current stdp instance
+             */
+            unload: function unload () {
+                if(stdp._loaded) {
+                    delete String.prototype[protoid];
+                    delete Array.prototype[protoid];
+                    delete Date.prototype[protoid];
+                    delete Object.prototype[protoid];
+                    delete Number.prototype[protoid];
+                    stdp._loaded = false;
+                }
+                return stdp;
+            },
+
+            /**
+             * Add to the stdp library
              * @param {String} toPrototype The prototype to add the function to
              * @param {String} name The name of the method
              * @param {Function} func The function to invoke
              * @return {Boolean} True if the extension was successful, false otherwise.
              */
-            extend: function extend (toPrototype, name, func) {
-                if(typeof toPrototype !== 'string') return false;
-                if(typeof name !== 'string') return false;
+            extend: function extend (pseudoProto, name, func) {
+                if(typeof pseudoProto !== 'string' || typeof name !== 'string') return false;
+                pseudoProto = pseudoProto.toLowerCase().replace(/^_/, '') + '_';
 
-                toPrototype = toPrototype.toLowerCase().replace(/^_/, '') + '_';
-
-                if(JLib[toPrototype]) {
-                    JLib[toPrototype][name] = function () {
-                        var args = arguments[protoIdentifier].toArray();
-                        return performWithCurrent(function (c) { func.apply(c, args); });
+                if(stdp[pseudoProto]) {
+                    stdp[pseudoProto][name] = function () {
+                        var args = arguments;
+                        return getThisValueAndInvoke(function (c) { func.apply(c, args); });
                     };
 
-                    if(toPrototype === '_object') addToOtherPrototypes();
+                    stdp[pseudoProto][name].name = name;
+                    if(pseudoProto === '_object') attachToAllNonObjectPesudoPrototypes();
                     return true;
                 }
                 return false;
             },
 
-            /**
-             * Initializes the jLib library by attaching the j object to the prototypes.
-             * @return {[type]} [description]
-             */
-            init: function init () {
-                // Add all the object functions to each of the other types
-                addToOtherPrototypes();
+            // --------------------------------------- BEGIN LIBRARY FUCTIONS --------------------------------------- //
 
-                // Append the JLib library to the object prototype
-                Object.defineProperty(Object.prototype, protoIdentifier, {
-                    configurable : false,
-                    enumerable   : false,
-                    get          : function () {
-                        ostack.push(this);
-                        return JLib._object;
-                    }
-                });
+            _function: {
 
-                // Append the JLib library to the string prototype
-                Object.defineProperty(String.prototype, protoIdentifier, {
-                    configurable : true,
-                    enumerable   : false,
-                    get          : function () {
-                        ostack.push(this);
-                        return JLib._string;
-                    }
-                });
-
-                // Append the JLib library to the number prototype
-                Object.defineProperty(Number.prototype, protoIdentifier, {
-                    configurable : true,
-                    enumerable   : false,
-                    get          : function () {
-                        ostack.push(this);
-                        return JLib._number;
-                    }
-                });
-
-                // Append the JLib library to the date prototype
-                Object.defineProperty(Date.prototype, protoIdentifier, {
-                    configurable : true,
-                    enumerable   : false,
-                    get          : function () {
-                        ostack.push(this);
-                        return JLib._date;
-                    }
-                });
-
-                // Append the JLib library to the array prototype
-                Object.defineProperty(Array.prototype, protoIdentifier, {
-                    configurable : true,
-                    enumerable   : false,
-                    get          : function () {
-                        ostack.push(this);
-                        return JLib._array;
-                    }
-                });
-                return JLib;
-            },
-
-            /**
-             * Removes jlib from the prototype chain
-             * @return {Jlib} The current JLib instance
-             */
-            unload: function unload () {
-                delete String.prototype[protoIdentifier];
-                delete Array.prototype[protoIdentifier];
-                delete Date.prototype[protoIdentifier];
-                delete Object.prototype[protoIdentifier];
-                delete Number.prototype[protoIdentifier];
-                return JLib;
             },
 
             /**
@@ -211,10 +249,10 @@
                  * @return {String} A difference string.
                  */
                 differenceFromString: function differenceFromString (other) {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         if(typeof other !== 'string') return s;
                         var sarr = s.split(''), oarr = other.split('');
-                        return sarr[protoIdentifier].differenceFromArray(oarr).join('');
+                        return sarr[protoid].differenceFromArray(oarr).join('');
                     });
                 },
 
@@ -223,8 +261,8 @@
                  * @return {String} The token replaced values.
                  */
                 replaceTokens: function replaceTokens () {
-                    return performWithCurrent(function (s) {
-                        return JLib.replaceStringTokens(s);
+                    return getThisValueAndInvoke(function (s) {
+                        return stdp.replaceStringTokens(s);
                     });
                 },
 
@@ -234,10 +272,10 @@
                  * @return {String} The intersection between the two strings.
                  */
                 intersectString: function intersectString (other) {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         if(typeof other !== 'string') return s;
                         var sarr = s.split(''), oarr = other.split('');
-                        return sarr[protoIdentifier].intersectArray(oarr).join('');
+                        return sarr[protoid].intersectArray(oarr).join('');
                     });
                 },
 
@@ -250,7 +288,7 @@
                     times = parseInt(times, 10);
                     times = isNaN(times) || !isFinite(times) || times <= 0 ? 1 : times;
 
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         var os = s;
                         for(var i = 1; i < times; i++) s += os;
                         return s;
@@ -263,7 +301,7 @@
                  * @return {String} The right trimmed string
                  */
                 rtrim: function rtrim (what) {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         what = typeof what === 'string' ? what : '\\s+';
                         return s.replace(new RegExp(what + '$'), '');
                     });
@@ -275,7 +313,7 @@
                  * @return {String} The left trimmed string
                  */
                 ltrim: function ltrim (what) {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         what = typeof what === 'string' ? what : '\\s+';
                         return s.replace(new RegExp('^' + what), '');
                     });
@@ -286,7 +324,7 @@
                  * @return {String} The HTML escaped string
                  */
                 htmlEncode: function htmlEncode () {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         var map = {
                             '&'  : '&amp;',
                             '<'  : '&lt;',
@@ -303,7 +341,7 @@
                  * @return {String} The HTML escaped string
                  */
                 htmlDecode: function htmlDecode () {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         var map = {
                             '&amp;'  : '&',
                             '&lt;'   : '<',
@@ -320,7 +358,7 @@
                  * @return {String} A string with slashes
                  */
                 addSlashes: function addSlashes () {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         return s.replace(/[\\"'\t\n\f\r]/g, '\\$&').replace(/\u0000/g, '\\0');
                     });
                 },
@@ -331,7 +369,7 @@
                  * @function
                  */
                 ucFirst: function ucFirst () {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         return s.charAt(0).toUpperCase() + s.slice(1);
                     });
                 },
@@ -342,7 +380,7 @@
                  * @function
                  */
                 lcFirst: function lcFirst () {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         return s.charAt(0).toLowerCase() + s.slice(1);
                     });
                 },
@@ -353,10 +391,10 @@
                  * @return {String} The title cased string.
                  */
                 titleCase: function titleCase () {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         var arr = [];
-                        s.split(' ')[protoIdentifier].each(function (t) {
-                            arr.push(t[protoIdentifier].ucFirst());
+                        s.split(' ')[protoid].each(function (t) {
+                            arr.push(t[protoid].ucFirst());
                         });
                         return arr.join(' ');
                     });
@@ -371,7 +409,7 @@
                  * @function
                  */
                 splice: function splice (index, count, add) {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         return s.slice(0, index) + (add || '') + s.slice(index + count);
                     });
                 },
@@ -386,7 +424,7 @@
                  * @function
                  */
                 ellipses: function ellipses_ (length, place, ellipses) {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         if(isNaN(parseInt(length, 10))) length = s.length;
                         if(length < 0 || !isFinite(length)) length = 0;
 
@@ -410,7 +448,7 @@
                  * @return {String} The mixed up string.
                  */
                 shuffle: function shuffle () {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         var a = s.split(''),
                             n = s.length;
 
@@ -431,7 +469,7 @@
                  * @return {String} The reversed string.
                  */
                 reverse: function reverse () {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         if(s.length < 64) {
                             var str = '';
                             for(var i = s.length; i >= 0; i--) str += s.charAt(i);
@@ -451,7 +489,7 @@
                  * @function
                  */
                 withoutTrailingSlash: function withoutTrailingSlash () {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         if(IS_NODE && require('os').platform === 'win32') return s.replace(/\\+$/, '');
                         return s.replace(/\/+$/, '');
                     });
@@ -465,9 +503,9 @@
                  * @function
                  */
                 withTrailingSlash: function withTrailingSlash () {
-                    return performWithCurrent(function (s) {
-                        if(IS_NODE && require('os').platform === 'win32') return s[protoIdentifier].withoutTrailingSlash() + '\\';
-                        return s[protoIdentifier].withoutTrailingSlash() + '/';
+                    return getThisValueAndInvoke(function (s) {
+                        if(IS_NODE && require('os').platform === 'win32') return s[protoid].withoutTrailingSlash() + '\\';
+                        return s[protoid].withoutTrailingSlash() + '/';
                     });
                 },
 
@@ -478,7 +516,7 @@
                  * @function
                  */
                 regexpSafe: function regexpSafe () {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
                     });
                 },
@@ -495,7 +533,7 @@
                  * @function
                  */
                 pad: function pad (length, delim, pre) {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         var i, thisLength = s.length;
 
                         if(!delim) delim = ' ';
@@ -519,7 +557,7 @@
                  * @return {String} The string with newlines converted to br tags.
                  */
                 newlineToBreak: function newlineToBreak () {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         return s.replace(/(\r\n|\n)/g, '<br/>');
                     });
                 },
@@ -529,7 +567,7 @@
                  * @return {String} The string with tabs converted to spans with the class 'tab'
                  */
                 tabsToSpan: function tabsToSpan () {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         return s.replace(/\t/g, '<span class="tab"></span>');
                     });
                 },
@@ -544,7 +582,7 @@
                  * @function
                  */
                 wordWrapToLength: function wordWrapToLength (width, padleft, padright, omitFirst) {
-                    return performWithCurrent(function (s) {
+                    return getThisValueAndInvoke(function (s) {
                         if(padright === undefined && padleft) padright = padleft;
 
                         padleft  = !isNaN(parseInt(padleft,  10)) ? parseInt(padleft, 10)  : 0;
@@ -593,8 +631,8 @@
                  * @function
                  */
                 advanceDays: function advanceDays (daysInTheFuture, adjustForWeekend) {
-                    return performWithCurrent(function (d) {
-                        daysInTheFuture = daysInTheFuture && daysInTheFuture[protoIdentifier].isNumeric() ? daysInTheFuture : 1;
+                    return getThisValueAndInvoke(function (d) {
+                        daysInTheFuture = daysInTheFuture && daysInTheFuture[protoid].isNumeric() ? daysInTheFuture : 1;
                         d.setTime(d.getTime() + (daysInTheFuture * 86400000));
 
                         if(adjustForWeekend && (d.getDay() === 0 || d.getDay() === 6)) {
@@ -613,8 +651,8 @@
                  * @function
                  */
                 advanceMonths: function advanceMonths (monthsInTheFuture, adjustForWeekend) {
-                    return performWithCurrent(function (d) {
-                        monthsInTheFuture = monthsInTheFuture && monthsInTheFuture[protoIdentifier].isNumeric() ? monthsInTheFuture : 1;
+                    return getThisValueAndInvoke(function (d) {
+                        monthsInTheFuture = monthsInTheFuture && monthsInTheFuture[protoid].isNumeric() ? monthsInTheFuture : 1;
                         d.setTime(d.getTime() + (monthsInTheFuture * 2629746000));
 
                         if(adjustForWeekend && (d.getDay() === 0 || d.getDay() === 6)) {
@@ -633,8 +671,8 @@
                  * @function
                  */
                 advanceYears: function advanceYears (yearsInTheFuture, adjustForWeekend) {
-                    return performWithCurrent(function (d) {
-                        yearsInTheFuture = yearsInTheFuture && yearsInTheFuture[protoIdentifier].isNumeric() ? yearsInTheFuture : 1;
+                    return getThisValueAndInvoke(function (d) {
+                        yearsInTheFuture = yearsInTheFuture && yearsInTheFuture[protoid].isNumeric() ? yearsInTheFuture : 1;
                         d.setTime(d.getTime() + (yearsInTheFuture * 31536000000));
 
                         if(adjustForWeekend && (d.getDay() === 0 || d.getDay() === 6)) {
@@ -652,7 +690,7 @@
                  * @function
                  */
                 yyyymmdd: function yyyymmdd (delim) {
-                    return performWithCurrent(function (d) {
+                    return getThisValueAndInvoke(function (d) {
                         delim = typeof delim !== 'string' ? '-' : delim ;
 
                         var dd   = d.getDate(),
@@ -673,8 +711,8 @@
                  * @function
                  */
                 clockTime: function clockTime (omitMS) {
-                    return performWithCurrent(function (d) {
-                        return d.getTime()[protoIdentifier].clockTime(!!omitMS);
+                    return getThisValueAndInvoke(function (d) {
+                        return d.getTime()[protoid].clockTime(!!omitMS);
                     });
                 }
             },
@@ -691,8 +729,8 @@
                  * @function
                  */
                 pad: function pad (length) {
-                    return performWithCurrent(function (n) {
-                        return n.toString()[protoIdentifier].pad(length, '0', true);
+                    return getThisValueAndInvoke(function (n) {
+                        return n.toString()[protoid].pad(length, '0', true);
                     });
                 },
 
@@ -702,7 +740,7 @@
                  * @return {Date} The modified date.
                  */
                 daysFrom: function daysFrom (date) {
-                    return performWithCurrent(function (n) {
+                    return getThisValueAndInvoke(function (n) {
                         if(typeof date === 'number') date = new Date(date);
                         if(!(date instanceof Date))  date = new Date();
 
@@ -716,8 +754,8 @@
                  * @return {Date} A date object
                  */
                 daysFromNow: function daysFromNow () {
-                    return performWithCurrent(function (n) {
-                        return n[protoIdentifier].daysFrom(new Date());
+                    return getThisValueAndInvoke(function (n) {
+                        return n[protoid].daysFrom(new Date());
                     });
                 },
 
@@ -727,7 +765,7 @@
                  * @return {Date} The modified date.
                  */
                 secondsFrom: function secondsFrom (date) {
-                    return performWithCurrent(function (n) {
+                    return getThisValueAndInvoke(function (n) {
                         if(typeof date === 'number') date = new Date(date);
                         if(!(date instanceof Date))  date = new Date();
 
@@ -741,8 +779,8 @@
                  * @return {Date} A date object
                  */
                 secondsFromNow: function secondsFromNow () {
-                    return performWithCurrent(function (n) {
-                        return n[protoIdentifier].secondsFrom(new Date());
+                    return getThisValueAndInvoke(function (n) {
+                        return n[protoid].secondsFrom(new Date());
                     });
                 },
 
@@ -752,7 +790,7 @@
                  * @return {Date} The modified date.
                  */
                 yearsFrom: function yearsFrom (date) {
-                    return performWithCurrent(function (n) {
+                    return getThisValueAndInvoke(function (n) {
                         if(typeof date === 'number') date = new Date(date);
                         if(!(date instanceof Date))  date = new Date();
 
@@ -766,8 +804,8 @@
                  * @return {Date} A date object
                  */
                 yearsFromNow: function yearsFromNow () {
-                    return performWithCurrent(function (n) {
-                        return n[protoIdentifier].yearsFrom(new Date());
+                    return getThisValueAndInvoke(function (n) {
+                        return n[protoid].yearsFrom(new Date());
                     });
                 },
 
@@ -777,7 +815,7 @@
                  * @return {Date} The modified date.
                  */
                 monthsFrom: function monthsFrom (date) {
-                    return performWithCurrent(function (n) {
+                    return getThisValueAndInvoke(function (n) {
                         if(typeof date === 'number') date = new Date(date);
                         if(!(date instanceof Date))  date = new Date();
 
@@ -791,8 +829,8 @@
                  * @return {Date} A date object
                  */
                 monthsFromNow: function monthsFromNow () {
-                    return performWithCurrent(function (n) {
-                        return n[protoIdentifier].monthsFrom(new Date());
+                    return getThisValueAndInvoke(function (n) {
+                        return n[protoid].monthsFrom(new Date());
                     });
                 },
 
@@ -802,7 +840,7 @@
                  * @return {Date} The modified date.
                  */
                 hoursFrom: function hoursFrom (date) {
-                    return performWithCurrent(function (n) {
+                    return getThisValueAndInvoke(function (n) {
                         if(typeof date === 'number') date = new Date(date);
                         if(!(date instanceof Date))  date = new Date();
 
@@ -816,8 +854,8 @@
                  * @return {Date} A date object
                  */
                 hoursFromNow: function hoursFromNow () {
-                    return performWithCurrent(function (n) {
-                        return n[protoIdentifier].hoursFrom(new Date());
+                    return getThisValueAndInvoke(function (n) {
+                        return n[protoid].hoursFrom(new Date());
                     });
                 },
 
@@ -827,7 +865,7 @@
                  * @return {Date} A modified date.
                  */
                 minutesFrom: function minutesFrom (date) {
-                    return performWithCurrent(function (n) {
+                    return getThisValueAndInvoke(function (n) {
                         if(typeof date === 'number') date = new Date(date);
                         if(!(date instanceof Date))  date = new Date();
 
@@ -841,8 +879,8 @@
                  * @return {Date} The date object
                  */
                 minutesFromNow: function minutesFromNow () {
-                    return performWithCurrent(function (n) {
-                        return (-n)[protoIdentifier].minutesFrom(new Date());
+                    return getThisValueAndInvoke(function (n) {
+                        return (-n)[protoid].minutesFrom(new Date());
                     });
                 },
 
@@ -851,8 +889,8 @@
                  * @return {Date} A Date object.
                  */
                 monthsAgo: function monthsAgo () {
-                    return performWithCurrent(function (n) {
-                        return (-n)[protoIdentifier].monthsFromNow();
+                    return getThisValueAndInvoke(function (n) {
+                        return (-n)[protoid].monthsFromNow();
                     });
                 },
 
@@ -861,8 +899,8 @@
                  * @return {Date} A Date object.
                  */
                 daysAgo: function daysAgo () {
-                    return performWithCurrent(function (n) {
-                        return (-n)[protoIdentifier].daysFromNow();
+                    return getThisValueAndInvoke(function (n) {
+                        return (-n)[protoid].daysFromNow();
                     });
                 },
 
@@ -871,8 +909,8 @@
                  * @return {Date} A Date object.
                  */
                 secondsAgo: function secondsAgo () {
-                    return performWithCurrent(function (n) {
-                        return (-n)[protoIdentifier].secondsFromNow();
+                    return getThisValueAndInvoke(function (n) {
+                        return (-n)[protoid].secondsFromNow();
                     });
                 },
 
@@ -881,8 +919,8 @@
                  * @return {Date} A Date object.
                  */
                 minutesAgo: function minutesAgo () {
-                    return performWithCurrent(function (n) {
-                        return (-n)[protoIdentifier].minutesFromNow();
+                    return getThisValueAndInvoke(function (n) {
+                        return (-n)[protoid].minutesFromNow();
                     });
                 },
 
@@ -891,8 +929,8 @@
                  * @return {Date} A Date object.
                  */
                 yearsAgo: function yearsAgo () {
-                    return performWithCurrent(function (n) {
-                        return (-n)[protoIdentifier].yearsFromNow();
+                    return getThisValueAndInvoke(function (n) {
+                        return (-n)[protoid].yearsFromNow();
                     });
                 },
 
@@ -904,7 +942,7 @@
                  * @function
                  */
                 clockTime: function clockTime (omitMS) {
-                    return performWithCurrent(function (t) {
+                    return getThisValueAndInvoke(function (t) {
                         var ms, secs, mins, hrs;
 
                         ms = t % 1000;
@@ -932,7 +970,7 @@
                  * @return {Array<*>} The mixed up array
                  */
                 shuffle: function shuffle () {
-                    return performWithCurrent(function (a) {
+                    return getThisValueAndInvoke(function (a) {
                         for(var i = a.length - 1; i > 0; i--) {
                             var j = Math.floor(Math.random() * (i + 1)), tmp = a[i];
                             a[i] = a[j];
@@ -949,13 +987,13 @@
                  * @return {Array<*>} The union set of the provided arrays.
                  */
                 union: function union () {
-                    var args = arguments[protoIdentifier].makeArray()[protoIdentifier].only('array');
+                    var args = arguments[protoid].makeArray()[protoid].only('array');
 
-                    return performWithCurrent(function (a) {
+                    return getThisValueAndInvoke(function (a) {
                         var union = [];
                         args.unshift(a);
-                        args[protoIdentifier].each(function (array) {
-                            array[protoIdentifier].each(function (item) {
+                        args[protoid].each(function (array) {
+                            array[protoid].each(function (item) {
                                 if(union.indexOf(item) === -1) union.push(item);
                             });
                         });
@@ -969,15 +1007,15 @@
                  * @return {Array} A new array with items unique to each array.
                  */
                 differenceFromArray: function differenceFromArray (other) {
-                    return performWithCurrent(function (a) {
+                    return getThisValueAndInvoke(function (a) {
                         if(!(other instanceof Array)) return a;
 
                         var diff = [];
-                        a[protoIdentifier].each(function (item) {
+                        a[protoid].each(function (item) {
                             if(other.indexOf(item) === -1) diff.push(item);
                         });
 
-                        other[protoIdentifier].each(function (item) {
+                        other[protoid].each(function (item) {
                             if(a.indexOf(item) === -1) diff.push(item);
                         });
 
@@ -991,11 +1029,11 @@
                  * @return {Array} A new array with items common to both arrays.
                  */
                 intersectArray: function intersectArray (other) {
-                    return performWithCurrent(function (a) {
+                    return getThisValueAndInvoke(function (a) {
                         if(!(other instanceof Array)) return a;
 
                         var intersection = [];
-                        a[protoIdentifier].each(function (item) {
+                        a[protoid].each(function (item) {
                             if(other.indexOf(item) !== -1) intersection.push(item);
                         });
 
@@ -1011,10 +1049,10 @@
                  * @function
                  */
                 without: function without () {
-                    var args = arguments[protoIdentifier].makeArray();
-                    return performWithCurrent(function (a) {
+                    var args = arguments[protoid].makeArray();
+                    return getThisValueAndInvoke(function (a) {
                         var res = [];
-                        a[protoIdentifier].each(function (v) { if(args.indexOf(v) === -1) res.push(v); });
+                        a[protoid].each(function (v) { if(args.indexOf(v) === -1) res.push(v); });
                         return res;
                     });
                 },
@@ -1029,7 +1067,7 @@
                  * @function
                  */
                 rotate: function rotate (direction, amount) {
-                    return performWithCurrent(function (a) {
+                    return getThisValueAndInvoke(function (a) {
                         if(direction && direction.isNumeric() && !amount) {
                             amount    = direction;
                             direction = undefined;
@@ -1051,8 +1089,8 @@
                  * @function
                  */
                 rotateLeft: function rotateLeft (amount) {
-                    return performWithCurrent(function (a) {
-                        return a[protoIdentifier].rotate('left', amount);
+                    return getThisValueAndInvoke(function (a) {
+                        return a[protoid].rotate('left', amount);
                     });
                 },
 
@@ -1064,8 +1102,8 @@
                  * @function
                  */
                 rotateRight: function rotateLeft (amount) {
-                    return performWithCurrent(function (a) {
-                        return a[protoIdentifier].rotate('right', amount);
+                    return getThisValueAndInvoke(function (a) {
+                        return a[protoid].rotate('right', amount);
                     });
                 },
 
@@ -1076,7 +1114,7 @@
                  * @function
                  */
                 makeUnique: function makeUnique () {
-                    return performWithCurrent(function (a) {
+                    return getThisValueAndInvoke(function (a) {
                         var visited = [];
                         for(var i = 0; i < a.length; i++) {
                             if(visited.indexOf(a[i]) === -1) {
@@ -1097,11 +1135,11 @@
                  * @function
                  */
                 unique: function unique () {
-                    return performWithCurrent(function (a) {
+                    return getThisValueAndInvoke(function (a) {
                         var visited = [],
                             unique  = [];
 
-                        a[protoIdentifier].each(function (item) {
+                        a[protoid].each(function (item) {
                             if(visited.indexOf(item) === -1) {
                                 unique.push(item);
                                 visited.push(item);
@@ -1118,7 +1156,7 @@
                  * @function
                  */
                 ascending: function ascending () {
-                    return performWithCurrent(function (a) {
+                    return getThisValueAndInvoke(function (a) {
                         return a.sort(function (a, b) {
                             return a < b ? -1 : a > b ? 1 : 0;
                         });
@@ -1132,7 +1170,7 @@
                  * @function
                  */
                 descending: function descending () {
-                    return performWithCurrent(function (a) {
+                    return getThisValueAndInvoke(function (a) {
                         return a.sort(function (a, b) {
                             return a > b ? -1 : a < b ? 1 : 0;
                         });
@@ -1152,7 +1190,7 @@
                  * @function
                  */
                 keys : function keys () {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         return Object.keys(o);
                     });
                 },
@@ -1171,7 +1209,7 @@
                  * @function
                  */
                 size: function size () {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         switch(true) {
                             case typeof o === 'function':
                                 return 1;
@@ -1183,7 +1221,7 @@
                             case typeof o === 'string':
                                 return o.length;
 
-                            case JLib.isArguments(o) && o.indexOf('length') > -1:
+                            case stdp.isArguments(o) && o.indexOf('length') > -1:
                                 return o.length - 1;
 
                             case typeof o === 'object':
@@ -1201,7 +1239,7 @@
                  * @function
                  */
                 isNumeric: function isNumeric () {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         return !isNaN(parseFloat(o)) && isFinite(o);
                     });
                 },
@@ -1212,7 +1250,7 @@
                  * @function
                  */
                 numeric: function numeric () {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         return parseFloat(o);
                     });
                 },
@@ -1223,8 +1261,8 @@
                  * @function
                  */
                 isEmpty: function isEmpty () {
-                    return performWithCurrent(function (o) {
-                        return o[protoIdentifier].size() === 0;
+                    return getThisValueAndInvoke(function (o) {
+                        return o[protoid].size() === 0;
                     });
                 },
 
@@ -1233,8 +1271,8 @@
                  * @return {Boolean} True if the object is an array, false otherwise.
                  */
                 isArray: function isArray () {
-                    return performWithCurrent(function (o) {
-                        return o[protoIdentifier] instanceof Array;
+                    return getThisValueAndInvoke(function (o) {
+                        return o[protoid] instanceof Array;
                     });
                 },
 
@@ -1243,8 +1281,8 @@
                  * @return {Boolean} True if the object is an object and not an array, false otherwise.
                  */
                 isPureObject: function isPureObject () {
-                    return performWithCurrent(function (o) {
-                        return !(o[protoIdentifier] instanceof Array) && typeof o === 'object';
+                    return getThisValueAndInvoke(function (o) {
+                        return !(o[protoid] instanceof Array) && typeof o === 'object';
                     });
                 },
 
@@ -1253,7 +1291,7 @@
                  * @return {Boolean} True if the object is a string, false otherwise.
                  */
                 isString: function isString () {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         return typeof o === 'string';
                     });
                 },
@@ -1263,7 +1301,7 @@
                  * @return {Boolean} True if the object is a boolean, false otherwise.
                  */
                 isBoolean: function isBoolean () {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         return typeof o === 'boolean';
                     });
                 },
@@ -1273,7 +1311,7 @@
                  * @return {Boolean} True if the object is a function, false otherwise.
                  */
                 isFunction: function isFunction () {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         return typeof o === 'function';
                     });
                 },
@@ -1283,7 +1321,7 @@
                  * @return {Boolean} True if the object is an arguments object, false otherwise
                  */
                 isArguments: function isArguments () {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         return Object.prototype.toString.call(o) === '[object Arguments]';
                     });
                 },
@@ -1294,7 +1332,7 @@
                  * @function
                  */
                 toNumber: function toNumber () {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         return o.isNumeric() ? parseFloat(o) : NaN;
                     });
                 },
@@ -1305,7 +1343,7 @@
                  * @function
                  */
                 toInteger: function toInteger () {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         return o.isNumeric() ? parseInt(o, 10) : NaN;
                     });
                 },
@@ -1317,10 +1355,10 @@
                  * @function
                  */
                 makeArray: function makeArray () {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         var arr = [];
                         if(o instanceof Array) return o;
-                        o[protoIdentifier].each(function (obj) { arr.push(obj); });
+                        o[protoid].each(function (obj) { arr.push(obj); });
                         return arr;
                     });
                 },
@@ -1331,7 +1369,7 @@
                  * @function
                  */
                 random: function random () {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         if(typeof o === 'object') {
                             return o instanceof Array ?
                                 o[Math.floor(Math.random() * o.length)] :
@@ -1377,14 +1415,14 @@
                     f = undefined;
                     for(var k = arguments.length - 1; k >= 0; k--) if(arguments[k] instanceof Function) f = arguments[k];
 
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         var ret       = null,
                             broken    = false,
                             self      = o,
                             keys, property, value,
 
                             exit = function () {
-                                var args = arguments[protoIdentifier].toArray();
+                                var args = arguments[protoid].toArray();
                                 broken   = true;
                                 ret      = args.length > 1 ? args : args[0];
                             };
@@ -1430,7 +1468,7 @@
                 every: function every (f) {
                     f = f instanceof Function ? f : undefined;
 
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         var self = o, keys, property, value;
                         if(typeof self === 'number' || typeof self === 'function' || typeof self === 'boolean') self = o.toString();
                         keys = Object.keys(self);
@@ -1454,11 +1492,11 @@
                  * @return {Array<*>} The object, converted to an array.
                  */
                 toArray: function toArray () {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         if(o instanceof Array) return o;
 
                         var arr = [];
-                        o[protoIdentifier].each(function (val) { arr.push(val); });
+                        o[protoid].each(function (val) { arr.push(val); });
                         return arr;
                     });
                 },
@@ -1470,7 +1508,7 @@
                  * @return {Array<*>} The first n elements of the array.
                  */
                 first: function first (n) {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         n = parseInt(n, 10);
                         n = isNaN(n) || !isFinite(n) ? 1 : n;
                         var v = null;
@@ -1483,7 +1521,7 @@
                         }
                         else {
                             v = {};
-                            o[protoIdentifier].each(0, n - 1, function (item, key) { v[key] = item; });
+                            o[protoid].each(0, n - 1, function (item, key) { v[key] = item; });
                             var keys = Object.keys(v);
                             return keys.length === 1 ? v[keys[0]] : v;
                         }
@@ -1500,18 +1538,18 @@
                  * @function
                  */
                 last: function last (n) {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         n = parseInt(n, 10);
                         n = isNaN(n) || !isFinite(n) ? 1 : n;
                         var v = null, keys, len, idx;
 
-                        if(JLib.isArguments(o)) {
+                        if(stdp.isArguments(o)) {
                             keys = Object.keys(o);
                             idx  = keys.indexOf('length');
 
                             if(idx > -1) keys.splice(idx, 1);
                             v = []; len = keys.length;
-                            keys[protoIdentifier].each(len - n, len, function (k) { v.push(o[k]); });
+                            keys[protoid].each(len - n, len, function (k) { v.push(o[k]); });
                         }
                         else if(typeof o !== 'object') {
                             v = o.toString().slice(-n);
@@ -1521,9 +1559,9 @@
                         }
                         else {
                             v   = {};
-                            len = o[protoIdentifier].size();
+                            len = o[protoid].size();
 
-                            o[protoIdentifier].each(len - n, len, function (item, key) { v[key] = item; });
+                            o[protoid].each(len - n, len, function (item, key) { v[key] = item; });
                             keys = Object.keys(v);
                             return keys.length === 1 ? v[keys[0]] : v;
                         }
@@ -1540,9 +1578,9 @@
                  * @function
                  */
                 findChildAtPath: function findChildAtPath (path, delimiter, original, invoked, done) {
-                    done = arguments[protoIdentifier].last() instanceof Function ? arguments[protoIdentifier].last() : JLib.NULLF;
+                    done = arguments[protoid].last() instanceof Function ? arguments[protoid].last() : stdp.NULLF;
 
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         var self = o;
 
                         original = (!(original instanceof Function) && original) ? original : self;
@@ -1554,14 +1592,14 @@
 
                             var p = path.shift();
                             if(p) {
-                                return self[protoIdentifier].each(function (o, k, i, exit) {
+                                return self[protoid].each(function (o, k, i, exit) {
                                     if(path.length === 0 && k === p) {
                                         done.call(original, o, self, k);
                                         invoked = true;
                                         exit(o);
                                     }
                                     else {
-                                        var obj = o[protoIdentifier].findChildAtPath(path.join(delimiter), delimiter, original, invoked, done);
+                                        var obj = o[protoid].findChildAtPath(path.join(delimiter), delimiter, original, invoked, done);
                                         if(obj !== null) exit(obj);
                                     }
                                 });
@@ -1579,7 +1617,7 @@
                  * @function
                  */
                 clone: function clone () {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         if(typeof o === 'string' || typeof o === 'number') return o;
 
                         try {
@@ -1598,17 +1636,17 @@
                  * @return {Array<*>} An array filtered by only the allowed types.
                  */
                 only: function only (types) {
-                    types = arguments[protoIdentifier].makeArray();
+                    types = arguments[protoid].makeArray();
 
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         // Allows the 'plural' form of the type...
-                        types[protoIdentifier].each(function (type, key) { this[key] = type.replace(/s$/, ''); });
+                        types[protoid].each(function (type, key) { this[key] = type.replace(/s$/, ''); });
 
                         if(typeof o !== 'object') return o;
                         var isArray  = o instanceof Array ? true : false,
                             filtered = isArray ? [] : {};
 
-                        o[protoIdentifier].each(function (item, key) {
+                        o[protoid].each(function (item, key) {
                             if(types.indexOf(typeof item) !== -1 || (item instanceof Array && types.indexOf('array') !== -1)) {
                                 if(isArray) filtered.push(item); else filtered[key] = item;
                             }
@@ -1626,13 +1664,13 @@
                  * @return {*} The filtered object
                  */
                 where: function where (predicate) {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         if(!(predicate instanceof Function)) return o;
 
                         var isObject = typeof o === 'object' && !(o instanceof Array) ? true : false,
                             filtered = !isObject ? [] : {};
 
-                        o[protoIdentifier].each(function (item, key) {
+                        o[protoid].each(function (item, key) {
                             if(predicate.call(item, item)) {
                                 if(isObject) filtered[key] = item; else filtered.push(item);
                             }
@@ -1649,13 +1687,13 @@
                  * @return {*} The filtered object
                  */
                 whereKeys: function whereKeys (predicate) {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         if(!(predicate instanceof Function)) return o;
 
                         var isObject = typeof o === 'object' && !(o instanceof Array) ? true : false,
                             filtered = !isObject ? [] : {};
 
-                        o[protoIdentifier].each(function (item, key) {
+                        o[protoid].each(function (item, key) {
                             if(predicate.call(key, key)) {
                                 if(isObject) filtered[key] = item; else filtered.push(item);
                             }
@@ -1673,12 +1711,12 @@
                  * @return {*} The inverse, as described above.
                  */
                 invert: function invert () {
-                    return performWithCurrent(function (o) {
-                        if(typeof o === 'string') return o[protoIdentifier].reverse();
+                    return getThisValueAndInvoke(function (o) {
+                        if(typeof o === 'string') return o[protoid].reverse();
                         if(typeof o === 'number') return 1 / o;
 
                         var obj = {};
-                        o[protoIdentifier].each(function (item, key) {
+                        o[protoid].each(function (item, key) {
                             if(typeof item === 'string' || typeof item === 'number') obj[item] = key;
                         });
 
@@ -1694,21 +1732,21 @@
                 max: function max (func) {
                     if(!(func instanceof Function)) func = undefined;
 
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         if(typeof o !== 'object') return o;
                         var max, maxValue;
 
                         if(!func) {
-                            max = o[protoIdentifier].first();
-                            o[protoIdentifier].each(1, function (item) {
+                            max = o[protoid].first();
+                            o[protoid].each(1, function (item) {
                                 if(item >= max) max = item;
                             });
                         }
                         else {
-                            max = o[protoIdentifier].first();
+                            max = o[protoid].first();
                             maxValue = func.call(max, max);
 
-                            o[protoIdentifier].each(1, function (item) {
+                            o[protoid].each(1, function (item) {
                                 if(func.call(item, item) >= maxValue) max = item;
                             });
                         }
@@ -1724,21 +1762,21 @@
                 min: function min (func) {
                     if(!(func instanceof Function)) func = undefined;
 
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         if(typeof o !== 'object') return o;
                         var min, minValue;
 
                         if(!func) {
-                            min = o[protoIdentifier].first();
-                            o[protoIdentifier].each(1, function (item) {
+                            min = o[protoid].first();
+                            o[protoid].each(1, function (item) {
                                 if(item <= min) min = item;
                             });
                         }
                         else {
-                            min = o[protoIdentifier].first();
+                            min = o[protoid].first();
                             minValue = func.call(min, min);
 
-                            o[protoIdentifier].each(1, function (item) {
+                            o[protoid].each(1, function (item) {
                                 if(func.call(item, item) <= minValue) min = item;
                             });
                         }
@@ -1752,7 +1790,7 @@
                  * @return {Boolean} True if the object has a function called 'method', false otherwise.
                  */
                 implements: function _implements (method) {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         return o && o[method] instanceof Function;
                     });
                 },
@@ -1763,14 +1801,17 @@
                  * @return {Boolean} True if the object has its own function called 'method', false otherwise.
                  */
                 implementsOwn: function implementsOwn (method) {
-                    return performWithCurrent(function (o) {
+                    return getThisValueAndInvoke(function (o) {
                         return o && o[method] instanceof Function && o.hasOwnProperty(method);
                     });
                 }
             }
+
+            // ---------------------------------------- END LIBRARY FUCTIONS ---------------------------------------- //
+
         };
 
-        // ------------------------------------------- OTHER HELPER FUNCTIONS ------------------------------------------- //
+        // ----------------------------------------- OTHER HELPER FUNCTIONS ----------------------------------------- //
         // These will be attached to the exports object in Node.js, or the window object in the browser.
 
         /**
@@ -1778,14 +1819,14 @@
          * to re-use this function than continuously create empty functions all over the place.
          * @type {Function}
          */
-        JLib.NULLF = function NullFunction () {};
+        stdp.NULLF = function NullFunction () {};
 
         /**
          * Returns 'enabled' if the value of 'i' evaluates to true, 'disabled otherwise'
          * @param {*} i The thingy to evaluate
          * @return {String} Either 'enabled' or 'disabled'
          */
-        JLib.enabledOrDisabled = function enabledOrDisabled (i) {
+        stdp.enabledOrDisabled = function enabledOrDisabled (i) {
             return i ? 'enabled' : 'disabled';
         };
 
@@ -1793,7 +1834,7 @@
          * A replacer function for JSON, to replace functions with '[Function (function name|anonymous)]'. A callback for
          * JSON.stringify. @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
          */
-        JLib.JSONFunctionReplacer = function JSONFunctionReplacer (key, value) {
+        stdp.JSONFunctionReplacer = function JSONFunctionReplacer (key, value) {
             if(value instanceof Function) return '[Function: ' + (value.name || 'anonymous') + ']';
             return value;
         };
@@ -1802,9 +1843,11 @@
          * Get's a callback from an array like object.
          * @return {Function} The supplied callback, or a fake one.
          */
-        JLib.getCallback = function getCallback (argumentsObject) {
-            var last = argumentsObject[protoIdentifier].last();
-            return last instanceof Function ? last : JLib.NULLF;
+        stdp.getCallback = function getCallback (argumentsObject) {
+            return invokeInStaticContext(argumentsObject, function () {
+                var last = stdp._object.last();
+                return last instanceof Function ? last : stdp.NULLF;
+            });
         };
 
         /**
@@ -1818,7 +1861,7 @@
          * @param {String} s The string containing tokens to replace
          * @return {String} The token-replaced string
          */
-        JLib.replaceStringTokens = function replaceStringTokens (s) {
+        stdp.replaceStringTokens = function replaceStringTokens (s) {
             if(typeof s === 'string') {
                 s = s.replace(/\[\$DATE-TIME-24]/g , new Date().toLocaleString('en-US', { hour12: false }))
                  .replace(/\[\$DATE-TIME]/g    , new Date().toLocaleString())
@@ -1847,16 +1890,16 @@
          * @param {String} withValue The value to replace the string token with
          * @return {JPCUtils} The current JPCUtils instance
          */
-        JLib.createToken = function createToken (named, withValue) {
+        stdp.createToken = function createToken (named, withValue) {
             if(typeof named !== 'string')
-                throw new Error('JPLib.exportable.createToken expected argument #0 (named) to be a string, got: ' + typeof named);
+                throw new Error('stdp.createToken expected argument #0 (named) to be a string, got: ' + typeof named);
 
             if(typeof value !== 'string')
-                throw new Error('JPLib.exportable.createToken expected argument #1 (withValue) to be a string, got: ' + typeof withValue);
+                throw new Error('stdp.createToken expected argument #1 (withValue) to be a string, got: ' + typeof withValue);
 
             named = named.toUpperCase();
             customTokens[named] = { name: named, value: withValue };
-            return exports;
+            return stdp;
         };
 
         /**
@@ -1866,23 +1909,28 @@
          * (an array joined by ' ') will be returned.
          * @return {String} The arguments string
          */
-        JLib.generateArgumentsStringFromObject = function generateArgumentsStringFromObject (o, produceArray) {
+        stdp.generateArgumentsStringFromObject = function generateArgumentsStringFromObject (o, produceArray) {
             if(o === undefined || o === null || o instanceof Function) return [];
             if(typeof o === 'string' || typeof o === 'number') return [o.toString()];
 
             var args = [];
             if(o instanceof Array) {
-                o[protoIdentifier].each(function (val) { args.push(val.toString()); });
+                o[protoid].each(function (val) { args.push(val.toString()); });
                 return args;
             }
 
-            o[protoIdentifier].each(function (val, key) {
-                if(key === '_' && val instanceof Array) {
-                    args = args.concat(val);
-                }
-                else {
-                    if(key.length === 1) args.push('-' + key, val); else args.push('--' + key + '=' + val.toString());
-                }
+            invokeInStaticContext(o, function () {
+                stdp._object.each(function (val, key) {
+                    if(key === '_' && val instanceof Array) {
+                        args = args.concat(val);
+                    }
+                    else if(key.length === 1) {
+                        args.push('-' + key, val);
+                    }
+                    else {
+                        args.push('--' + key + '=' + val.toString());
+                    }
+                });
             });
             return produceArray ? args : args.join(' ');
         };
@@ -1896,11 +1944,11 @@
          * @returns {String} A random string
          * @function
          */
-        JLib.randomString = function randomString (length, possible) {
+        stdp.randomString = function randomString (length, possible) {
             var text = '';
             possible = typeof possible === 'string' ? possible : 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            length   = length || Math.floor(Math.random() * 101);
 
-            length = length || Math.floor(Math.random() * 101);
             for(var i = 0; i < length; i++)
                 text += possible.charAt(Math.floor(Math.random() * possible.length));
 
@@ -1912,9 +1960,11 @@
          * @param {...*} o The objects to evaluate
          * @return {Boolean}
          */
-        JLib.isNull = function () {
-            return arguments[protoIdentifier].every(function (item) {
-                if(item !== null) return false;
+        stdp.allNull = function () {
+            return invokeInStaticContext(arguments, function () {
+                return stdp._object.every(function (o) {
+                    if(o !== null) return false;
+                });
             });
         };
 
@@ -1923,9 +1973,117 @@
          * @param {...*} o The objects to evaluate
          * @return {Boolean}
          */
-        JLib.isUndefined = function () {
-            return arguments[protoIdentifier].every(function (item) {
-                if(item !== undefined) return false;
+        stdp.allUndefined = function () {
+            return invokeInStaticContext(arguments, function () {
+                return stdp._object.every(function (o) {
+                    if(o !== undefined) return false;
+                });
+            });
+        };
+
+        /**
+         * True if and only if all objects provided are booleans.
+         * @param {...*} o The objects to evaluate
+         * @return {Boolean}
+         */
+        stdp.allBooleans = function () {
+            return invokeInStaticContext(arguments, function () {
+                return stdp._object.every(function (o) {
+                    if(typeof o !== 'boolean') return false;
+                });
+            });
+        };
+
+        /**
+         * True if and only if all objects provided are strings.
+         * @param {...*} o The objects to evaluate
+         * @return {Boolean}
+         */
+        stdp.allString = function () {
+            return invokeInStaticContext(arguments, function () {
+                return stdp._object.every(function (o) {
+                    if(typeof o !== 'string') return false;
+                });
+            });
+        };
+
+        /**
+         * True if and only if all objects provided are "empty" (either null or undefined).
+         * Zero (0) is not empty!
+         * @param {...*} o The objects to evaluate
+         * @return {Boolean}
+         */
+        stdp.allEmpty = function () {
+            return invokeInStaticContext(arguments, function () {
+                return stdp._object.every(function (o) {
+                    if(o !== undefined && o !== null) return false;
+                });
+            });
+        };
+
+        /**
+         * True if and only if all objects provided are "not empty" (non-null and defined).
+         * @param {...*} o The objects to evaluate
+         * @return {Boolean}
+         */
+        stdp.allDefined = function () {
+            return invokeInStaticContext(arguments, function () {
+                return stdp._object.every(function (o) {
+                    if(o === undefined || o === null) return false;
+                });
+            });
+        };
+
+        /**
+         * True if and only if all objects provided are arrays.
+         * @param {...*} o The objects to evaluate
+         * @return {Boolean}
+         */
+        stdp.allArrays = function () {
+            if(arguments.length === 0) return false;
+            return invokeInStaticContext(arguments, function () {
+                return stdp._object.every(function (o) {
+                    if(!(o instanceof Array)) return false;
+                });
+            });
+        };
+
+        /**
+         * True if and only if all objects provided are objects.
+         * @param {...*} o The objects to evaluate
+         * @return {Boolean}
+         */
+        stdp.allObjects = function () {
+            return invokeInStaticContext(arguments, function () {
+                return stdp._object.every(function (o) {
+                    if(typeof o !== 'object') return false;
+                });
+            });
+        };
+
+        /**
+         * True if and only if all objects provided are objects (excluding arrays).
+         * @param {...*} o The objects to evaluate
+         * @return {Boolean}
+         */
+        stdp.allStrictlyObjects = function () {
+            return invokeInStaticContext(arguments, function () {
+                return stdp._object.every(function (o) {
+                    if(typeof o !== 'object' || (o instanceof Array)) return false;
+                });
+            });
+        };
+
+        /**
+         * True if and only if all objects provided are objects (excluding arrays).
+         * @param {...*} o The objects to evaluate
+         * @return {Boolean}
+         */
+        stdp.allArguments = function () {
+            return invokeInStaticContext(arguments, function () {
+                return stdp._object.every(function (o) {
+                    return stdp.isArguments(o);
+                });
             });
         };
 
@@ -1934,43 +2092,27 @@
          * @param {*} o The object to evaluate
          * @return {Boolean} True if the object is an arguments object, false otherwise.
          */
-        JLib.isArguments = function (o) {
+        stdp.isArguments = function (o) {
             return Object.prototype.toString.call(o) === '[object Arguments]';
         };
 
-        // Apply the following to the JLib object.
-        var staticIdentityFunction = function () {
-            var args   = arguments[protoIdentifier].makeArray(),
-                method = this;
-
-            args.shift();
-            return arguments[protoIdentifier].every(function (item) {
-                if(item) return item[protoIdentifier][method]();
-                return false;
-            });
-        };
-
-        for(var n = ['isArray', 'isEmpty', 'isNumeric', 'isPureObject', 'isString', 'isBoolean', 'isFunction'], o = n.shift(); o; o = n.shift()) {
-            JLib[o] = staticIdentityFunction.bind(o);
-        }
-
-        if(IS_NODE) require(require('path').join(__dirname, 'lib', 'NodeAddons'))(JLib);
-        return JLib.init();
+        if(IS_NODE) require(require('path').join(__dirname, 'lib', 'NodeAddons'))(stdp);
+        return stdp.init();
     };
 
-    // ------------------------------------------------ EXPORT JLIB ------------------------------------------------- //
-    // JLib will be exported as a function, so the user can define custom a custom prototype namespace identifier.
+    // ------------------------------------------------ EXPORT stdp ------------------------------------------------- //
+    // stdp will be exported as a function, so the user can define custom a custom prototype namespace identifier.
     // It's possible to call the function multiple times, adding the library to each prototype under different names,
     // but this is highly discouraged.
 
-    var jlibs = {},
-        jInit = function (protoIdentifier) {
-            if(typeof protoIdentifier !== 'string') protoIdentifier = 'jl';
-            if(jlibs[protoIdentifier]) return jlibs[protoIdentifier];
-            return JLibrary(protoIdentifier);
+    var stdlibs  = {},
+        stdpInit = function (protoid) {
+            if(typeof protoid !== 'string') protoid = 'p';
+            if(stdlibs[protoid]) return stdlibs[protoid];
+            return StdPseudoLib(protoid);
         };
 
     return IS_NODE ?
-        module.exports = jInit :
-        window.JLib    = jInit ;
+        module.exports = stdpInit :
+        window.stdp    = stdpInit ;
 }());
