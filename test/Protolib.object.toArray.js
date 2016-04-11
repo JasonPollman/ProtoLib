@@ -3,7 +3,10 @@
 var expect = require('chai').expect,
     path   = require('path');
 
-describe('Object#j.toArray', function () {
+describe('Protolib.object.toArray', function () {
+    before(function () {
+        new (require(path.join(__dirname, '..')))('_');
+    });
 
     // Create some test data
     var obj = { foo: 'bar', num: 2, bool: false },
@@ -14,12 +17,8 @@ describe('Object#j.toArray', function () {
         subarr = [1, 2, 3],
         array  = [1, 2, subarr];
 
-    before(function () {
-        require(path.join(__dirname, '..'));
-    });
-
     it('It should convert objects to arrays', function () {
-        var arr = obj.jlib.toArray();
+        var arr = obj._.toArray();
         expect(arr).to.be.instanceof(Array);
         expect(arr[0]).to.be.a('string');
         expect(arr[1]).to.be.a('number');
@@ -27,7 +26,7 @@ describe('Object#j.toArray', function () {
     });
 
     it('It should convert strings to a char arrays', function () {
-        var arr = string.jlib.toArray();
+        var arr = string._.toArray();
         expect(arr).to.be.instanceof(Array);
         expect(arr[0]).to.equal('s');
         expect(arr[1]).to.equal('t');
@@ -38,7 +37,7 @@ describe('Object#j.toArray', function () {
     });
 
     it('It should convert numbers to an array of digits', function () {
-        var arr = number.jlib.toArray();
+        var arr = number._.toArray();
         expect(arr).to.be.instanceof(Array);
         expect(arr[0]).to.equal(1);
         expect(arr[1]).to.equal(2);
@@ -47,7 +46,7 @@ describe('Object#j.toArray', function () {
         expect(arr[4]).to.equal(2);
         expect(arr[5]).to.equal(3);
 
-        arr = float.jlib.toArray();
+        arr = float._.toArray();
         expect(arr).to.be.instanceof(Array);
         expect(arr[0]).to.equal(1);
         expect(arr[1]).to.equal(3);
@@ -60,14 +59,14 @@ describe('Object#j.toArray', function () {
     });
 
     it('It should convert booleans to a char arrays', function () {
-        var arr = true.jlib.toArray();
+        var arr = true._.toArray();
         expect(arr).to.be.instanceof(Array);
         expect(arr[0]).to.equal('t');
         expect(arr[1]).to.equal('r');
         expect(arr[2]).to.equal('u');
         expect(arr[3]).to.equal('e');
 
-        arr = false.jlib.toArray();
+        arr = false._.toArray();
         expect(arr).to.be.instanceof(Array);
         expect(arr[0]).to.equal('f');
         expect(arr[1]).to.equal('a');
@@ -77,7 +76,7 @@ describe('Object#j.toArray', function () {
     });
 
     it('It should convert functions to a char arrays', function () {
-        var arr = func.jlib.toArray();
+        var arr = func._.toArray();
         expect(arr).to.be.instanceof(Array);
         expect(arr[0]).to.equal('f');
         expect(arr[1]).to.equal('u');
@@ -86,7 +85,7 @@ describe('Object#j.toArray', function () {
     });
 
     it('It should simply return arrays', function () {
-        var arr = array.jlib.toArray();
+        var arr = array._.toArray();
         expect(arr).to.be.instanceof(Array);
         expect(arr).to.equal(array);
         expect(arr[0]).to.equal(1);

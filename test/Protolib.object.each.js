@@ -3,7 +3,10 @@
 var expect = require('chai').expect,
     path   = require('path');
 
-describe('Object#j.each', function () {
+describe('Protolib.object.each', function () {
+    before(function () {
+        new (require(path.join(__dirname, '..')))('_');
+    });
 
     // Create some test data
     var obj = {
@@ -27,12 +30,8 @@ describe('Object#j.each', function () {
     arr.push(arr);
     obj.arr = arr;
 
-    before(function () {
-        require(path.join(__dirname, '..'))('jlib');
-    });
-
     it('It should iterate over objects and arrays as exprected', function () {
-        expect(Object.jlib.each).to.be.an.instanceof(Function);
+        expect(Object._.each).to.be.an.instanceof(Function);
         var isArr, currentObj;
 
         var eachCallback = function (value, key, iteration) {
@@ -85,7 +84,7 @@ describe('Object#j.each', function () {
                     expect(value.length).to.equal(4);
 
                     var i = 0;
-                    value.jlib.each(function (val, key, iteration) {
+                    value._.each(function (val, key, iteration) {
                         expect(this).to.an.instanceof(Array);
                         expect(this.length).to.equal(4);
                         expect(val === i && i === iteration && iteration === key);
@@ -100,23 +99,25 @@ describe('Object#j.each', function () {
         };
 
         isArr = false; currentObj = obj;
-        obj.jlib.each(eachCallback);
+        obj._.each(eachCallback);
 
         isArr = true; currentObj = arr;
-        arr.jlib.each(eachCallback);
+        arr._.each(eachCallback);
     });
 
     it('It should break when the exit() argument is called', function () {
-        expect(Object.jlib.each).to.be.an.instanceof(Function);
+        expect(Object._.each).to.be.an.instanceof(Function);
         var i = 0, exitCalled = false, resI = null;
 
-        var res = [0, 1, 2, 3, 4, 5].jlib.each(function (value, key, iteration, exit) {
+        var res = [0, 1, 2, 3, 4, 5]._.each(function (value, key, iteration, exit) {
             expect(i).to.equal(value);
             i++;
-            if(i === 2) exit(function () {
-                resI       = i;
-                exitCalled = true;
-            });
+            if(i === 2) {
+                exit(function () {
+                    resI       = i;
+                    exitCalled = true;
+                });
+            }
         });
 
         res();
@@ -125,16 +126,16 @@ describe('Object#j.each', function () {
     });
 
     it('It should iterate over strings as expected', function () {
-        expect(Object.jlib.each).to.be.an.instanceof(Function);
+        expect(Object._.each).to.be.an.instanceof(Function);
         var string = 'somereallyreallyreallylongstring';
 
-        string.jlib.each(function (char) {
+        string._.each(function (char) {
             expect(this).to.equal('somereallyreallyreallylongstring');
             expect(char).to.be.a('string');
             expect(char).to.have.length(1);
         });
 
-        var c = string.jlib.each(function (char, k, i, exit) {
+        var c = string._.each(function (char, k, i, exit) {
             expect(this).to.equal('somereallyreallyreallylongstring');
             expect(char).to.be.a('string');
             expect(char).to.have.length(1);
@@ -143,7 +144,7 @@ describe('Object#j.each', function () {
 
         expect(c).to.equal('y');
 
-        c = string.jlib.each(function (char, k, i, exit) {
+        c = string._.each(function (char, k, i, exit) {
             expect(this).to.equal('somereallyreallyreallylongstring');
             expect(char).to.be.a('string');
             expect(char).to.have.length(1);
@@ -157,11 +158,11 @@ describe('Object#j.each', function () {
     });
 
     it('It should iterate over start and end ranges as expected', function () {
-        expect(Object.jlib.each).to.be.an.instanceof(Function);
+        expect(Object._.each).to.be.an.instanceof(Function);
         var string = 'somereallyreallyreallylongstring';
 
         var val = '';
-        string.jlib.each(1, 2, function (char) {
+        string._.each(1, 2, function (char) {
             val += char;
             expect(this).to.equal('somereallyreallyreallylongstring');
             expect(char).to.be.a('string');
@@ -170,7 +171,7 @@ describe('Object#j.each', function () {
         expect(val).to.equal('om');
 
         val = '';
-        string.jlib.each(2, function (char) {
+        string._.each(2, function (char) {
             val += char;
             expect(this).to.equal('somereallyreallyreallylongstring');
             expect(char).to.be.a('string');
@@ -179,7 +180,7 @@ describe('Object#j.each', function () {
         expect(val).to.equal('mereallyreallyreallylongstring');
 
         val = '';
-        string.jlib.each(-20, function (char) {
+        string._.each(-20, function (char) {
             val += char;
             expect(this).to.equal('somereallyreallyreallylongstring');
             expect(char).to.be.a('string');
@@ -188,7 +189,7 @@ describe('Object#j.each', function () {
         expect(val).to.equal('somereallyreallyreallylongstring');
 
         val = '';
-        string.jlib.each(-20, 2000, function (char) {
+        string._.each(-20, 2000, function (char) {
             val += char;
             expect(this).to.equal('somereallyreallyreallylongstring');
             expect(char).to.be.a('string');
@@ -197,7 +198,7 @@ describe('Object#j.each', function () {
         expect(val).to.equal('somereallyreallyreallylongstring');
 
         val = '';
-        string.jlib.each(-20, -1000, function (char) {
+        string._.each(-20, -1000, function (char) {
             val += char;
             expect(this).to.equal('somereallyreallyreallylongstring');
             expect(char).to.be.a('string');
@@ -206,7 +207,7 @@ describe('Object#j.each', function () {
         expect(val).to.equal('');
 
         val = '';
-        string.jlib.each(100000, 1, function (char) {
+        string._.each(100000, 1, function (char) {
             val += char;
             expect(this).to.equal('somereallyreallyreallylongstring');
             expect(char).to.be.a('string');
@@ -215,7 +216,7 @@ describe('Object#j.each', function () {
         expect(val).to.equal('');
 
         val = '';
-        string.jlib.each(200, -100, function (char) {
+        string._.each(200, -100, function (char) {
             val += char;
             expect(this).to.equal('somereallyreallyreallylongstring');
             expect(char).to.be.a('string');
@@ -225,7 +226,7 @@ describe('Object#j.each', function () {
     });
 
     it('It should iterate over numbers as expected', function () {
-        expect(Object.jlib.each).to.be.an.instanceof(Function);
+        expect(Object._.each).to.be.an.instanceof(Function);
         var numbers = [
                 1235435234,
                 123123.123,
@@ -252,15 +253,15 @@ describe('Object#j.each', function () {
 
         for(var i = 0; i < 8; i++) {
             currentNumber = numbers[i];
-            currentNumber.jlib.each(numberCallback);
+            currentNumber._.each(numberCallback);
         }
     });
 
     it('It should iterate over functions as if they were strings', function () {
-        expect(Object.jlib.each).to.be.an.instanceof(Function);
+        expect(Object._.each).to.be.an.instanceof(Function);
 
         var func = function () { console.log('HELLO WORLD'); };
-        func.jlib.each(function (char, k, i) {
+        func._.each(function (char, k, i) {
             expect(this).to.equal(func);
             expect(char).to.be.a('string');
             switch(i) {
@@ -296,9 +297,9 @@ describe('Object#j.each', function () {
     });
 
     it('It should iterate over booleans as if they were strings', function () {
-        expect(Object.jlib.each).to.be.an.instanceof(Function);
+        expect(Object._.each).to.be.an.instanceof(Function);
 
-        true.jlib.each(function (char, k, i) {
+        true._.each(function (char, k, i) {
             expect(this).to.equal(true);
             expect(char).to.be.a('string');
             switch(i) {
@@ -320,7 +321,7 @@ describe('Object#j.each', function () {
             }
         });
 
-        false.jlib.each(function (char, k, i) {
+        false._.each(function (char, k, i) {
             expect(this).to.equal(false);
             expect(char).to.be.a('string');
             switch(i) {

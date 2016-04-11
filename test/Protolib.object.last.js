@@ -3,7 +3,10 @@
 var expect = require('chai').expect,
     path   = require('path');
 
-describe('Object#j.last', function () {
+describe('Protolib.object.last', function () {
+    before(function () {
+        new (require(path.join(__dirname, '..')))('_');
+    });
 
     // Create some test data
     var obj = { foo: 'bar', num: 2, bool: false },
@@ -13,35 +16,31 @@ describe('Object#j.last', function () {
         func   = function () { console.log('HELLO WORLD!'); },
         subarr = [1, 2, 3];
 
-    before(function () {
-        require(path.join(__dirname, '..'))('jl');
-    });
-
     it('It should return the last item in an object', function () {
-        var o = obj.jl.last();
+        var o = obj._.last();
         expect(o).to.equal(false);
     });
 
     it('It should return the last item in an array', function () {
-        var o = subarr.jl.last();
+        var o = subarr._.last();
         expect(o).to.equal(3);
     });
 
     it('It should return the last character in a string', function () {
-        var o = string.jl.last();
+        var o = string._.last();
         expect(o).to.equal('g');
     });
 
     it('It should return the last digit in a number', function () {
-        var o = number.jl.last();
+        var o = number._.last();
         expect(o).to.equal('3');
 
-        o = float.jl.last();
+        o = float._.last();
         expect(o).to.equal('4');
     });
 
     it('It should return the last charcter of a function cast to a string', function () {
-        var o = func.jl.last();
+        var o = func._.last();
         expect(o).to.equal('}');
     });
 });

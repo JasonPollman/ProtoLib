@@ -3,7 +3,10 @@
 var expect = require('chai').expect,
     path   = require('path');
 
-describe('Object#j.size', function () {
+describe('Protolib.object.size', function () {
+    before(function () {
+        new (require(path.join(__dirname, '..')))('_');
+    });
 
     // Create some test data
     var obj    = { foo: 'bar', num: 2, bool: false },
@@ -16,44 +19,40 @@ describe('Object#j.size', function () {
         subarr = [1, 2, 3],
         earr   = [];
 
-    before(function () {
-        require(path.join(__dirname, '..'))('jlib');
-    });
-
     it('It should return the correct number of members given an object', function () {
-        var o = obj.jlib.size();
+        var o = obj._.size();
         expect(o).to.equal(3);
 
-        o = eobj.jlib.size();
+        o = eobj._.size();
         expect(o).to.equal(0);
     });
 
     it('It should return the correct number of members given an array', function () {
-        var o = subarr.jlib.size();
+        var o = subarr._.size();
         expect(o).to.equal(3);
 
-        o = earr.jlib.size();
+        o = earr._.size();
         expect(o).to.equal(0);
     });
 
     it('It should return the correct number of members given a string', function () {
-        var o = string.jlib.size();
+        var o = string._.size();
         expect(o).to.equal(6);
 
-        o = estr.jlib.size();
+        o = estr._.size();
         expect(o).to.equal(0);
     });
 
     it('It should return the correct number of members given a number', function () {
-        var o = number.jlib.size();
+        var o = number._.size();
         expect(o).to.equal(6);
 
-        o = float.jlib.size();
+        o = float._.size();
         expect(o).to.equal(8);
     });
 
     it('It should return the correct number of members given a function', function () {
-        var o = func.jlib.size();
+        var o = func._.size();
         expect(o).to.equal(1);
     });
 });
