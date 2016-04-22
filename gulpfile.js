@@ -1,23 +1,33 @@
 'use strict';
 var gulp       = require('gulp'),
     buffer     = require('vinyl-buffer'),
+    source = require('vinyl-source-stream'),
+    browserify = require('browserify'),
     uglify     = require('gulp-uglify'),
     sourcemaps = require('gulp-sourcemaps'),
     gutil      = require('gulp-util'),
     grename    = require('gulp-rename');
 
 gulp.task('default', function () {
-    return gulp.src('./index.js')
+
+    gulp.src('./test/*').pipe(gulp.dest('dist/test'));
+    gulp.src('./test-browser/*').pipe(gulp.dest('dist/test'));
+
+    return browserify({
+            entries: './index',
+            debug: true
+        })
+        .bundle()
+        .pipe(source('protolib.js'))
         .pipe(grename({
-            basename : 'jlib',
+            basename : 'protolib',
             extname  : '.js'
         }))
-        .pipe(gulp.dest('./dist'))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(uglify()).on('error', gutil.log)
         .pipe(grename({
-            basename : 'jlib.min',
+            basename : 'protolib.min',
             extname  : '.js'
         }))
         .pipe(sourcemaps.write('./'))

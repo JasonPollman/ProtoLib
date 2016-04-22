@@ -1,33 +1,36 @@
 {
-  "name": "jlib",
-  "version": "0.1.0",
-  "description": "A feature packed JavaScript standard library, that modifies various prototype chains using a single (customizable) namespace.",
-  "author": "Jason Pollman <jasonjpollman@gmail.com>",
-  "keywords": [
-    "utility",
-    "dev tools",
-    "prototype",
-    "stdlib",
-    "library",
-    "standard lib"
-  ],
-  "scripts": {
-      "prepublish": "gulp",
-      "test": "mocha"
-  },
-  "dependencies": {
-    "minimist": "1.2.0",
-    "uglify-js": "2.4.10"
-  },
-  "devDependencies": {
-    "chai": "^3.5.0",
-    "gulp": "^3.9.1",
-    "gulp-rename": "^1.2.2",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-uglify": "^1.5.3",
-    "mocha": "^2.4.5",
-    "vinyl-buffer": "^1.0.0"
-  },
-  "main": "index.js",
-  "license": "MIT"
+    "name": "protolib",
+    "version": "0.1.0",
+    "description": "A feature packed JavaScript standard library, that modifies various prototype chains using a single (customizable) namespace.",
+    "author": "Jason Pollman <jasonjpollman@gmail.com>",
+    "keywords": [
+        "utility",
+        "dev tools",
+        "prototype",
+        "stdlib",
+        "library",
+        "standard lib",
+        "protolib"
+    ],
+    "scripts": {
+        "prepublish": "gulp",
+        "test": "mocha"
+    },
+    "dependencies": {
+        "minimist": "^1.2.0"
+    },
+    "devDependencies": {
+        "browserify": "^13.0.0",
+        "chai": "^3.5.0",
+        "gulp": "^3.9.1",
+        "gulp-rename": "^1.2.2",
+        "gulp-sourcemaps": "^1.6.0",
+        "gulp-uglify": "^1.5.3",
+        "mocha": "^2.4.5",
+        "uglify-js": "2.4.10",
+        "vinyl-buffer": "^1.0.0",
+        "vinyl-source-stream": "^1.1.0"
+    },
+    "main": "index.js",
+    "license": "MIT"
 }

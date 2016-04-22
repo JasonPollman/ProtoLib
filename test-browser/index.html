@@ -1,0 +1,71 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mocha Tests</title>
+    <link href="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="mocha"></div>
+    <script src="https://cdn.rawgit.com/jquery/jquery/2.1.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/Automattic/expect.js/0.3.1/index.js"></script>
+    <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
+    <script src="chai.js"></script>
+    <script src="../protolib.min.js"></script>
+
+    <script>
+        'use strict';
+        mocha.setup('bdd');
+        window.expect = window.chai.expect;
+        window.protolib = new window.ProtoLib('_');
+    </script>
+    <script src="ProtoLib.array.intersect.js"></script>
+    <script src="ProtoLib.array.makeUnique.js"></script>
+    <script src="ProtoLib.array.rotate.js"></script>
+    <script src="ProtoLib.array.union.js"></script>
+    <script src="ProtoLib.array.unique.js"></script>
+    <script src="ProtoLib.array.without.js"></script>
+    <script src="ProtoLib.number.pad.js"></script>
+    <script src="ProtoLib.object.any.js"></script>
+    <script src="ProtoLib.object.each.js"></script>
+    <script src="ProtoLib.object.every.js"></script>
+    <script src="ProtoLib.object.empty.js"></script>
+    <script src="ProtoLib.object.first.js"></script>
+    <script src="ProtoLib.object.findChildAtPath.js"></script>
+    <script src="ProtoLib.object.isArguments.js"></script>
+    <script src="ProtoLib.object.isArray.js"></script>
+    <script src="ProtoLib.object.isBoolean.js"></script>
+    <script src="ProtoLib.object.isEmpty.js"></script>
+    <script src="ProtoLib.object.isFunction.js"></script>
+    <script src="ProtoLib.object.isNull.js"></script>
+    <script src="ProtoLib.object.isPureObject.js"></script>
+    <script src="ProtoLib.object.isString.js"></script>
+    <script src="ProtoLib.object.isUndefined.js"></script>
+    <script src="ProtoLib.object.keys.js"></script>
+    <script src="ProtoLib.object.last.js"></script>
+    <script src="ProtoLib.object.only.js"></script>
+    <script src="ProtoLib.object.occurencesOf.js"></script>
+    <script src="ProtoLib.object.random.js"></script>
+    <script src="ProtoLib.object.size.js"></script>
+    <script src="ProtoLib.object.toArray.js"></script>
+    <script src="ProtoLib.object.where.js"></script>
+    <script src="ProtoLib.object.whereKeys.js"></script>
+    <script src="ProtoLib.string.camelize.js"></script>
+    <script src="ProtoLib.string.decamelize.js"></script>
+    <script src="ProtoLib.string.ellipses.js"></script>
+    <script src="ProtoLib.string.lcFirst.js"></script>
+    <script src="ProtoLib.string.ltrim.js"></script>
+    <script src="ProtoLib.string.pad.js"></script>
+    <script src="ProtoLib.string.repeat.js"></script>
+    <script src="ProtoLib.string.reverse.js"></script>
+    <script src="ProtoLib.string.rtrim.js"></script>
+    <script src="ProtoLib.string.splice.js"></script>
+    <script src="ProtoLib.string.titleCase.js"></script>
+    <script src="ProtoLib.string.ucFirst.js"></script>
+    <script src="ProtoLib.string.withoutTrailingSlash.js"></script>
+    <script src="ProtoLib.string.withTrailingSlash.js"></script>
+    <script>
+        mocha.checkLeaks();
+        mocha.run();
+    </script>
+</body>
+</html>

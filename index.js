@@ -1,10 +1,6 @@
 (function () {
     'use strict';
 
-    process.on('uncaughtException', (e) => {
-        throw e;
-    });
-
     /**
      * Function Identifier.
      * @type {Number}
@@ -15,7 +11,7 @@
      * True if the Node.js environment is loaded, false otherwise.
      * @type {Boolean}
      */
-     IS_NODE = require('./lib/isNode');
+     IS_BROWSER = typeof window !== 'undefined';
 
     // This provides a way to determine the name of a functiion constructor in a platform agnostic way...
     Object.defineProperty(Function.prototype, '__get_protolib_name__', {
@@ -122,7 +118,7 @@
                             }
 
                             i++;
-                        } while(p = Object.getPrototypeOf(p));
+                        } while(p = Object.getPrototypeOf(p)); // jshint ignore:line
                         return obj;
                     }
                 });
@@ -224,10 +220,12 @@
         attachLibraryToSelf();
 
         // Attach Node.js specific library functions/members...
-        if(IS_NODE) require('./lib/NodeAddons')(self);
+        if(!IS_BROWSER) require('./lib/NodeAddons')(self);
     };
 
-    return IS_NODE ?
+    var x = new ProtoLib('_');
+
+    return !IS_BROWSER ?
         module.exports  = ProtoLib :
         window.ProtoLib = ProtoLib ;
 }());
