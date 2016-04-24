@@ -4,8 +4,7 @@
 *There's nothing wrong with modifying primitive prototypes, as long as you do it right.*   
 
 ------
-ProtoLib is a fast, node and browser friendly JavaScript library. It "tucks" library methods inside a single, customizable
-property attached to *Object.prototype*.
+ProtoLib is a fast, node and browser friendly JavaScript library. It "tucks" library methods inside a single, customizable property attached to *Object.prototype*.
 
 It works in Node.js, Chrome, Firefox, and Safari.
 **Untested in IE**
@@ -15,7 +14,7 @@ Basically, I got sick of writing library methods over and over, dealing with sta
 ## Features
 ---
 - **Over 100 library methods**
-    - See the list below...
+    - [See the list below...](#available-methods)
 - **Collision Free**
     - You define the property attached to *Object.prototype*
     - The default is *_* (underscore), but this can be set to any string.
@@ -35,7 +34,7 @@ $ npm install protolib --save
 1. [Install](#install)
 2. [Getting Started](#getting-started)
     - [Browser Use](#browser-use)
-3. [Library Methods](#library-methods)
+3. [Available Methods](#available-methods)
     - [Objects](#objects)
         - [histogram](#histogram)
         - [copy](#copy)
@@ -201,7 +200,7 @@ arr._.only('string')                   // -> ['hello', 'world']
    });
 ```
 
-## Library methods
+## Available Methods
 ---
 
 ### Objects
@@ -402,10 +401,12 @@ If used in the static context, it will return an array with the results for each
 'string'._.getNumeric();         // NaN
 '1234'._.getNumeric();           // 1234
 '-1234'._.getNumeric();          // -1234
+'-1234.56'._.getNumeric();       // -1234.56
 '1e7'._.getNumeric();            // 10000000
 '0xFF'._.getNumeric();           // 255
 
 (1234)._.getNumeric();           // 1234
+(1234.56)._.getNumeric();        // 1234.56
 (-1234)._.getNumeric();          // -1234
 (1e7)._.getNumeric();            // 10000000
 (0x64)._.getNumeric();           // 100
@@ -563,4 +564,124 @@ function () {}._.isArguments()    // false
 }());
 
 lib.object.isArguments([]);            // false
+```
+
+#### toNumber
+*Alias for [getNumeric](#getnumeric)*
+
+#### toInt
+**Get's the given value's integer equivalent.**
+Returns the integer value represented by the given value(s), or NaN.
+If used in the static context, it will return an array with the results for each argument *if more than one argument is supplied*.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **toInt**() |
+| static   | **toInt**(*{...\*}* objs) |
+
+```js
+[]._.toInt();               // NaN
+{}._.toInt();               // NaN
+
+'string'._.toInt();         // NaN
+'1234.12'._.toInt();        // 1234
+'-1234.000112'._.toInt();   // -1234
+'1e7'._.toInt();            // 10000000
+'0xFF'._.toInt();           // 255
+
+(1234.789)._.toInt();       // 1234
+(-1234.00012)._.toInt();    // -1234
+(1e7)._.toInt();            // 10000000
+(0x64)._.toInt();           // 100
+
+(function () {})._.toInt();  // NaN
+
+/* Static Use */
+lib.object.toInt('1', '0xFF', 'hello world', 7); // Returns [1, 255, NaN, 7]
+```
+
+#### random
+**Returns a random item from an array or object, a random digit from a number, or a random character from a string.**
+Functions are cast to strings with *Function.toString*
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **random**() |
+| static   | **random**(*{\*}* obj) |
+
+```js
+[1, 2, 3, 4].random()._.random();         // Could be any of: 1, 2, 3, or 4
+{ foo: 'a', bar: 'b', baz: 0 }._.random() // Could be any of: 'a', 'b', 0,
+'string'._.random()                       // Could be any of: 's', 't', 'r', 'i', 'n', 'g'
+
+/* Static Use */
+lib.object.random([[1, 2, 3], ['a', 'b', 'c'], 9]);
+// Returns either one of the arrays or 9
+```
+
+#### each
+**Invokes the provided callback for "each" item in the collection.**
+For each item in the collection, a callback (*onIteration*) is invoked with the following arguments:
+*this* refers to the object being iterated over within the body of *onIteration*.
+
+| Argument               | Definition       |
+| :--------------------- | :--------------- |
+| {\*} **value**         | The value of the current item being iterated over |
+| {String} **key**       | The key of the current item |
+| {Number} **iteration** | The current iteration count.<br/>For arrays *key* and *iteration* will be the same. |
+| {Function} **exit**    | A function that, when called will break the loop and return the arguments passed to it as an array (or if a single value is passed, the value itself) |
+
+Functions and Numbers are cast to strings with *Function/Number.toString*.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **each**(*{Number=}* [**startRange**=0], *{Number=}* [**endRange**=obj.length - 1], *{Function}* **onInteration**) |
+| static   | **each**(*{\*}* **obj**, *{Number=}* [**startRange**=0], *{Number=}* [**endRange**=obj.length - 1], *{Function}* **onInteration**)) |
+
+**Note:** If *startRange* is greater than *endRange* it will perform a decrementing loop.
+```js
+var total = 0, keyTotal = 0;
+[1, 2, 3, 4, 5]._.each((val, key) => {
+    total    += val;
+    keyTotal += key.toString();
+});
+// total    = 15
+// keyTotal = '01234'
+
+{ hello: 1, world: 'foo', array: [1, 2, 3] }._.each((val, key, i, exit) => {
+    console.log(val + ',' + key + ',' + i);
+});
+// Logged on 0th iteration: 1, 'hello', 0
+// Logged on 1st iteration: 'foo', 'world', 1
+// Logged on 2nd iteration: 1,2,3, 'array', 2
+
+var truncated = '';
+var result = 'hello world!'._.each((val, key, i, exit) => {
+    if(val === ' ') return exit(val);
+    truncated += val;
+});
+// truncated = 'hello'
+// result    = ' '
+
+/* Using Ranges */
+
+var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+arr._.each(0, 3, function (val, key, i, exit) {
+    this[key] *= 7;
+});
+// arr = [7, 14, 21, 28, 5, 6, 7, 8, 9, 10]
+
+arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+arr._.each(4, 3, function (val, key, i, exit) {
+    this[key] *= 7;
+});
+// arr = [1, 2, 3, 28, 35, 6, 7, 8, 9, 10]
+
+
+/* Static Use */
+var myArray = ['a', 'b', 'c'],
+    onInteration = () => { /* Do something... */ }
+
+lib.object.each(myArray, 0, 1 onInteration);
+// Iterates through 'a' and 'b', but not 'c'.
 ```

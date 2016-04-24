@@ -37,7 +37,7 @@
             if(typeof window !== 'object' && !Object._) new (require('../'))('_');
         });
 
-        it('It should iterate over objects and arrays as exprected', function () {
+        it('It should iterate over objects and arrays as expected', function () {
             expect(Object._.each).to.be.an.instanceof(Function);
             var isArr, currentObj;
 
@@ -110,6 +110,14 @@
 
             isArr = true; currentObj = arr;
             arr._.each(eachCallback);
+
+            var x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            x._.each(0, 3, function (val, key) { this[key] *= 7; });
+            expect(x).to.eql([7, 14, 21, 28, 5, 6, 7, 8, 9, 10]);
+
+            x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            x._.each(4, 3, function (val, key) { x[key] *= 7; });
+            expect(x).to.eql([1, 2, 3, 28, 35, 6, 7, 8, 9, 10]);
         });
 
         it('It should break when the exit() argument is called', function () {
