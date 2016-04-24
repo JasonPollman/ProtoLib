@@ -1,7 +1,7 @@
 {
     "name": "protolib",
     "version": "0.1.0",
-    "description": "A feature packed JavaScript standard library, that modifies various prototype chains using a single (customizable) namespace.",
+    "description": "The namespace friendly prototype library for both node and browsers.",
     "author": "Jason Pollman <jasonjpollman@gmail.com>",
     "keywords": [
         "utility",

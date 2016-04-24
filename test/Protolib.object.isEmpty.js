@@ -35,6 +35,7 @@
         it('It should recognize strings, functions, and all numbers as "not empty"', function () {
             expect(lib.object.isEmpty(1)).to.equal(false);
             expect(lib.object.isEmpty('a')).to.equal(false);
+            expect(lib.object.isEmpty('')).to.equal(true);
             expect(lib.object.isEmpty(function () {})).to.equal(false);
             expect(lib.object.isEmpty(0)).to.equal(false);
             expect(lib.object.isEmpty(-1)).to.equal(false);

@@ -77,9 +77,14 @@
             expect(lib.object.isNumeric('1e7', 1, '123', '.123', false)).to.equal(false);
             expect(lib.object.isNumeric('1.2134e7', 1, '123', '.123', false)).to.equal(false);
 
+            expect(lib.object.isNumeric('1.2134e7', '0xFF', '123', '.123', '0x64')).to.equal(true);
+            expect(lib.object.isNumeric('1.2134e7', '0xFF', '123', '.123', 'aq0x64!!!!!!!!!!!')).to.equal(false);
+
             expect(lib.object.isNumeric({})).to.equal(false);
             expect(lib.object.isNumeric([])).to.equal(false);
             expect(lib.object.isNumeric(function () {})).to.equal(false);
+
+            expect((5)._.isNumeric()).to.equal(true);
         });
     });
 

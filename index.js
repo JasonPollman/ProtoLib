@@ -11,7 +11,7 @@
      * True if the Node.js environment is loaded, false otherwise.
      * @type {Boolean}
      */
-     IS_BROWSER = typeof window !== 'undefined';
+    IS_BROWSER = typeof window !== 'undefined';
 
     // This provides a way to determine the name of a function constructor in a platform agnostic way...
     Object.defineProperty(Function.prototype, '__get_protolib_name__', {
@@ -243,7 +243,7 @@
          */
         this.remove = function (name, proto) {
             if(typeof proto !== 'string' || typeof name !== 'string') return false;
-            
+
             if(libp[proto] && libp[proto][name]) {
                 delete libp[proto][name];
                 if(libs[proto] && libs[proto][name]) delete libs[proto][name];
@@ -262,13 +262,19 @@
             return self;
         };
 
+        /**
+         * Applies the library to the object prototype and all static functions
+         * to the current ProtoLib instance.
+         * @return {ProtoLib} The current ProtoLib instance
+         */
+        this.load = function () {
+            applyLibraryToPrototypes();
+            attachLibraryToSelf();
+        }
+
         // Apply the library to the object prototype, and attach all the static functions
         // to the current ProtoLib instance...
-        applyLibraryToPrototypes();
-        attachLibraryToSelf();
-
-        // Attach Node.js specific library functions/members...
-        if(!IS_BROWSER) require('./lib/NodeAddons')(self);
+        self.load();
     };
 
     var x = new ProtoLib('_');
