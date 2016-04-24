@@ -50,6 +50,21 @@
             var o = func._.last();
             expect(o).to.equal('}');
         });
+
+        it('It should return the last n items, if the a number argument is passed in as n', function () {
+            expect(obj._.last(2)).to.eql({ num: 2, bool: false });
+            expect(obj._.last(-2)).to.eql({});
+            expect(obj._.last(0)).to.eql({});
+
+            expect(subarr._.last(2)).to.eql([2, 3]);
+            expect(subarr._.last(-2)).to.eql([3]); // Works like slice
+            expect(subarr._.last(-1)).to.eql([2, 3]); // Works like slice
+            expect(subarr._.last(0)).to.eql([]);
+
+            expect(string._.last(2)).to.equal('ng');
+            expect(string._.last(-2)).to.equal('ring'); // Works like slice
+            expect(string._.last(0)).to.equal(null);
+        });
     });
 
 }());

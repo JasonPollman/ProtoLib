@@ -13,9 +13,9 @@
      */
      IS_BROWSER = typeof window !== 'undefined';
 
-    // This provides a way to determine the name of a functiion constructor in a platform agnostic way...
+    // This provides a way to determine the name of a function constructor in a platform agnostic way...
     Object.defineProperty(Function.prototype, '__get_protolib_name__', {
-        configurable : false,
+        configurable : true,
         enumerable   : false,
         get          : function () {
             if(typeof this.__protolib_name__ !== 'string') {
@@ -31,6 +31,9 @@
     });
 
     var ProtoLib = function (handle) {
+        // Prevent Function.call or binding...
+        if(!(this instanceof ProtoLib)) return new ProtoLib(handle);
+
         handle = handle || 'p';
 
         /**
@@ -58,6 +61,14 @@
         cached = {},
 
         /**
+         * Stores the constructor chain for each prototype as an array.
+         * For example: { string: ['object', 'string'] }.
+         * Another example: { myCustomClassThatExtendsString: ['object', 'string', 'myCustomClassThatExtendsString'] }
+         * @type {Object}
+         */
+        protoChain = {},
+
+        /**
          * The static library
          */
         libs,
@@ -66,6 +77,21 @@
          * The protolibrary
          */
         libp;
+
+        /**
+         * Deletes the cache for the given prototype, and all others that this prototype inherits from.
+         * Which means if 'proto' is 'object', all cache will be deleted.
+         * @param {String} proto The prototype to delete the cache for.
+         * @return {ProtoLib} The current ProtoLib instance
+         */
+        function deleteCacheForProto (proto) {
+            for(var i in protoChain) {
+                if(protoChain.hasOwnProperty(i)) {
+                    if(protoChain[i].indexOf(proto) > -1) delete cached[i];
+                }
+            }
+            return self;
+        }
 
         /**
          * Appends all the library functions to this instance for static use.
@@ -91,13 +117,25 @@
                 Object.defineProperty(Object.prototype, handle, {
                     configurable : true,
                     enumerable   : false,
-                    get          : function () {
+                    // Allow users to overwrite the handle on a per instance basis...
+                    set: function (v) {
+                        if(this[handle] !== v) {
+                            Object.defineProperty(this, handle, {
+                                configurable : true,
+                                enumerable   : true,
+                                writable     : true,
+                                value        : v
+                            });
+                        }
+                    },
+                    // Returns the libp library...
+                    get: function () {
                         obj = {}; i = 0;
                         p = Object.getPrototypeOf(this);
+                        var last = null;
 
                         do { // This will traverse the protoypes of the object, so inherited properties will be made available
-                             // to objects down the prototype chain...
-
+                             // to objects up the prototype chain...
                             if(p.constructor) {
                                 name = p.constructor.__get_protolib_name__;
                                 if(/^anonymous:/.test(name)) name = 'anonymous';
@@ -110,14 +148,20 @@
                                         return cached[c];
                                     }
                                     else if(libp[c]) {
+                                        if(!protoChain[c]) protoChain[c] = [c];
+                                        if(last) protoChain[last].unshift(c);
+
                                         currentThis = this;
                                         libs.object.each(libp[c], addMethod);
                                         cached[c] = obj;
+
+                                        last = c;
                                     }
                                 }
                             }
 
                             i++;
+
                         } while(p = Object.getPrototypeOf(p)); // jshint ignore:line
                         return obj;
                     }
@@ -170,7 +214,7 @@
          * @return {Boolean} True if the method was added, false otherwise.
          */
         this.extend = function (name, proto, callback) {
-            callback = libs.object.last(arguments);
+            callback = libs.object.getCallback(arguments);
 
             if(typeof name !== 'string' || !(callback instanceof Function)) return false;
             if(!proto || typeof proto !== 'string') proto = 'object';
@@ -180,14 +224,14 @@
 
             libs[proto][name] = callback;
             libp[proto][name] = function () {
-                var args = libs.object.makeArray(arguments);
+                var args = libs.object.toArray(arguments);
                 return getThisValueAndInvoke(function (c) {
                     args.push(c);
                     return callback.apply(c, args);
                 });
             };
 
-            delete cached[proto];
+            deleteCacheForProto(proto);
             return true;
         };
 
@@ -199,10 +243,14 @@
          */
         this.remove = function (name, proto) {
             if(typeof proto !== 'string' || typeof name !== 'string') return false;
-            if(libp[proto] && libp[proto][name]) delete libp[proto][name];
-            if(libs[proto] && libs[proto][name]) delete libs[proto][name];
-            delete cached[proto];
-            return true;
+            
+            if(libp[proto] && libp[proto][name]) {
+                delete libp[proto][name];
+                if(libs[proto] && libs[proto][name]) delete libs[proto][name];
+                deleteCacheForProto(proto);
+                return true;
+            }
+            return false;
         };
 
         /**

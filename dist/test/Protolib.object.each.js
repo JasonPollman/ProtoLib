@@ -214,13 +214,22 @@
             expect(val).to.equal('');
 
             val = '';
+            string._.each(100000, 0, function (char) {
+                val += char;
+                expect(this).to.equal('somereallyreallyreallylongstring');
+                expect(char).to.be.a('string');
+                expect(char).to.have.length(1);
+            });
+            expect(val).to.equal('gnirtsgnolyllaeryllaeryllaeremos');
+
+            val = '';
             string._.each(100000, 1, function (char) {
                 val += char;
                 expect(this).to.equal('somereallyreallyreallylongstring');
                 expect(char).to.be.a('string');
                 expect(char).to.have.length(1);
             });
-            expect(val).to.equal('');
+            expect(val).to.equal('gnirtsgnolyllaeryllaeryllaeremo');
 
             val = '';
             string._.each(200, -100, function (char) {
@@ -229,7 +238,7 @@
                 expect(char).to.be.a('string');
                 expect(char).to.have.length(1);
             });
-            expect(val).to.equal('');
+            expect(val).to.equal('gnirtsgnolyllaeryllaeryllaeremos');
         });
 
         it('It should iterate over numbers as expected', function () {

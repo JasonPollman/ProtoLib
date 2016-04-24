@@ -18,7 +18,7 @@
 
             var arr = [];
             expect(arr._.makeUnique()).to.eql([]);
-            expect(arr._.makeUnique()).to.eql(arr);
+            expect(arr._.makeUnique()).to.equal(arr);
 
             arr = [1, 2, 3, 4, 4, 4, 4, 3, 2, 1, 1, 2, 3];
             expect(arr._.makeUnique()).to.eql([1, 2, 3, 4]);

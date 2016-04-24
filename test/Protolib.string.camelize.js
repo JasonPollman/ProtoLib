@@ -34,11 +34,17 @@
             expect('A_B_C_D_E'._.camelize()).to.equal('aBCDE');
             expect('a_b_c_d_e'._.camelize()).to.equal('aBCDE');
             expect('$_a_b_c_d_e'._.camelize()).to.equal('$ABCDE');
-            expect('$a_b_c_d_e'._.camelize()).to.equal('$aBCDE');
+            expect('$a_b_c_d_e'._.camelize()).to.equal('$ABCDE');
             expect('$ a b c d_e'._.camelize()).to.equal('$ABCDE');
-            expect('$a b c d_e'._.camelize()).to.equal('$aBCDE');
+            expect('$a b c d_e'._.camelize()).to.equal('$ABCDE');
             expect('hello $ world $'._.camelize()).to.equal('hello$World$');
             expect('   hello              world $ '._.camelize()).to.equal('helloWorld$');
+            expect('_   _   _   _   ______________ '._.camelize()).to.equal('');
+            expect('h'._.camelize()).to.equal('h');
+            expect('        h'._.camelize()).to.equal('h');
+            expect('h         '._.camelize()).to.equal('h');
+            expect('  _ $$$  '._.camelize()).to.equal('$$$');
+            expect('  _ $$$hello   world '._.camelize()).to.equal('$$$HelloWorld');
         });
 
         it('It should camelize strings as expected (statically, using arguments)', function () {

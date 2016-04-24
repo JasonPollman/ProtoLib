@@ -98,5 +98,30 @@
             expect(arr[1]).to.equal(2);
             expect(arr[2]).to.equal(subarr);
         });
+
+        it('It should convert an object to an array', function () {
+            expect({ foo: 1, bar: 2, baz: 3}._.toArray()).to.eql([1, 2, 3]);
+            expect({}._.toArray()).to.eql([]);
+
+            var f = function () {};
+            expect({ foo: 1, bar: 2, baz: 3, func: f }._.toArray()).to.eql([1, 2, 3, f]);
+        });
+
+        it('It should convert a string to a char array', function () {
+            expect('hello world'._.toArray()).to.eql(['h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd']);
+            expect(''._.toArray()).to.eql([]);
+            expect('   '._.toArray()).to.eql([' ', ' ', ' ']);
+        });
+
+        it('It should split a number by digits', function () {
+            expect((1234)._.toArray()).to.eql([1, 2, 3, 4]);
+            expect((-1234)._.toArray()).to.eql(['-', 1, 2, 3, 4]);
+            expect((0)._.toArray()).to.eql([0]);
+            expect((1e7)._.toArray()).to.eql([1, 0, 0, 0, 0, 0, 0, 0]);
+        });
+
+        it('It should operate on functions as strings', function () {
+            expect((function () {})._.toArray()).to.eql(['f', 'u', 'n', 'c', 't', 'i', 'o', 'n', ' ', '(', ')', ' ', '{', '}']);
+        });
     });
 }());
