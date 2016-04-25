@@ -110,6 +110,33 @@
 
             isArr = true; currentObj = arr;
             arr._.any(anyCallback);
+
+            var nobj = { a: 1, b: 2, c: 3 },
+                keys = [],
+                vals = [];
+
+            nobj._.any((val, key) => {
+                vals.push(val);
+                keys.push(key);
+            });
+            // vals = [1, 2, 3], keys = ['a', 'b', 'c']
+            expect(vals).to.eql([1, 2, 3]);
+            expect(keys).to.eql(['a', 'b', 'c']);
+
+            var result = nobj._.any(val => {
+                if(val === 3) return val;
+            });
+            expect(result).to.equal(3);
+
+            result = nobj._.any(val => {
+                if(val === 999) return val;
+            });
+            expect(result).to.equal(undefined);
+
+            result = 'hello world'._.any(function (val, key) {
+                if(key == 4) return 'got the letter o';
+            });
+            expect(result).to.equal('got the letter o');
         });
 
         it('It should break when the provided callback returns anything except undefined', function () {

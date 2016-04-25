@@ -116,8 +116,19 @@
             expect(x).to.eql([7, 14, 21, 28, 5, 6, 7, 8, 9, 10]);
 
             x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-            x._.each(4, 3, function (val, key) { x[key] *= 7; });
+            x._.each(4, 3, function (val, key) { this[key] *= 7; });
             expect(x).to.eql([1, 2, 3, 28, 35, 6, 7, 8, 9, 10]);
+
+            x = [1, 2, 3, 4, 5];
+            x._.each(10000, -1, function (val, key) { this[key] *= 7; });
+            expect(x).to.eql([7, 14, 21, 28, 35]);
+
+            x = ['d', 'l', 'r', 'o', 'w', ' ', 'o', 'l', 'l', 'e', 'h'];
+            var y = '';
+            x._.each(10000, 0, function (val) {
+                y += val;
+            });
+            expect(y).to.eql('hello world');
         });
 
         it('It should break when the exit() argument is called', function () {

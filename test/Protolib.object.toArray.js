@@ -10,8 +10,14 @@
     }
 
     describe('Protolib.object.toArray', function () {
+        var lib;
         before(function () {
-            if(typeof window !== 'object' && !Object._) new (require('../'))('_');
+            if(typeof window !== 'object') {
+                lib = new (require('../'))('_');
+            }
+            else {
+                lib = window.protolib;
+            }
         });
 
         // Create some test data
@@ -29,6 +35,25 @@
             expect(arr[0]).to.be.a('string');
             expect(arr[1]).to.be.a('number');
             expect(arr[2]).to.be.a('boolean');
+
+            var string = 'a string',
+                chars  = string._.toArray();
+
+            expect(chars).to.eql( ['a', ' ', 's', 't', 'r', 'i', 'n', 'g']);
+
+            var nobj = { foo: 1, bar: 2 },
+                a = nobj._.toArray();
+
+            expect(a).to.eql([1, 2]);
+
+            (function () {
+                var args = arguments._.toArray();
+                expect(args).to.eql([1, 2, 3, 4]);
+            }(1, 2, 3, 4));
+
+            /* Static Use */
+            var converted = lib.object.toArray({ a: [1, 2], b: { foo: 'bar' }});
+            expect(converted).to.eql([[1, 2], { foo: 'bar' }]);
         });
 
         it('It should convert strings to a char arrays', function () {
@@ -90,10 +115,10 @@
             expect(arr[3]).to.equal('c');
         });
 
-        it('It should simply return arrays', function () {
+        it('It should return shallow copies of arrays', function () {
             var arr = array._.toArray();
             expect(arr).to.be.instanceof(Array);
-            expect(arr).to.equal(array);
+            expect(arr).to.eql(array);
             expect(arr[0]).to.equal(1);
             expect(arr[1]).to.equal(2);
             expect(arr[2]).to.equal(subarr);

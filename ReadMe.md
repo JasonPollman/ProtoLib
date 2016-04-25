@@ -212,8 +212,8 @@ For strings, it will count character frequencies. Numbers and functions will be 
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **histogram**() |
-| static   | **histogram**(*{...\*}* items) |
+| instance | **histogram**() → *{Object<Number>}* |
+| static   | **histogram**(*{...\*}* items) → *{Object<Number>}* |
 
 ```js
 [1, 2, 3, 4, 1, 1, 1, 5, 5]._.histogram()
@@ -249,8 +249,8 @@ For non-objects, the given value is simply returned. For objects, a shallow copy
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **copy**() |
-| static   | **copy**(*{\*}* item) |
+| instance | **copy**() → *{\*}* |
+| static   | **copy**(*{\*}* item) → *{\*}* |
 
 ```js
 [1, 2, 3, 'a', 'b', 'c']._.copy();
@@ -272,8 +272,8 @@ For non-objects, the character occurrences are counted; for objects, the occurre
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **occurrencesOf**(*{\*}* what) |
-| static   | **occurrencesOf**(*{\*}* item, *{\*}* what) |
+| instance | **occurrencesOf**(*{\*}* what) → *{Number}* |
+| static   | **occurrencesOf**(*{\*}* item, *{\*}* what) → *{Number}* |
 
 ```js
 [1, 1, 1, 1, 3]._.occurrencesOf(1);
@@ -298,8 +298,8 @@ For numbers and functions, this will *always* return an empty array.
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **keys**() |
-| static   | **keys**(*{\*}* item) |
+| instance | **keys**() → *{Array<String>}* |
+| static   | **keys**(*{\*}* item) → *{Array<String>}* |
 
 ```js
 [1, 1, 1, 1, 3]._.keys();
@@ -327,8 +327,8 @@ For strings, it will return *the string's length*, for numbers: the *number of d
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **size**() |
-| static   | **size**(*{\*}* item) |
+| instance | **size**() → *{Number}* |
+| static   | **size**(*{\*}* item) → *{Number}* |
 
 ```js
 [1, 1, 1, 1, 3]._.size();
@@ -360,8 +360,8 @@ If used in the static context, it will return true if and only if all arguments 
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **isNumeric**() |
-| static   | **isNumeric**(*{...\*}* items) |
+| instance | **isNumeric**() → *{Boolean}* |
+| static   | **isNumeric**(*{...\*}* items) → *{Boolean}* |
 
 ```js
 []._.isNumeric();               // false
@@ -391,8 +391,8 @@ If used in the static context, it will return an array with the results for each
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **getNumeric**() |
-| static   | **getNumeric**(*{...\*}* objs) |
+| instance | **getNumeric**() → *{Number|NaN}* |
+| static   | **getNumeric**(*{...\*}* objs) → *{Number|NaN}* |
 
 ```js
 []._.getNumeric();               // NaN
@@ -426,8 +426,8 @@ If used in the static context, it will return true if and only if all arguments 
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **isEmpty**() |
-| static   | **isEmpty**(*{...\*}* objs) |
+| instance | **isEmpty**() → *{Boolean}* |
+| static   | **isEmpty**(*{...\*}* objs) → *{Boolean}* |
 
 ```js
 []._.isEmpty()                // true
@@ -451,8 +451,8 @@ If used in the static context, it will return true if and only if all arguments 
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **isArray**() |
-| static   | **isArray**(*{...\*}* objs) |
+| instance | **isArray**() → *{Boolean}* |
+| static   | **isArray**(*{...\*}* objs) → *{Boolean}* |
 
 ```js
 []._.isArray()                // true
@@ -474,8 +474,8 @@ If used in the static context, it will return true if and only if all arguments 
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **isPureObject**() |
-| static   | **isPureObject**(*{...\*}* objs) |
+| instance | **isPureObject**() → *{Boolean}* |
+| static   | **isPureObject**(*{...\*}* objs) → *{Boolean}* |
 
 ```js
 []._.isPureObject()                // false
@@ -497,8 +497,8 @@ If used in the static context, it will return true if and only if all arguments 
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **isString**() |
-| static   | **isString**(*{...\*}* objs) |
+| instance | **isString**() → *{Boolean}* |
+| static   | **isString**(*{...\*}* objs) → *{Boolean}* |
 
 #### isBoolean
 **Determines if the given objects are all booleans.**
@@ -506,8 +506,8 @@ If used in the static context, it will return true if and only if all arguments 
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **isBoolean**() |
-| static   | **isBoolean**(*{...\*}* objs) |
+| instance | **isBoolean**() → *{Boolean}* |
+| static   | **isBoolean**(*{...\*}* objs) → *{Boolean}* |
 
 #### isFunction
 **Determines if the given objects are all functions.**
@@ -515,8 +515,8 @@ If used in the static context, it will return true if and only if all arguments 
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **isFunction**() |
-| static   | **isFunction**(*{...\*}* objs) |
+| instance | **isFunction**() → *{Boolean}* |
+| static   | **isFunction**(*{...\*}* objs) → *{Boolean}* |
 
 #### isNull
 **Determines if the given objects are all null.**
@@ -524,8 +524,8 @@ If used in the static context, it will return true if and only if all arguments 
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **isNull**() |
-| static   | **isNull**(*{...\*}* objs) |
+| instance | **isNull**() → *{Boolean}* |
+| static   | **isNull**(*{...\*}* objs) → *{Boolean}* |
 
 #### isUndefined
 **Determines if the given objects are all undefined.**
@@ -533,8 +533,8 @@ If used in the static context, it will return true if and only if all arguments 
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **isUndefined**() |
-| static   | **isUndefined**(*{...\*}* objs) |
+| instance | **isUndefined**() → *{Boolean}* |
+| static   | **isUndefined**(*{...\*}* objs) → *{Boolean}* |
 
 #### isArguments
 **Determines if the given objects are all arguments objects.**
@@ -542,8 +542,8 @@ If used in the static context, it will return true if and only if all arguments 
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **isArguments**() |
-| static   | **isArguments**(*{...\*}* objs) |
+| instance | **isArguments**() → *{Boolean}* |
+| static   | **isArguments**(*{...\*}* objs) → *{Boolean}* |
 
 ```js
 []._.isArguments()                // false
@@ -606,8 +606,8 @@ Functions are cast to strings with *Function.toString*
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **random**() |
-| static   | **random**(*{\*}* obj) |
+| instance | **random**() → *{\*\}* |
+| static   | **random**(*{\*}* obj) → *{\*\}* |
 
 ```js
 [1, 2, 3, 4].random()._.random();         // Could be any of: 1, 2, 3, or 4
@@ -630,15 +630,16 @@ For each item in the collection, a callback (*onIteration*) is invoked with the 
 | {String} **key**       | The key of the current item |
 | {Number} **iteration** | The current iteration count.<br/>For arrays *key* and *iteration* will be the same. |
 | {Function} **exit**    | A function that, when called will break the loop and return the arguments passed to it as an array (or if a single value is passed, the value itself) |
+| {*} **parent**         | The object being iterated over. Typically, *this* and *parent* will be equal, however *parent* exists in the event *onIteration* has been bound. If using an arrow function *this* will be lexically block scoped, so *parent* should be used to be safe. |
 
 Functions and Numbers are cast to strings with *Function/Number.toString*.
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **each**(*{Number=}* [**startRange**=0], *{Number=}* [**endRange**=obj.length - 1], *{Function}* **onInteration**) |
-| static   | **each**(*{\*}* **obj**, *{Number=}* [**startRange**=0], *{Number=}* [**endRange**=obj.length - 1], *{Function}* **onInteration**)) |
+| instance | **each**(*{Number=}* [**startRange**=0], *{Number=}* [**endRange**=obj.length - 1], *{Function}* **onInteration**) → *{\*\|null}* |
+| static   | **each**(*{\*}* **obj**, *{Number=}* [**startRange**=0], *{Number=}* [**endRange**=obj.length - 1], *{Function}* **onInteration**)) → *{\*\|null}* |
 
-**Note:** If *startRange* is greater than *endRange* it will perform a decrementing loop.
+**Note:** All ranges are inclusive. If *startRange* is greater than *endRange* it will perform a decrementing loop.
 ```js
 var total = 0, keyTotal = 0;
 [1, 2, 3, 4, 5]._.each((val, key) => {
@@ -664,6 +665,7 @@ var result = 'hello world!'._.each((val, key, i, exit) => {
 // result    = ' '
 
 /* Using Ranges */
+/* All ranges are inclusive */
 
 var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 arr._.each(0, 3, function (val, key, i, exit) {
@@ -672,11 +674,18 @@ arr._.each(0, 3, function (val, key, i, exit) {
 // arr = [7, 14, 21, 28, 5, 6, 7, 8, 9, 10]
 
 arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-arr._.each(4, 3, function (val, key, i, exit) {
-    this[key] *= 7;
+arr._.each(4, 3, function (val, key, i, exit, parent) {
+    parent[key] *= 7;
 });
 // arr = [1, 2, 3, 28, 35, 6, 7, 8, 9, 10]
 
+// If rangeA > rangeB, a decrementing loop will be performed!
+arr = ['d', 'l', 'r', 'o', 'w', ' ', 'o', 'l', 'l', 'e', 'h'],
+str = '';
+arr._.each(10000, 0, function (val, key, i, exit) {
+    str += val;
+});
+// str = 'hello world'
 
 /* Static Use */
 var myArray = ['a', 'b', 'c'],
@@ -684,4 +693,303 @@ var myArray = ['a', 'b', 'c'],
 
 lib.object.each(myArray, 0, 1 onInteration);
 // Iterates through 'a' and 'b', but not 'c'.
+```
+
+#### every
+**Invokes the provided callback for "every" item in the collection.**
+Loops through each item in the object and calls *onIteration*. If *false* is returned, the loop will break and return *false*, otherwise it will return *true*. This is similar to *Array.every* except that it works for all objects, and will break only on *false* and not a *falsy* return (null, undefined, 0, etc.).
+*this* refers to the object being iterated over within the body of *onIteration*.
+
+| Argument               | Definition       |
+| :--------------------- | :--------------- |
+| {\*} **value**         | The value of the current item being iterated over |
+| {String} **key**       | The key of the current item |
+| {Number} **iteration** | The current iteration count.<br/>For arrays *key* and *iteration* will be the same. |
+| {Function} **exit**    | A function that, when called will break the loop and return the arguments passed to it as an array (or if a single value is passed, the value itself) |
+| {*} **parent**         | The object being iterated over. Typically, *this* and *parent* will be equal, however *parent* exists in the event *onIteration* has been bound. If using an arrow function *this* will be lexically block scoped, so *parent* should be used to be safe. |
+
+Functions and Numbers are cast to strings with *Function/Number.toString*.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **every**(*{Function}* **onInteration**) → *{Boolean}* |
+| static   | **every**(*{\*}* **obj**, *{Function}* **onInteration**)) → *{Boolean}* |
+
+```js
+var obj = { a: 1, b: 2, c: 3 },
+    keys = [],
+    vals = [];
+
+obj._.every((val, key) => {
+    vals.push(val);
+    keys.push(key);
+});
+// vals = [1, 2, 3], keys = ['a', 'b', 'c']
+
+var didLoopThroughAllItems = obj._.every(val => {
+    if(val === 3) return false;
+});
+// didLoopThroughAllItems = false
+
+didLoopThroughAllItems = obj._.every(val => {
+    if(val === 999) return false;
+});
+// didLoopThroughAllItems = true
+
+/* Static Use */
+var myArray = ['a', 'b', 'c'],
+    onInteration = () => { /* Do something... */ }
+
+lib.object.every(myArray, onInteration);
+```
+
+#### any
+**Invokes the provided callback for every item in the collection and breaks when any value (other than undefined) is returned.**
+Loops through each item in the object and calls *onIteration*. If a "non-undefined" value is returned, the loop will break and return that value.
+
+| Argument               | Definition       |
+| :--------------------- | :--------------- |
+| {\*} **value**         | The value of the current item being iterated over |
+| {String} **key**       | The key of the current item |
+| {Number} **iteration** | The current iteration count.<br/>For arrays *key* and *iteration* will be the same. |
+| {Function} **exit**    | A function that, when called will break the loop and return the arguments passed to it as an array (or if a single value is passed, the value itself) |
+| {*} **parent**         | The object being iterated over. Typically, *this* and *parent* will be equal, however *parent* exists in the event *onIteration* has been bound. If using an arrow function *this* will be lexically block scoped, so *parent* should be used to be safe. |
+
+Functions and Numbers are cast to strings with *Function/Number.toString*.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **any**(*{Function}* **onInteration**) → *{\*\|undefined}* |
+| static   | **any**(*{\*}* **obj**, *{Function}* **onInteration**)) → *{\*\|undefined}* |
+
+```js
+var obj = { a: 1, b: 2, c: 3 },
+    keys = [],
+    vals = [];
+
+obj._.any((val, key) => {
+    vals.push(val);
+    keys.push(key);
+});
+// vals = [1, 2, 3], keys = ['a', 'b', 'c']
+
+var result = obj._.any(val => {
+    if(val === 3) return val;
+});
+// result = 3
+
+result = obj._.any(val => {
+    if(val === 999) return val;
+});
+// result = undefined
+
+result = 'hello world'._.any(function (val, key) {
+    if(key == 4) return 'got the letter o';
+});
+// result = 'got the letter o'
+
+/* Static Use */
+var myArray = ['a', 'b', 'c'],
+    onInteration = () => { /* Do something... */ }
+
+lib.object.any(myArray, onInteration);
+```
+
+#### toArray
+**Converts an object to an array**
+Useful for converting *arguments* objects to arrays.
+If an array is passed, a shallow copy of the array will be returned.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **toArray**() → *{Array<\*>}* |
+| static   | **toArray**(*{\*}* **obj**) → *{Array<\*>}* |
+
+```js
+var string = 'a string',
+    chars  = string._.toArray(); // chars = ['a', ' ', 's', 't', 'r', 'i', 'n', 'g']
+
+var obj = { foo: 1, bar: 2 },
+    arr = obj._.toArray(); // arr = [1, 2]
+
+(function () {
+    var args = arguments._.toArray();
+    // args = [1, 2, 3, 4]
+}(1, 2, 3, 4));
+
+/* Static Use */
+var converted = lib.object.toArray({ a: [1, 2], b: { foo: 'bar' }});
+// converted = [[1, 2], { foo: 'bar' }]
+```
+
+#### first
+**Returns the first n items of an object**
+If *n* is 1, the first item will be returned. If *n* is more than 1, an array/object of the first *n* items will be returned.
+IF a string is passed, a single string will always be returned... in this way it works like *String.slice*.
+Strings, numbers and functions will be cast to string using *toString*.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **first**(*{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
+| static   | **first**(*{\*}* **obj**, *{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
+
+```js
+var string = 'a string',
+
+    first = string._.first(),
+    // first = 'a'
+    firstFour = string._.first(4);
+    // firstTwo = 'a st'
+
+var array = [1, 2, 3, 4],
+
+    arrayFirst = array._.first(),
+    // arrayFirst = 1
+
+    arrayFirstThree = array._.first(3);
+    // arrayFirstThree = [1, 2, 3]
+
+var object = { foo: 'bar', hello: 'world' },
+
+    objectFirst = object._.first(),
+    // objectFirst = 'bar'
+
+    objectFirstThree = object._.first(3);
+    // objectFirstThree = { foo: 'bar', hello: 'world' }
+
+/* Static Use */
+var staticFirst = lib.object.first([1, 2, 3]);
+// staticFirst = 1
+```
+
+#### last
+**Returns the last n items of an object**
+Works similar to *first*, except it returns the last *n* items, rather than the first *n*,
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **last**(*{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
+| static   | **last**(*{\*}* **obj**, *{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
+
+#### getCallback
+**Always returns a callback**
+If the last item in the object is a function, it will be returned, otherwise an "empty" function is returned. This is useful for ensuring that you always have a valid callback when used against an *arguments* object.
+
+This method is useless against strings, numbers, and functions. It will however, return an "empty" function if called on one.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **getCallback**() → *{Function}* |
+| static   | **getCallback**(*{\*}* **obj**) → *{Function}* |
+
+```js
+// For this example EMPTY_CALLBACK_REPLACEMENT is a "blank" function.
+// EMPTY_CALLBACK_REPLACEMENT === function () {}
+
+var cb = [1, 2, 3, 4].getCallback();         // cb === EMPTY_CALLBACK_REPLACEMENT
+
+cb = [1, 2, 3, function someFunction () {}]; // cb === someFunction
+cb = { foo: 'bar', hello: 'world' };         // cb === EMPTY_CALLBACK_REPLACEMENT
+cb = { foo: 'bar', hello: () => {} };        // cb === anonymous arrow function
+
+(function (argA, argB, argC) {
+    cb = arguments.getCallback();
+    // cb === argC === exampleCallbackFunction
+}('argA', 'argB', function exampleCallbackFunction () {}));
+
+(function (argA, argB, argC, argD, argE) {
+    cb = arguments.getCallback();
+    // cb === EMPTY_CALLBACK_REPLACEMENT
+    // Since exampleCallbackFunction wasn't the *last* argument,
+    // the empty function was assigned to cb.
+}('argA', 'argB', function exampleCallbackFunction () {}, 'argD', 'argE'));
+
+/* Static Use */
+var staticFirst = lib.object.getCallback(someObject);
+```
+
+#### findChildAtPath
+**Finds the child of an object specified by the given string path**
+Finds the child specified by the given string "path" and delimiter (default '.') by walking the objects keys.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **findChildAtPath**(*{String}* **path**, {String=} [**delimiter**='.'], {Function=} **done**) → *{\*\|null}* |
+| static   | **findChildAtPath**(*{\*}* **obj**, *{String}* **path**, {String=} [**delimiter**='.'], {Function=} **done**) → *{\*\|null}* |
+
+```js
+
+var someObject = {
+    a: {
+        aa: {
+            aaa: 1,
+            aab: 'hello'
+        },
+        ab: {
+            aba: 2,
+            abb: 'world'
+        }
+    },
+    b: {
+        ba: {
+            baa: 3,
+            bab: 'foo'
+        },
+        bb: {
+            bba: 4,
+            bbb: 'bar'
+        }
+    },
+    c: [
+        100,
+        200,
+        {
+            example: 'value'
+        }
+    ]
+}
+
+var aa = someObject._.findChildAtPath('a.aa'),
+    // Returns the object labeled by 'aa'
+
+    aaa = someObject._.findChildAtPath('a.aa.aaa'),
+    // Returns the value labeled by 'aaa' (1)
+
+    bba = someObject._.findChildAtPath('a.bb.bba'),
+    // Returns the value labeled by 'bba' (3)
+
+    xxy = someObject._.findChildAtPath('a.bb.xxy'),
+    // Returns null
+
+    // Works on arrays too...
+    c1 = someObject._.findChildAtPath('c.1'),
+    // Returns 200
+
+    c1 = someObject._.findChildAtPath('c.2.example'),
+    // Returns 'value'
+
+    d = someObject._.findChildAtPath('d'),
+    // Returns null
+
+    xxx = someObject._.findChildAtPath('');
+    // Returns someObject
+
+// If a function is passed for parameter *done*, it will be invoked
+// with the item at the path, the parent of the item, and the item's key
+aa = someObject._.findChildAtPath('a.aa', function (value, parent, key) {
+    // this   = someObject
+    // value  = { aaa: 1, aab: 'hello' }
+    // parent = the object labeled by 'a' above.
+    // key    = 'aa'
+});
+
+aaa = someObject._.findChildAtPath('a.aa.aaa', function (value, parent, key) {
+    // this   = someObject
+    // value  = 1
+    // parent = the object labeled by 'a.aa' above.
+    // key    = 'aaa'
+});
+
+/* Static Use */
+var child = lib.object.findChildAtPath(someObject, 'somePath');
 ```

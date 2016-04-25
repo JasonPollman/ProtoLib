@@ -11,8 +11,14 @@
 
 
     describe('Protolib.object.first', function () {
+        var lib;
         before(function () {
-            if(typeof window !== 'object' && !Object._) new (require('../'))('_');
+            if(typeof window !== 'object') {
+                lib = new (require('../'))('_');
+            }
+            else {
+                lib = window.protolib;
+            }
         });
 
         // Create some test data
@@ -26,6 +32,30 @@
         it('It should return the first item in an object', function () {
             var o = obj._.first();
             expect(o).to.equal('bar');
+
+            var estring = 'a string',
+                first = estring._.first(),
+                firstFour = estring._.first(4);
+
+            expect(first).to.equal('a');
+            expect(firstFour).to.equal('a st');
+
+            var earray = [1, 2, 3, 4],
+                arrayFirst = earray._.first(),
+                arrayFirstThree = earray._.first(3);
+
+            expect(arrayFirst).to.equal(1);
+            expect(arrayFirstThree).to.eql([1, 2, 3]);
+
+            var eobject = { foo: 'bar', hello: 'world' },
+                objectFirst = eobject._.first(),
+                objectFirstThree = eobject._.first(3);
+
+            expect(objectFirst).to.eql('bar');
+            expect(objectFirstThree).to.eql({ foo: 'bar', hello: 'world' });
+
+            var staticFirst = lib.object.first([1, 2, 3]);
+            expect(staticFirst).to.eql(1);
         });
 
         it('It should return the first item in an array', function () {
