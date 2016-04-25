@@ -58,6 +58,11 @@
             expect(staticFirst).to.eql(1);
         });
 
+        it('It should simply return booleans', function () {
+            expect(true._.first()).to.equal(true);
+            expect(false._.first()).to.equal(false);
+        });
+
         it('It should return the first item in an array', function () {
             var o = subarr._.first();
             expect(o).to.equal(1);

@@ -37,7 +37,7 @@
             if(typeof window !== 'object' && !Object._) new (require('../'))('_');
         });
 
-        it('It should iterate over objects and arrays as exprected', function () {
+        it('It should iterate over objects and arrays as expected', function () {
             expect(Object._.every).to.be.an.instanceof(Function);
             var isArr, currentObj;
 
@@ -110,6 +110,27 @@
 
             isArr = true; currentObj = arr;
             arr._.every(everyCallback);
+
+            var nobj = { a: 1, b: 2, c: 3 },
+                keys = [],
+                vals = [];
+
+            nobj._.every((val, key) => {
+                vals.push(val);
+                keys.push(key);
+            });
+            expect(vals).to.eql([1, 2, 3]);
+            expect(keys).to.eql(['a', 'b', 'c']);
+
+            var didLoopThroughAllItems = nobj._.every((val) => {
+                if(val === 3) return false;
+            });
+            expect(didLoopThroughAllItems).to.equal(false);
+
+            didLoopThroughAllItems = nobj._.every((val) => {
+                if(val === 999) return false;
+            });
+            expect(didLoopThroughAllItems).to.equal(true);
         });
 
         it('It should break when the provided callback returns false', function () {

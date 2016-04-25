@@ -39,6 +39,11 @@
             expect({ a: 1, b: funcA, c: {}, d: [], e: 1, f: 'a', g: funcB}._.getCallback()).to.be.a('function');
         });
 
+        it('It should return an "empty" function for booleans', function () {
+            expect(true._.getCallback()).to.be.a('function');
+            expect(false._.getCallback()).to.be.a('function');
+        });
+
         it('It should return an "empty" function for non-object types (string, number, function)', function () {
             expect((1234)._.getCallback()).to.be.a('function');
             expect((-1234)._.getCallback()).to.be.a('function');

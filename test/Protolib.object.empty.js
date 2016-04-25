@@ -18,7 +18,7 @@
             expect({}._.isEmpty()).to.equal(true);
             expect({ a: 0 }._.isEmpty()).to.equal(false);
             expect({ '0': null }._.isEmpty()).to.equal(false);
-            expect(''._.isEmpty()).to.equal(true);
+            expect(''._.isEmpty()).to.equal(false);
             expect(' '._.isEmpty()).to.equal(false);
             expect('\\'._.isEmpty()).to.equal(false);
             expect([]._.isEmpty()).to.equal(true);
@@ -28,6 +28,8 @@
             expect((0)._.isEmpty()).to.equal(false);
             expect((1)._.isEmpty()).to.equal(false);
             expect((-1)._.isEmpty()).to.equal(false);
+            expect((true)._.isEmpty()).to.equal(false);
+            expect((false)._.isEmpty()).to.equal(false);
             expect((function () {})._.isEmpty()).to.equal(false);
         });
     });

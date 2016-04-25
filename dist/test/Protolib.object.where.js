@@ -113,6 +113,41 @@
             expect({ foo: 'bar', '1': 7 }._.where(function () {
                 return false;
             })).to.eql({});
+
+            var foo, bar;
+            foo = [1, 2, 3, 4];
+
+            bar = foo._.where(item => item > 2);
+            expect(bar).to.eql([3, 4]);
+
+            bar = foo._.where(() => true);
+            expect(bar).to.eql([1, 2, 3, 4]);
+
+            foo = {
+                a: [1, 2, 3],
+                b: 'a string',
+                c: function () {},
+                d: null,
+                e: { z: 9, y: 8 }
+            };
+
+            bar = foo._.where((item, key) => key === 'a');      // bar = { a: [1, 2, 3] }
+            expect(bar).to.eql({ a: [1, 2, 3] });
+
+            bar = foo._.where(function (item, key) {            // bar = { b: 'a string' }
+                return typeof item !== 'object' && key !== 'c';
+            });
+            expect(bar).to.eql({ b: 'a string' });
+
+            bar = lib.object.where(null, function () {
+                return false;
+            });
+            expect(bar).to.equal(null);
+
+            bar = lib.object.where(5, function () {
+                return false;
+            });
+            expect(bar).to.equal('');
         });
     });
 

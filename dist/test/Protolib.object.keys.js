@@ -20,6 +20,11 @@
             expect(('   ')._.keys()).to.eql(['0', '1', '2']);
         });
 
+        it('It should return [] for booleans', function () {
+            expect((true)._.keys()).to.eql([]);
+            expect((false)._.keys()).to.eql([]);
+        });
+
         it('It should return the correct key set for an array', function () {
             expect(([1, 2, 3, 4, 5])._.keys()).to.eql(['0', '1', '2', '3', '4']);
             expect(([1, 'a', {}, [], function () {}])._.keys()).to.eql(['0', '1', '2', '3', '4']);

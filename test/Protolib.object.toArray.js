@@ -67,6 +67,11 @@
             expect(arr[5]).to.equal('g');
         });
 
+        it('It should convert booleans to a char arrays', function () {
+            expect(true._.toArray()).to.eql(['t', 'r', 'u', 'e']);
+            expect(false._.toArray()).to.eql(['f', 'a', 'l', 's', 'e']);
+        });
+
         it('It should convert numbers to an array of digits', function () {
             var arr = number._.toArray();
             expect(arr).to.be.instanceof(Array);

@@ -37,7 +37,7 @@
             if(typeof window !== 'object' && !Object._) new (require('../'))('_');
         });
 
-        it('It should iterate over objects and arrays as exprected', function () {
+        it('It should iterate over objects and arrays as expected', function () {
             expect(Object._.any).to.be.an.instanceof(Function);
             var isArr, currentObj;
 

@@ -23,6 +23,11 @@
             func   = function () { console.log('HELLO WORLD!'); },
             subarr = [1, 2, 3];
 
+        it('It should simply return booleans', function () {
+            expect(true._.last()).to.equal(true);
+            expect(false._.last()).to.equal(false);
+        });
+        
         it('It should return the last item in an object', function () {
             var o = obj._.last();
             expect(o).to.equal(false);
@@ -31,6 +36,14 @@
         it('It should return the last item in an array', function () {
             var o = subarr._.last();
             expect(o).to.equal(3);
+        });
+
+        it('It should simply return a boolean', function () {
+            var o = true._.last();
+            expect(o).to.equal(true);
+
+            o = false._.last();
+            expect(o).to.equal(false);
         });
 
         it('It should return the last character in a string', function () {

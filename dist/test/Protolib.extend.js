@@ -270,7 +270,7 @@
             expect(lib.date.date_test).to.be.a('undefined');
             expect(d._.date_test).to.be.a('undefined');
 
-            // Check that other methods still exist...
+            // Spot check that other methods still exist...
             expect(s._.reverse).to.be.a('function');
             expect(o._.invert).to.be.a('function');
             expect(a._.rotate).to.be.a('function');

@@ -1,25 +1,27 @@
 # ProtoLib
 ------
-**The namespace friendly prototype library**   
-*There's nothing wrong with modifying primitive prototypes, as long as you do it right.*   
+**The namespace friendly prototype library.**   
+*"There's nothing wrong with modifying primitive prototypes, as long as you do it right."*   
 
 ------
 ProtoLib is a fast, node and browser friendly JavaScript library. It "tucks" library methods inside a single, customizable property attached to *Object.prototype*.
 
-It works in Node.js, Chrome, Firefox, and Safari.
+Currently working in Node.js, Chrome, Firefox, and Safari.
 **Untested in IE**
 
-Basically, I got sick of writing library methods over and over, dealing with static methods, and colliding libraries... enter: ProtoLib.
+Basically, I got sick of writing the same library methods over and over, dealing with static methods, and colliding libraries...   
+
+...Enter ProtoLib.
 
 ## Features
 ---
 - **Over 100 library methods**
     - [See the list below...](#available-methods)
 - **Collision Free**
-    - You define the property attached to *Object.prototype*
+    - *You* define the property attached to *Object.prototype*.
     - The default is *_* (underscore), but this can be set to any string.
 - **Extensible**
-    - ProtoLib allows you to extend that library for any prototype.
+    - ProtoLib allows you to extend the library for any prototype.
     - Extend both custom objects and primitives.
 - **Switch the library on and off, on the fly**
 
@@ -36,109 +38,11 @@ $ npm install protolib --save
     - [Browser Use](#browser-use)
 3. [Available Methods](#available-methods)
     - [Objects](#objects)
-        - [histogram](#histogram)
-        - [copy](#copy)
-        - [occurrencesOf](#occurrencesof)
-        - [keys](#keys)
-        - [size](#size)
-        - [isNumeric](#isnumeric)
-        - [getNumeric](#getnumeric)
-        - [isEmpty](#isempty)
-        - [isArray](#isarray)
-        - [isString](#isstring)
-        - [isBoolean](#isboolean)
-        - [isFunction](#isfunction)
-        - [isNull](#isnull)
-        - [isUndefined](#isundefined)
-        - [isArguments](#isarguments)
-        - [toNumber](#tonumber)
-        - [toInt](#toint)
-        - [random](#random)
-        - [each](#each)
-        - [every](#every)
-        - [any](#any)
-        - [toArray](#toarray)
-        - [first](#first)
-        - [last](#last)
-        - [getCallback](#getcallback)
-        - [findChildAtPath](#findchildatpath)
-        - [clone](#clone)
-        - [only](#only)
-        - [where](#where)
-        - [whereKeys](#wherekeys)
-        - [invert](#invert)
-        - [max](#max)
-        - [min](#min)
-        - [implements](#implements)
-        - [implementsOwn](#implementsown)
     - [Strings](#strings)
-        - [camelize](#camelize)
-        - [decamelize](#decamelize)
-        - [differenceFromString](#differencefromstring)
-        - [intersectString](#intersectstring)
-        - [repeat](#repeat)
-        - [rtrim](#rtrim)
-        - [ltrim](#ltrim)
-        - [htmlEncode](#htmlencode)
-        - [htmlDecode](#htmldecode)
-        - [addSlashes](#addslashes)
-        - [ucFirst](#ucfirst)
-        - [lcFirst](#lcfirst)
-        - [titleCase](#titlecase)
-        - [splice](#splice)
-        - [ellipses](#ellipses)
-        - [shuffle](#shuffle)
-        - [reverse](#reverse)
-        - [withoutTrailingSlash](#withouttrailingslash)
-        - [withTrailingSlash](#withtrailingslash)
-        - [regexpSafe](#regexpsafe)
-        - [pad](#pad)
-        - [newlineToBreak](#newlinetobreak)
-        - [tabsToSpan](#tabstospan)
-        - [wordWrapToLength](#wordwraptolength)
     - [Arrays](#arrays)
-        - [shuffle](#shuffle)
-        - [union](#union)
-        - [difference](#difference)
-        - [intersect](#intersect)
-        - [without](#without)
-        - [rotate](#rotate)
-        - [rotateLeft](#rotateleft)
-        - [rotateRight](#rotateright)
-        - [makeUnique](#makeUnique)
-        - [unique](#unique)
-        - [ascending](#ascending)
-        - [descending](#descending)
     - [Functions](#functions)
-        - [inherits](#inherits)
     - [Numbers](#numbers)
-        - [factorial](#factorial)
-        - [choose](#choose)
-        - [pad](#pad)
-        - [daysFrom](#daysfrom)
-        - [daysFromNow](#daysfromnow)
-        - [secondsFrom](#secondsfrom)
-        - [secondsFromNow](#secondsfromnow)
-        - [yearsFrom](#yearsfrom)
-        - [yearsFromNow](#yearsfromnow)
-        - [monthsFrom](#monthsfrom)
-        - [monthsFromNow](#monthsfromnow)
-        - [hoursFrom](#hoursfrom)
-        - [hoursFromNow](#hoursfromnow)
-        - [minutesFrom](#minutesfrom)
-        - [minutesFromNow](#minutesfromnow)
-        - [monthsAgo](#monthsago)
-        - [daysAgo](#daysago)
-        - [secondsAgo](#secondsago)
-        - [minutesAgo](#minutesago)
-        - [yearsAgo](#yearsago)
-        - [clockTime](#clocktime)
     - [Date Objects](#date-objects)
-        - [advanceDays](#advancedays)
-        - [advanceMonths](#advancemonths)
-        - [advanceYears](#advanceyears)
-        - [yyyymmdd](#yyyymmdd)
-        - [clockTime](#clocktime)
 
 
 ## Getting Started
@@ -147,7 +51,8 @@ $ npm install protolib --save
 // Require the protolib library.
 var ProtoLib = require('protolib');
 
-// Create a new instance, specifying the accessor property (e.g. "handle"). This will default to '_' if unspecified.
+// Create a new instance, specifying the accessor property (e.g. "handle").
+// This will default to '_' if unspecified.
 var lib = new ProtoLib('_');
 
 // That's it!
@@ -177,9 +82,11 @@ obj.lib.invert()        // -> { hello: 'foo', world: 'bar' }
 ```
 
 ### Browser Use
+Use ***/dist/protolib.min.js***... */index.js* is for Node.js only.
+
 *my-html-file.hmtl*
 ```html
-<script type="text/javascript" src="protolib.min.js"></script>
+<script type="text/javascript" src="path/to/protolib.min.js"></script>
 <script type="text/javascript" src="my-script.js"></script>
 ```
 *my-script.js*
@@ -202,18 +109,71 @@ arr._.only('string')                   // -> ['hello', 'world']
 
 ## Available Methods
 ---
+| Name                              | Description                      |
+| :-------------------------------- | :------------------------------- |
+| [**Objects**](#objects)                                              |
+| [any](#any)                         | Loops through each item in an object until a *non-undefined* value is returned |
+| [clone](#clone)                     | Clones an object using *JSON.stringify* and *JSON.parse* |
+| [copy](#copy)                       | Creates a shallow copy of an object |
+| [each](#each)                       | Loops through each item in an object, with an optional start and end range |
+| [every](#every)                     | Loops through each item in an object until *false* is returned |
+| [findChildAtPath](#findchildatpath) | Walks an object's children an returns the child specified by a string path |
+| [first](#first)                     | Gets the first *n* items of an object |
+| [getCallback](#getcallback)         | Gets the callback (last) value from a set, or returns an empty function |
+| [getNumeric](#getnumeric)           | Gets an object's numeric equivalent (or *NaN*) |
+| [histogram](#histogram)             | Computes an object's histogram of values |
+| [implements](#implements)           | Determines if an object has the given property, and that property is a method |
+| [implementsOwn](#implementsown)     | Determines if an object has the given property, that property is a method, and belongs to the object |
+| [invert](#invert)                   | Inverts an object's keys and values, or computes the mathematical inverse of a number |
+| [isArguments](#isarguments)         | Determines if the given objects are all Arguments objects |
+| [isArray](#isarray)                 | Determines if the given objects are all arrays |
+| [isBoolean](#isboolean)             | Determines if the given objects are all booleans |
+| [isEmpty](#isempty)                 | Determines if the given objects are all empty (not null, not undefined, and not an empty string) |
+| [isFunction](#isfunction)           | Determines if the given objects are all functions |
+| [isNumeric](#isnumeric)             | Determines if the given objects are all numeric (can be parsed as a number) |
+| [isNull](#isnull)                   | Determines if the given objects are all null |
+| [isPureObject](#ispureobject)       | Determines if the given objects are all objects (and not arrays) |
+| [isString](#isstring)               | Determines if the given objects are all strings |
+| [isUndefined](#isundefined)         | Determines if the given objects are all undefined |
+| [keys](#keys)                       | Gets an object's key set |
+| [last](#last)                       | Gets the last *n* items of an object |
+| [max](#max)                         | Finds the maximum value in an object |
+| [min](#min)                         | Finds the minimum value in an object |
+| [occurrencesOf](#occurrencesof)     | Counts an object's occurrences of the provided arguments |
+| [random](#random)                   | Gets a random item from the object |
+| [size](#size)                       | Gets the size ("length") of an object |
+| [toArray](#toarray)                 | Converts an object to an array |
+| [toNumber](#tonumber)               | Gets an object's numeric equivalent (or *NaN*) |
+| [toInt](#toint)                     | Gets an object's integer equivalent (or *NaN*) |
+| [only](#only)                       | Filters an object by the given types |
+| [where](#where)                     | Filters an object using a predicate function |
+| [whereKeys](#wherekeys)             | Filters an object by its keys using a predicate function |
+| [**Strings**](#strings)                                              |
+| [**Arrays**](#arrays)                                                |
+| [**Functions**](#functions)                                          |
+| [**Numbers**](#numbers)                                              |
+| [**Dates**](#dates)                                                  |
+
+**The examples below assume you have set 'lib' to a new instance of protolib and that you're using the default handler ('_'), that is:**
+
+```js
+var ProtoLib = require('protolib'),
+    lib = new ProtoLib('_');
+
+// Or in the browser...
+var lib = new window.ProtoLib('_');
+```
 
 ### Objects
 
 #### histogram    
-**Returns an object containing the frequencies for each value in the provided arguments.**
-For objects (arrays and pure objects), it will count the frequency of values.
-For strings, it will count character frequencies. Numbers and functions will be converted using *toString*, and thus treated like strings. Except, for numbers, the result will attempt to parse each value as a number.
+**Returns an object containing a frequencies of values.**
+For objects (arrays and pure objects), it will count the frequency of values. For strings, it will count character frequencies. Numbers and functions will be converted using *toString*.
 
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **histogram**() → *{Object<Number>}* |
-| static   | **histogram**(*{...\*}* items) → *{Object<Number>}* |
+| static   | **histogram**(*{...\*}* **items**) → *{Object<Number>}* |
 
 ```js
 [1, 2, 3, 4, 1, 1, 1, 5, 5]._.histogram()
@@ -244,13 +204,13 @@ lib.object.histogram([1, 2, 3, [3, 4, 5], ['a', 'b', 'c']]);
 ```
 
 #### copy    
-**Returns a shallow copy of *item***
-For non-objects, the given value is simply returned. For objects, a shallow copy is made.
+**Returns a shallow copy of an object**
+For non-objects, the provided value is simply returned. For objects, a shallow copy is made.
 
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **copy**() → *{\*}* |
-| static   | **copy**(*{\*}* item) → *{\*}* |
+| static   | **copy**(*{\*}* **item**) → *{\*}* |
 
 ```js
 [1, 2, 3, 'a', 'b', 'c']._.copy();
@@ -268,12 +228,12 @@ lib.object.copy(something);
 
 #### occurrencesOf   
 **Counts the number of occurrences of *what***
-For non-objects, the character occurrences are counted; for objects, the occurrences of "what" are counted by reference for object, and value for non-obejcts.
+For strings, numbers, and functions, the character occurrences are counted; For objects, the occurrences of "what" are counted by object reference or by value for non-object members.
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **occurrencesOf**(*{\*}* what) → *{Number}* |
-| static   | **occurrencesOf**(*{\*}* item, *{\*}* what) → *{Number}* |
+| instance | **occurrencesOf**(*{\*}* **what**) → *{Number}* |
+| static   | **occurrencesOf**(*{\*}* **item**, *{\*}* **what**) → *{Number}* |
 
 ```js
 [1, 1, 1, 1, 3]._.occurrencesOf(1);
@@ -293,8 +253,8 @@ lib.object.occurrencesOf(haystack, needle);
 ```
 
 #### keys    
-**Returns the object's keys**
-For numbers and functions, this will *always* return an empty array.
+**Returns the object's key set**
+Note: For numbers and functions, this will *always* return an empty array.
 
 | Context  | Signature        |
 | :--------| :--------------- |
@@ -323,12 +283,12 @@ lib.object.keys(item);
 
 #### size
 **Returns the "size" of an object (length).**
-For strings, it will return *the string's length*, for numbers: the *number of digits*, for objects: *Object.keys(obj).length*, for arrays: *Array.length*, and for functions: *1*.
+For strings, it will return *the string's length*, for numbers: the *number of digits*, for objects: *Object.keys(...).length*, for arrays: *Array.length*, and for functions: *1*.
 
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **size**() → *{Number}* |
-| static   | **size**(*{\*}* item) → *{Number}* |
+| static   | **size**(*{\*}* **item**) → *{Number}* |
 
 ```js
 [1, 1, 1, 1, 3]._.size();
@@ -361,7 +321,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **isNumeric**() → *{Boolean}* |
-| static   | **isNumeric**(*{...\*}* items) → *{Boolean}* |
+| static   | **isNumeric**(*{...\*}* **items**) → *{Boolean}* |
 
 ```js
 []._.isNumeric();               // false
@@ -385,14 +345,14 @@ lib.object.isNumeric(a, b, c...);
 ```
 
 #### getNumeric
-**Get's the given value's number equivalent.**
-Returns the number represented by the given value, or NaN.
+**Get's an object's number equivalent.**
+Returns the number represented by the given value, or *NaN*.
 If used in the static context, it will return an array with the results for each argument *if more than one argument is supplied*.
 
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **getNumeric**() → *{Number|NaN}* |
-| static   | **getNumeric**(*{...\*}* objs) → *{Number|NaN}* |
+| static   | **getNumeric**(*{...\*}* **objs**) → *{Number|NaN}* |
 
 ```js
 []._.getNumeric();               // NaN
@@ -415,11 +375,12 @@ If used in the static context, it will return an array with the results for each
 
 /* Static Use */
 lib.object.getNumeric('1', '0xFF', 'hello world', 7); // Returns [1, 255, NaN, 7]
+lib.object.getNumeric('90'); // Returns 90
 ```
 
 #### isEmpty
 **Determines if the given objects are "empty".**
-That is, if *obj !== null && obj !== undefined*. So zero (0) isn't empty.
+That is, if *obj !== null && obj !== undefined && obj !== ''*. **So zero (0) isn't empty.**
 For collections, it will assert that the object has a length of more than zero.   
 
 If used in the static context, it will return true if and only if all arguments are empty.
@@ -427,7 +388,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **isEmpty**() → *{Boolean}* |
-| static   | **isEmpty**(*{...\*}* objs) → *{Boolean}* |
+| static   | **isEmpty**(*{...\*}* **objs**) → *{Boolean}* |
 
 ```js
 []._.isEmpty()                // true
@@ -452,7 +413,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **isArray**() → *{Boolean}* |
-| static   | **isArray**(*{...\*}* objs) → *{Boolean}* |
+| static   | **isArray**(*{...\*}* **objs**) → *{Boolean}* |
 
 ```js
 []._.isArray()                // true
@@ -475,7 +436,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **isPureObject**() → *{Boolean}* |
-| static   | **isPureObject**(*{...\*}* objs) → *{Boolean}* |
+| static   | **isPureObject**(*{...\*}* **objs**) → *{Boolean}* |
 
 ```js
 []._.isPureObject()                // false
@@ -498,7 +459,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **isString**() → *{Boolean}* |
-| static   | **isString**(*{...\*}* objs) → *{Boolean}* |
+| static   | **isString**(*{...\*}* **objs**) → *{Boolean}* |
 
 #### isBoolean
 **Determines if the given objects are all booleans.**
@@ -507,7 +468,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **isBoolean**() → *{Boolean}* |
-| static   | **isBoolean**(*{...\*}* objs) → *{Boolean}* |
+| static   | **isBoolean**(*{...\*}* **objs**) → *{Boolean}* |
 
 #### isFunction
 **Determines if the given objects are all functions.**
@@ -516,7 +477,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **isFunction**() → *{Boolean}* |
-| static   | **isFunction**(*{...\*}* objs) → *{Boolean}* |
+| static   | **isFunction**(*{...\*}* **objs**) → *{Boolean}* |
 
 #### isNull
 **Determines if the given objects are all null.**
@@ -525,7 +486,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **isNull**() → *{Boolean}* |
-| static   | **isNull**(*{...\*}* objs) → *{Boolean}* |
+| static   | **isNull**(*{...\*}* **objs**) → *{Boolean}* |
 
 #### isUndefined
 **Determines if the given objects are all undefined.**
@@ -534,7 +495,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **isUndefined**() → *{Boolean}* |
-| static   | **isUndefined**(*{...\*}* objs) → *{Boolean}* |
+| static   | **isUndefined**(*{...\*}* **objs**) → *{Boolean}* |
 
 #### isArguments
 **Determines if the given objects are all arguments objects.**
@@ -543,7 +504,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **isArguments**() → *{Boolean}* |
-| static   | **isArguments**(*{...\*}* objs) → *{Boolean}* |
+| static   | **isArguments**(*{...\*}* **objs**) → *{Boolean}* |
 
 ```js
 []._.isArguments()                // false
@@ -570,14 +531,14 @@ lib.object.isArguments([]);            // false
 *Alias for [getNumeric](#getnumeric)*
 
 #### toInt
-**Get's the given value's integer equivalent.**
-Returns the integer value represented by the given value(s), or NaN.
+**Get's the object's integer equivalent.**
+Returns the integer value represented by the given value(s), or *NaN*.
 If used in the static context, it will return an array with the results for each argument *if more than one argument is supplied*.
 
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **toInt**() |
-| static   | **toInt**(*{...\*}* objs) |
+| static   | **toInt**(*{...\*}* **objs**) |
 
 ```js
 []._.toInt();               // NaN
@@ -607,7 +568,7 @@ Functions are cast to strings with *Function.toString*
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **random**() → *{\*\}* |
-| static   | **random**(*{\*}* obj) → *{\*\}* |
+| static   | **random**(*{\*}* **obj**) → *{\*\}* |
 
 ```js
 [1, 2, 3, 4].random()._.random();         // Could be any of: 1, 2, 3, or 4
@@ -918,7 +879,6 @@ Finds the child specified by the given string "path" and delimiter (default '.')
 | static   | **findChildAtPath**(*{\*}* **obj**, *{String}* **path**, {String=} [**delimiter**='.'], {Function=} **done**) → *{\*\|null}* |
 
 ```js
-
 var someObject = {
     a: {
         aa: {
@@ -992,4 +952,148 @@ aaa = someObject._.findChildAtPath('a.aa.aaa', function (value, parent, key) {
 
 /* Static Use */
 var child = lib.object.findChildAtPath(someObject, 'somePath');
+```
+
+#### clone
+**Clones an object using *JSON.stringify* and *JSON.parse***
+Throws an error if the object is circular.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **clone**() → *{\*}* |
+| static   | **clone**(*{\*}* **obj**) → *{\*}* |
+
+```js
+var foo, bar;
+
+foo = { a: 1, b: 2, c: 3 };
+bar = foo._.clone(); // bar = { a: 1, b: 2, c: 3 }
+
+foo = [1, 2, 3, 4, { a: 1, b: 2}];
+bar = foo._.clone(); // bar = [1, 2, 3, 4, { a: 1, b: 2}]
+
+/* Static Use */
+lib.object.clone(myObject);
+```
+
+#### only
+**Returns a new object with only the given types***
+Filters an object by the specified list of types ('string', 'number', 'object', 'array', 'function', 'object object'). Any *typeof* type can be used, and multiple arguments can be specified. *object* will return both arrays and objects, *object object* will return only objects, and *array* will filter only arrays.
+
+Plural forms of the types can be used as well.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **only**(*{...String}* **types**) → *{\*}* |
+| static   | **only**(*{\*}* **obj**, *{...String}* **types**) → *{\*}* |
+
+```js
+var foo, bar;
+foo = [1, 2, 3, 'a', 'b', 'c', 4, 5, 6];
+
+bar = foo._.only('numbers');            // bar = [1, 2, 3, 4, 5, 6]
+bar = foo._.only('strings');            // bar = ['a', 'b', 'c']
+bar = foo._.only('numbers', 'strings'); // bar = [1, 2, 3, 'a', 'b', 'c', 4, 5, 6]
+
+foo = {
+    a: [1, 2, 3],
+    b: 'a string',
+    c: function () {},
+    d: null,
+    e: { z: 9, y: 8 }
+};
+
+bar = foo._.only('object');         // bar = { a: [1, 2, 3], d: null, e: { z: 9, y: 8 } }
+bar = foo._.only('array');          // bar = { a: [1, 2, 3] }
+bar = foo._.only('object object');  // bar = { d: null, e: { z: 9, y: 8 } }
+bar = foo._.only('function');       // bar = { c: function () {} }
+
+// Useless on strings, numbers, and functions...
+bar = (5)._.only('string')              // bar = 5
+bar = ('hello world')._.only('string')  // bar = 'hello world'
+bar = (function () {})._.only('string') // bar = function () {}
+
+/* Static Use */
+lib.object.only(myObject, 'typeA', 'typeB', 'typeC'...);
+```
+
+#### where
+**Returns a new object, filtering by a predicate function***
+Filters an object by using a predicate function. If the predicate returns *true* the item is included in the results. The predicate function will be invoked for each item within the object with the following signature: **onItem** (*{\*}* **item**, *{String}* **key**).
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **where**(*{Function}* **predicate**) → *{\*}* |
+| static   | **where**(*{\*}* **obj**, *{Function}* **predicate**) → *{\*}* |
+
+```js
+var foo, bar;
+foo = [1, 2, 3, 4];
+
+bar = foo._.where(item => item > 2); // bar = [3, 4]
+bar = foo._.where(item => true);     // bar = [1, 2, 3, 4]
+
+foo = {
+    a: [1, 2, 3],
+    b: 'a string',
+    c: function () {},
+    d: null,
+    e: { z: 9, y: 8 }
+};
+
+bar = foo._.where((item, key) => key === 'a');      // bar = { a: [1, 2, 3] }
+bar = foo._.where(function (item, key) {            // bar = { b: 'a string' }
+    return typeof item !== 'object' && key !== 'c';
+});
+
+/* Static Use */
+lib.object.where(myObject, predicateFunction);
+```
+
+#### whereKeys
+**Returns a new object, filtering an object's keys by a predicate function***
+The same as *where*, except that the predicate function is invoked with the signature: **onItem** (*{String}* **key**, *{\*}* **item**).
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **whereKeys**(*{Function}* **predicate**) → *{\*}* |
+| static   | **whereKeys**(*{\*}* **obj**, *{Function}* **predicate**) → *{\*}* |
+
+#### invert
+**Inverts an object's keys and values.**
+For numbers it computes the mathematical inverse (x<sup>-1</sup>).
+For strings, it reverses the string.
+For functions, invert returns a new function that wraps the given function and inverts it's result.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **invert**() → *{\*}* |
+| static   | **invert**(*{\*}* **obj**) → *{\*}* |
+
+```js
+(1)._.invert()     // -> 1
+(0)._.invert()     // -> Infinity
+(789)._.invert()   // -> ~0.00126742712
+
+[6, 7, 8]._.invert() // -> { 6: 0, 7: 1, 8: 2 }
+{ a: 'foo', b: 5 }   // -> { foo: 'a', 5: b }
+'string'._.invert()  // -> 'gnirts'
+true._.invert()      // -> false
+
+// For functions, invert returns a new function that wraps the
+// given function and inverts it's result.
+function alwaysTrue = () {
+    return true;
+}
+
+var alwaysFalse = alwaysTrue._.invert();
+alwaysFalse() // -> false
+
+// Under the hood alwaysFalse was turned into something like this...
+function () {
+    return alwaysTrue.apply(alwaysTrue, arguments)._.invert();
+}
+
+/* Static Use */
+lib.object.invert(myObject);
 ```

@@ -30,6 +30,11 @@
             expect('function'._.histogram()).to.eql({ f: 1, u: 1, n: 2, c: 1, t: 1, i: 1, o: 1 });
         });
 
+        it('It should simply return an object with true/false for keys and 1 for a value', function () {
+            expect(true._.histogram()).to.eql({ true: 1 });
+            expect(false._.histogram()).to.eql({ false: 1 });
+        });
+
         it('It should return a histogram of an array\'s members', function () {
             expect([1, 2, 3, 4, 5]._.histogram()).to.eql({ '1': 1, '2': 1, '3': 1, '4': 1, '5': 1 });
             expect([1, 2, 3, 4, 5, 1, 2, 3, 4, 5]._.histogram()).to.eql({ '1': 2, '2': 2, '3': 2, '4': 2, '5': 2 });
@@ -57,7 +62,7 @@
         it('It should treat numbers and functions like strings', function () {
             expect((1234)._.histogram()).to.eql({ 1: 1, 2: 1, 3: 1, 4: 1 });
             expect((-1234)._.histogram()).to.eql({ 1: 1, 2: 1, 3: 1, 4: 1, '-': 1 });
-            expect(function () {}._.histogram()).to.eql({ f: 1, u: 1, n: 2, c: 1, t: 1, i: 1, o: 1, '(': 1, ')': 1, '{': 1, '}': 1, ' ': 2 });
+            expect(function () {}._.histogram()).to.eql({ function: 1 });
         });
     });
 

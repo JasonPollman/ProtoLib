@@ -14,6 +14,14 @@
             if(typeof window !== 'object' && !Object._) new (require('../'))('_');
         });
 
+        it('It should simply return booleans', function () {
+            expect(true._.random()).to.equal(true);
+            expect(true._.random()).to.equal(true);
+
+            expect(false._.random()).to.equal(false);
+            expect(false._.random()).to.equal(false);
+        });
+
         it('It should return a random character from a string', function () {
             expect('random'._.random()).to.match(/[random]{1}/);
             expect(''._.random()).to.equal('');

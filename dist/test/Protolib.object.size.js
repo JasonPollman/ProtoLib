@@ -50,6 +50,11 @@
             expect(lib.object.size(null, null)).to.equal(0);
         });
 
+        it('It should return 0 for booleans', function () {
+            expect(true._.size()).to.equal(0);
+            expect(false._.size()).to.equal(0);
+        });
+
         it('It should return the correct number of members given an array', function () {
             var o = subarr._.size();
             expect(o).to.equal(3);

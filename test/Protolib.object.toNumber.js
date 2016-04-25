@@ -42,6 +42,11 @@
             expect(function () {}._.toNumber()).to.be.NaN;
         });
 
+        it('It should return NaN for booleans', function () {
+            expect(true._.toNumber()).to.be.NaN;
+            expect(false._.toNumber()).to.be.NaN;
+        });
+
         it('It should return an array for all arguments', function () {
             expect(lib.object.toNumber(1, 'a', '123')).to.eql([1, NaN, 123]);
             expect(lib.object.toNumber()).to.eql([]);

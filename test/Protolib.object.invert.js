@@ -28,6 +28,11 @@
             expect('123'._.invert()).to.equal('321');
         });
 
+        it('It should invert booleans', function () {
+            expect(true._.invert()).to.equal(false);
+            expect(false._.invert()).to.equal(true);
+        });
+
         it('It should compute the inverse of a number', function () {
             expect((1)._.invert()).to.equal(1);
             expect((0)._.invert()).to.equal(Infinity);
@@ -46,9 +51,32 @@
             expect(({ foo: 'fooA', barB: 'bar' })._.invert()).to.eql({ fooA: 'foo', bar: 'barB' });
         });
 
-        it('It should simply return function', function () {
-            var f = function () {};
-            expect((f)._.invert()).to.equal(f);
+        it('It should return a function that inverts the result of the given function', function () {
+            var f = function () { return true; };
+            var finverse = f._.invert();
+            expect(finverse).to.be.a('function');
+            expect(finverse()).to.equal(false);
+
+            f = function () { return 5; };
+            finverse = f._.invert();
+            expect(finverse).to.be.a('function');
+            expect(finverse()).to.equal(0.2);
+
+            f = function () { return 0; };
+            finverse = f._.invert();
+            expect(finverse).to.be.a('function');
+            expect(finverse()).to.equal(Infinity);
+
+            f = function () { return 'abc'; };
+            finverse = f._.invert();
+            expect(finverse).to.be.a('function');
+            expect(finverse()).to.equal('cba');
+
+            f = function () { return function () { return false; }; };
+            finverse = f._.invert();
+            expect(finverse).to.be.a('function');
+            expect(finverse()).to.be.a('function');
+            expect(finverse()()).to.equal(true);
         });
     });
 

@@ -50,6 +50,11 @@
             expect(arr._.copy()).to.not.equal(arr);
         });
 
+        it('It should simply return booleans', function () {
+            expect(true._.copy()).to.equal(true);
+            expect(false._.copy()).to.equal(false);
+        });
+
         it('It should return a shallow copy of objects', function () {
             var obj = { a: 1, b: 2, c: 3};
             expect(obj._.copy()).to.eql({ a: 1, b: 2, c: 3});
