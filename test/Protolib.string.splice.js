@@ -32,6 +32,18 @@
             expect('string'._.splice(-99, -99, 'add')).to.equal('addstring');
             expect('string'._.splice(-99, 0, 'add')).to.equal('addstring');
             expect('string'._.splice(0, -1, 'add')).to.equal('addg');
+
+            var myString = 'the quick red fox jumped over the lazy brown dog!';
+            myString = myString._.splice(4, 5, 'slow');
+
+            expect(myString).to.equal('the slow red fox jumped over the lazy brown dog!');
+
+            var helloWorld = 'hello world';
+            helloWorld = helloWorld._.splice(0, 6);
+            expect(helloWorld).to.equal('world');
+
+            helloWorld._.splice(5, 6);
+            helloWorld = expect(helloWorld).to.equal('world');
         });
     });
 

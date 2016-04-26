@@ -23,6 +23,17 @@
             expect('string'._.pad(15)).to.equal('string         ');
             expect('string'._.pad(-1)).to.equal('strin');
             expect('string'._.pad(0 )).to.equal('');
+
+            expect('hello world!'._.pad(3)).to.equal('hel');
+            expect('hello world!'._.pad(20)).to.equal('hello world!        ');
+
+            // Custom pad string
+            expect('hello world!'._.pad(3, '-')).to.equal('hel');
+            expect('hello world!'._.pad(20, '-')).to.equal('hello world!--------');
+
+            // If *pre* parameter is passed true...
+            expect('hello world!'._.pad(3, '-', true)).to.equal('ld!');
+            expect('hello world!'._.pad(20, '-', true)).to.equal('--------hello world!');
         });
 
         it('It should pad a string using the specified character', function () {

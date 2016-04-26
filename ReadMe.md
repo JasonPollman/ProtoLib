@@ -109,9 +109,9 @@ arr._.only('string')                   // -> ['hello', 'world']
 
 ## Available Methods
 ---
+### [**Objects**](#objects)
 | Name                              | Description                      |
 | :-------------------------------- | :------------------------------- |
-| [**Objects**](#objects)                                              |
 | [any](#any)                         | Loops through each item in an object until a *non-undefined* value is returned |
 | [clone](#clone)                     | Clones an object using *JSON.stringify* and *JSON.parse* |
 | [copy](#copy)                       | Creates a shallow copy of an object |
@@ -148,11 +148,35 @@ arr._.only('string')                   // -> ['hello', 'world']
 | [only](#only)                       | Filters an object by the given types |
 | [where](#where)                     | Filters an object using a predicate function |
 | [whereKeys](#wherekeys)             | Filters an object by its keys using a predicate function |
-| [**Strings**](#strings)                                              |
-| [**Arrays**](#arrays)                                                |
-| [**Functions**](#functions)                                          |
-| [**Numbers**](#numbers)                                              |
-| [**Dates**](#dates)                                                  |
+
+### [**Strings**](#strings)
+| Name                                | Description                      |
+| :---------------------------------- | :------------------------------- |
+| [addSlashes](#addslashes)           | Creates an eval-safe string, by escaping */['"\t\n\f\r\u0000]/* |
+| [camelize](#camelize)               | Converts a string to camel case |
+| [decamelize](#decamelize)           | Converts a camel cased string to sentence form |
+| [ellipses](#ellipses)               | Truncates a string, adding ellipses if the string is longer than *length* |
+| [htmlDecode](#htmldecode)           | Unescapes HTML special characters |
+| [htmlEncode](#htmlencode)           | Escapes HTML special characters |
+| [lcFirst](#lcfirst)                 | Lowercases the first character of a string |
+| [ltrim](#ltrim)                     | Left trims whitespace from a string |
+| [newlineToBreak](#newlinetobreak)   | Replaces newlines with *<br>* tags |
+| [pad](#pad)                         | Pads (or truncates) a string to *length* |
+| [repeat](#repeat)                   | Repeats a string *n* times |
+| [reverse](#reverse)                 | Reverses a string |
+| [rtrim](#rtrim)                     | Right trims whitespace from a string |
+| [splice](#splice)                   | Splices a string like *Array.splice* |
+| [shuffle](#shuffle)                 | Shuffles a string |
+| [titleCase](#titleCase)             | Converts a string to title case |
+| [tabsToSpan](#tabstospan)           | Converts tab characters to a "tab" span |
+| [ucFirst](#ucfirst)                 | Uppercases the first character of a string |
+| [withoutTrailingSlash](#withouttrailingslash) | Removes trailing slashes from a string |
+| [withTrailingSlash](#withtrailingslash)       | Adds a trailing slash to a string |
+
+### [**Arrays**](#arrays)
+### [**Functions**](#functions)
+### [**Numbers**](#numbers)
+### [**Dates**](#dates)
 
 **The examples below assume you have set 'lib' to a new instance of protolib and that you're using the default handler ('_'), that is:**
 
@@ -228,7 +252,6 @@ lib.object.copy(something);
 
 #### occurrencesOf   
 **Counts the number of occurrences of *what**    
-For strings, numbers, and functions, the character occurrences are counted; For objects, the occurrences of "what" are counted by object reference or by value for non-object members.
 
 | Context  | Signature        |
 | :--------| :--------------- |
@@ -247,6 +270,10 @@ For strings, numbers, and functions, the character occurrences are counted; For 
 
 'racecar'._.occurrencesOf('r');
 // Returns 2
+
+'the rain falls mainly in the plain in spain'._.occurrencesOf('ain');
+// Returns 4
+
 
 /* Static Use */
 lib.object.occurrencesOf(haystack, needle);
@@ -875,8 +902,8 @@ Finds the child specified by the given string "path" and delimiter (default '.')
 
 | Context  | Signature        |
 | :--------| :--------------- |
-| instance | **findChildAtPath**(*{String}* **path**, {String=} [**delimiter**='.'], {Function=} **done**) → *{\*\|null}* |
-| static   | **findChildAtPath**(*{\*}* **obj**, *{String}* **path**, {String=} [**delimiter**='.'], {Function=} **done**) → *{\*\|null}* |
+| instance | **findChildAtPath**(*{String}* **path**, *{String=}* [**delimiter**='.'], *{Function=}* **done**) → *{\*\|null}* |
+| static   | **findChildAtPath**(*{\*}* **obj**, *{String}* **path**, *{String=}* [**delimiter**='.'], *{Function=}* **done**) → *{\*\|null}* |
 
 ```js
 var someObject = {
@@ -1358,4 +1385,225 @@ var myString   = 'the quick red fox jumped over the lazy brown dog!',
 
 /* Static Use */
 lib.string.titleCase(myString);
+```
+
+#### splice
+**Splices a string, like *Array.splice*.**   
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **splice**(*{Number}* **index**, *{Number}* **delete**, *{String=}* **append**) → *{String}* |
+| static   | **splice**(*{\*}* **myString**, *{Number}* **index**, *{Number}* **delete**, *{String=}* **append**) → *{String}* |
+
+```js
+var myString = 'the quick red fox jumped over the lazy brown dog!';
+myString = myString._.splice(4, 5, 'slow');
+
+// myString = 'the slow red fox jumped over the lazy brown dog!'
+
+var helloWorld = 'hello world';
+helloWorld._.splice(0, 6); // -> 'world'
+helloWorld._.splice(5, 6); // -> 'hello'
+
+/* Static Use */
+lib.string.splice(myString, index, deleteCount, stringToAppendAtIndex);
+```
+
+#### ellipses
+**Truncates a string, adding ellipses if the string is longer than *length***   
+Truncates the given string to length. If the string is longer than length, ellipses will be added to the end of the string.
+
+- If the optional *place* argument is set to 'front', the ellipses is prepended to the string, rather than appended.
+- The optional *ellipses* argument allows '...' to be replaces with any string value.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **ellipses**(*{Number}* **length**, *{String=}* [**place**='back'], *{String=}* **ellipses**) → *{String}* |
+| static   | **ellipses**(*{\*}* **myString**, *{Number}* **length**, *{String=}* **place**, *{String=}* **ellipses**) → *{String}* |
+
+```js
+var myString = 'the quick red fox jumped over the lazy brown dog!';
+
+myString._.ellipses(10); // -> 'the qui...'
+myString._.ellipses(20); // -> 'the quick red fox...'
+
+myString._.ellipses(20, 'front');          // -> '...the quick red fox'
+myString._.ellipses(20, 'front', '•••');   // -> '•••the quick red fox'
+myString._.ellipses(20, 'back', '??????'); // -> 'the quick red ??????'
+
+/* Static Use */
+lib.string.splice(myString, index, deleteCount, stringToAppendAtIndex);
+```
+
+#### shuffle
+**Shuffles a string.**   
+If the optional *splitter* argument is passed, it will be tokenized by the value of *splitter* before being shuffled. Otherwise the strings characters will be moved around.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **shuffle**(*{String=}* **splitter**) → *{String}* |
+| static   | **shuffle**(*{\*}* **myString**, *{String=}* **splitter**) → *{String}* |
+
+```js
+var aString = 'hello world';
+aString._.shuffle() // -> 'lweol rhold' (this is one possibility)
+
+'hello world'._.shuffle('hello ');
+// Possibilities are...
+// 'hello world', and 'worldhello '
+
+'hello world'._.shuffle(' ');
+// Possibilities are...
+// 'hello world', 'world hello', 'worldhello ', ' helloworld'
+// ' worldhello', and 'helloworld '
+
+/* Static Use */
+lib.string.shuffle(myString, splitter);
+```
+
+#### reverse
+**Reverses a string.**   
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **reverse**() → *{String}* |
+| static   | **reverse**(*{\*}* **myString**) → *{String}* |
+
+```js
+var myString = 'hello world';
+myString._.reverse()  // -> 'dlrow olleh';
+'racecar'._.reverse() // -> 'racecar'
+
+/* Static Use */
+lib.string.reverse(myString);
+```
+
+#### withoutTrailingSlash
+**Removes a trailing slash from a string (or path).**   
+*On Node.js withoutTrailingSlash uses path.sep for a platform agnostic replacement.*
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **withoutTrailingSlash**() → *{String}* |
+| static   | **withoutTrailingSlash**(*{\*}* **myString**) → *{String}* |
+
+```js
+var path = 'path/to/some/directory/';
+path._.withoutTrailingSlash() // -> 'path/to/some/directory'
+
+path = 'path/to/some/directory/////';
+path._.withoutTrailingSlash() // -> 'path/to/some/directory'
+
+path = '/';
+path._.withoutTrailingSlash() // -> ''
+
+// If Node.js and Windows...
+path = 'path\\to\\some\\directory\\';
+path._.withoutTrailingSlash() // -> 'path\\to\\some\\directory'
+
+/* Static Use */
+lib.string.withoutTrailingSlash(myString);
+```
+
+#### withTrailingSlash
+**Removes a trailing slash from a string (or path).**   
+*On Node.js withoutTrailingSlash uses path.sep for a platform agnostic replacement.*
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **withTrailingSlash**() → *{String}* |
+| static   | **withTrailingSlash**(*{\*}* **myString**) → *{String}* |
+
+```js
+var path = 'path/to/some/directory';
+path._.withTrailingSlash() // -> 'path/to/some/directory/'
+
+// If Node.js and Windows...
+path = 'path\\to\\some\\directory';
+path._.withoutTrailingSlash() // -> 'path\\to\\some\\directory\\'
+
+/* Static Use */
+lib.string.withTrailingSlash(myString);
+```
+
+#### regexpSafe
+**Returns a regular expression safe string.**   
+Prepends slashes to ```/[-\/\\^$*+?.()|[\]{}]/g```
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **regexpSafe**() → *{String}* |
+| static   | **regexpSafe**(*{\*}* **myString**) → *{String}* |
+
+```js
+var money  = '$1,000.00',
+    badRegExp, safeRegexp, result;
+
+badRegexp = new Regexp(money, 'gi');
+result = '$1,000.00 dollars would be nice.'._.replace(badRegexp, 'One thousand dollars');
+// -> Throws 'invalid regular expression'
+
+safeRegexp = new Regexp(money._.regexpSafe(), 'gi');
+result = '$1,000.00 dollars would be nice.'._.replace(badRegexp, 'One thousand dollars');
+// -> 'One thousand dollars would be nice.'
+
+/* Static Use */
+lib.string.regexpSafe(myString);
+```
+
+#### pad
+**Pads a string (or truncates it) to the given length.**   
+Prepends slashes to ```/[-\/\\^$*+?.()|[\]{}]/g```
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **regexpSafe**(*{String}* **length**, *{String=}* [**delimiter**= ' '], *{Boolean=}* **pre**) → *{String}* |
+| static   | **regexpSafe**(*{\*}* **myString**, *{String}* **length**, *{String=}* **delimiter**, *{Boolean=}* **pre**) → *{String}* |
+
+```js
+'hello world!'._.pad(3);  // -> 'hel'
+'hello world!'._.pad(20); // -> 'hello world!        '
+
+// Custom pad string
+'hello world!'._.pad(3, '-');  // -> 'hel'
+'hello world!'._.pad(20, '-'); // -> 'hello world!--------'
+
+// If *pre* parameter is passed true...
+'hello world!'._.pad(3, '-', true);  // -> 'ld!'
+'hello world!'._.pad(20, '-', true); // -> '--------hello world!'
+
+/* Static Use */
+lib.string.pad(myString, length, delimiter, pre);
+```
+
+#### newlineToBreak
+**Replaces newlines with <br> tags.**   
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **newlineToBreak**() → *{String}* |
+| static   | **newlineToBreak**(*{\*}* **myString**) → *{String}* |
+
+```js
+'line 1\nline 2\n line 3'._.newlineToBreak();
+// -> 'line 1<br>line 2<br>line 3'
+
+/* Static Use */
+lib.string.pad(myString, length, delimiter, pre);
+```
+
+#### tabsToSpan
+**Replaces tab characters with <span class="tab"></span> tags.**   
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **tabsToSpan**() → *{String}* |
+| static   | **tabsToSpan**(*{\*}* **myString**) → *{String}* |
+
+```js
+'line 1\tline 2\t line 3'._.newlineToBreak();
+// -> 'line 1<span class="tab"></span>line 2<span class="tab"></span>line 3'
+
+/* Static Use */
+lib.string.pad(myString, length, delimiter, pre);
 ```
