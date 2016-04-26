@@ -167,7 +167,7 @@ var lib = new window.ProtoLib('_');
 ### Objects
 
 #### histogram    
-**Returns an object containing a frequencies of values.**
+**Returns an object containing a frequencies of values.**   
 For objects (arrays and pure objects), it will count the frequency of values. For strings, it will count character frequencies. Numbers and functions will be converted using *toString*.
 
 | Context  | Signature        |
@@ -204,7 +204,7 @@ lib.object.histogram([1, 2, 3, [3, 4, 5], ['a', 'b', 'c']]);
 ```
 
 #### copy    
-**Returns a shallow copy of an object**
+**Returns a shallow copy of an object**   
 For non-objects, the provided value is simply returned. For objects, a shallow copy is made.
 
 | Context  | Signature        |
@@ -227,7 +227,7 @@ lib.object.copy(something);
 ```
 
 #### occurrencesOf   
-**Counts the number of occurrences of *what***
+**Counts the number of occurrences of *what***   
 For strings, numbers, and functions, the character occurrences are counted; For objects, the occurrences of "what" are counted by object reference or by value for non-object members.
 
 | Context  | Signature        |
@@ -253,7 +253,7 @@ lib.object.occurrencesOf(haystack, needle);
 ```
 
 #### keys    
-**Returns the object's key set**
+**Returns the object's key set**   
 Note: For numbers and functions, this will *always* return an empty array.
 
 | Context  | Signature        |
@@ -282,7 +282,7 @@ lib.object.keys(item);
 ```
 
 #### size
-**Returns the "size" of an object (length).**
+**Returns the "size" of an object (length).**   
 For strings, it will return *the string's length*, for numbers: the *number of digits*, for objects: *Object.keys(...).length*, for arrays: *Array.length*, and for functions: *1*.
 
 | Context  | Signature        |
@@ -314,8 +314,8 @@ lib.object.size(item);
 ```
 
 #### isNumeric    
-**Determines if the object "is numeric".**
-Returns true if the object can be parsed as a number and is finite, false otherwise.
+**Determines if the object "is numeric".**   
+Returns true if the object can be parsed as a number and is finite, false otherwise.   
 If used in the static context, it will return true if and only if all arguments are numeric.
 
 | Context  | Signature        |
@@ -345,8 +345,8 @@ lib.object.isNumeric(a, b, c...);
 ```
 
 #### getNumeric
-**Get's an object's number equivalent.**
-Returns the number represented by the given value, or *NaN*.
+**Get's an object's number equivalent.**   
+Returns the number represented by the given value, or *NaN*.   
 If used in the static context, it will return an array with the results for each argument *if more than one argument is supplied*.
 
 | Context  | Signature        |
@@ -379,9 +379,9 @@ lib.object.getNumeric('90'); // Returns 90
 ```
 
 #### isEmpty
-**Determines if the given objects are "empty".**
-That is, if *obj !== null && obj !== undefined && obj !== ''*. **So zero (0) isn't empty.**
-For collections, it will assert that the object has a length of more than zero.   
+**Determines if the given objects are "empty".**   
+That is, if *obj !== null && obj !== undefined && obj !== ''*. **So zero (0) isn't empty.**   
+For collections, it will assert that the object has a length of more than zero.    
 
 If used in the static context, it will return true if and only if all arguments are empty.
 
@@ -407,7 +407,7 @@ lib.object.isEmpty(null, undefined); // true
 ```
 
 #### isArray
-**Determines if the given objects are all arrays.**
+**Determines if the given objects are all arrays.**   
 If used in the static context, it will return true if and only if all arguments are arrays.
 
 | Context  | Signature        |
@@ -430,7 +430,7 @@ lib.object.isArray(null, []);                       // false
 ```
 
 #### isPureObject
-**Determines if the given objects are all objects, but not arrays.**
+**Determines if the given objects are all objects, but not arrays.**   
 If used in the static context, it will return true if and only if all arguments are "pure objects".
 
 | Context  | Signature        |
@@ -453,7 +453,7 @@ lib.object.isPureObject(null, {});   // false
 ```
 
 #### isString
-**Determines if the given objects are all strings.**
+**Determines if the given objects are all strings.**   
 If used in the static context, it will return true if and only if all arguments are strings.
 
 | Context  | Signature        |
@@ -471,7 +471,7 @@ If used in the static context, it will return true if and only if all arguments 
 | static   | **isBoolean**(*{...\*}* **objs**) → *{Boolean}* |
 
 #### isFunction
-**Determines if the given objects are all functions.**
+**Determines if the given objects are all functions.**   
 If used in the static context, it will return true if and only if all arguments are functions.
 
 | Context  | Signature        |
@@ -480,7 +480,7 @@ If used in the static context, it will return true if and only if all arguments 
 | static   | **isFunction**(*{...\*}* **objs**) → *{Boolean}* |
 
 #### isNull
-**Determines if the given objects are all null.**
+**Determines if the given objects are all null.**   
 If used in the static context, it will return true if and only if all arguments are null.
 
 | Context  | Signature        |
@@ -489,7 +489,7 @@ If used in the static context, it will return true if and only if all arguments 
 | static   | **isNull**(*{...\*}* **objs**) → *{Boolean}* |
 
 #### isUndefined
-**Determines if the given objects are all undefined.**
+**Determines if the given objects are all undefined.**   
 If used in the static context, it will return true if and only if all arguments are undefined.
 
 | Context  | Signature        |
@@ -498,7 +498,7 @@ If used in the static context, it will return true if and only if all arguments 
 | static   | **isUndefined**(*{...\*}* **objs**) → *{Boolean}* |
 
 #### isArguments
-**Determines if the given objects are all arguments objects.**
+**Determines if the given objects are all arguments objects.**   
 If used in the static context, it will return true if and only if all arguments are Arguments instances.
 
 | Context  | Signature        |
@@ -527,11 +527,11 @@ function () {}._.isArguments()    // false
 lib.object.isArguments([]);            // false
 ```
 
-#### toNumber
+#### toNumber   
 *Alias for [getNumeric](#getnumeric)*
 
 #### toInt
-**Get's the object's integer equivalent.**
+**Get's the object's integer equivalent.**   
 Returns the integer value represented by the given value(s), or *NaN*.
 If used in the static context, it will return an array with the results for each argument *if more than one argument is supplied*.
 
@@ -562,7 +562,7 @@ lib.object.toInt('1', '0xFF', 'hello world', 7); // Returns [1, 255, NaN, 7]
 ```
 
 #### random
-**Returns a random item from an array or object, a random digit from a number, or a random character from a string.**
+**Returns a random item from an array or object, a random digit from a number, or a random character from a string.**   
 Functions are cast to strings with *Function.toString*
 
 | Context  | Signature        |
@@ -581,7 +581,7 @@ lib.object.random([[1, 2, 3], ['a', 'b', 'c'], 9]);
 ```
 
 #### each
-**Invokes the provided callback for "each" item in the collection.**
+**Invokes the provided callback for "each" item in the collection.**   
 For each item in the collection, a callback (*onIteration*) is invoked with the following arguments:
 *this* refers to the object being iterated over within the body of *onIteration*.
 
@@ -657,7 +657,7 @@ lib.object.each(myArray, 0, 1 onInteration);
 ```
 
 #### every
-**Invokes the provided callback for "every" item in the collection.**
+**Invokes the provided callback for "every" item in the collection.**   
 Loops through each item in the object and calls *onIteration*. If *false* is returned, the loop will break and return *false*, otherwise it will return *true*. This is similar to *Array.every* except that it works for all objects, and will break only on *false* and not a *falsy* return (null, undefined, 0, etc.).
 *this* refers to the object being iterated over within the body of *onIteration*.
 
@@ -705,7 +705,7 @@ lib.object.every(myArray, onInteration);
 ```
 
 #### any
-**Invokes the provided callback for every item in the collection and breaks when any value (other than undefined) is returned.**
+**Invokes the provided callback for every item in the collection and breaks when any value (other than undefined) is returned.**   
 Loops through each item in the object and calls *onIteration*. If a "non-undefined" value is returned, the loop will break and return that value.
 
 | Argument               | Definition       |
@@ -757,7 +757,7 @@ lib.object.any(myArray, onInteration);
 ```
 
 #### toArray
-**Converts an object to an array**
+**Converts an object to an array**   
 Useful for converting *arguments* objects to arrays.
 If an array is passed, a shallow copy of the array will be returned.
 
@@ -784,7 +784,7 @@ var converted = lib.object.toArray({ a: [1, 2], b: { foo: 'bar' }});
 ```
 
 #### first
-**Returns the first n items of an object**
+**Returns the first n items of an object**   
 If *n* is 1, the first item will be returned. If *n* is more than 1, an array/object of the first *n* items will be returned.
 IF a string is passed, a single string will always be returned... in this way it works like *String.slice*.
 Strings, numbers and functions will be cast to string using *toString*.
@@ -824,7 +824,7 @@ var staticFirst = lib.object.first([1, 2, 3]);
 ```
 
 #### last
-**Returns the last n items of an object**
+**Returns the last n items of an object**   
 Works similar to *first*, except it returns the last *n* items, rather than the first *n*,
 
 | Context  | Signature        |
@@ -833,7 +833,7 @@ Works similar to *first*, except it returns the last *n* items, rather than the 
 | static   | **last**(*{\*}* **obj**, *{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
 
 #### getCallback
-**Always returns a callback**
+**Always returns a callback**   
 If the last item in the object is a function, it will be returned, otherwise an "empty" function is returned. This is useful for ensuring that you always have a valid callback when used against an *arguments* object.
 
 This method is useless against strings, numbers, and functions. It will however, return an "empty" function if called on one.
@@ -870,7 +870,7 @@ var staticFirst = lib.object.getCallback(someObject);
 ```
 
 #### findChildAtPath
-**Finds the child of an object specified by the given string path**
+**Finds the child of an object specified by the given string path**   
 Finds the child specified by the given string "path" and delimiter (default '.') by walking the objects keys.
 
 | Context  | Signature        |
@@ -955,7 +955,7 @@ var child = lib.object.findChildAtPath(someObject, 'somePath');
 ```
 
 #### clone
-**Clones an object using *JSON.stringify* and *JSON.parse***
+**Clones an object using *JSON.stringify* and *JSON.parse***   
 Throws an error if the object is circular.
 
 | Context  | Signature        |
@@ -977,7 +977,7 @@ lib.object.clone(myObject);
 ```
 
 #### only
-**Returns a new object with only the given types***
+**Returns a new object with only the given types***   
 Filters an object by the specified list of types ('string', 'number', 'object', 'array', 'function', 'object object'). Any *typeof* type can be used, and multiple arguments can be specified. *object* will return both arrays and objects, *object object* will return only objects, and *array* will filter only arrays.
 
 Plural forms of the types can be used as well.
@@ -1018,7 +1018,7 @@ lib.object.only(myObject, 'typeA', 'typeB', 'typeC'...);
 ```
 
 #### where
-**Returns a new object, filtering by a predicate function***
+**Returns a new object, filtering by a predicate function***   
 Filters an object by using a predicate function. If the predicate returns *true* the item is included in the results. The predicate function will be invoked for each item within the object with the following signature: **onItem** (*{\*}* **item**, *{String}* **key**).
 
 | Context  | Signature        |
@@ -1051,7 +1051,7 @@ lib.object.where(myObject, predicateFunction);
 ```
 
 #### whereKeys
-**Returns a new object, filtering an object's keys by a predicate function***
+**Returns a new object, filtering an object's keys by a predicate function***   
 The same as *where*, except that the predicate function is invoked with the signature: **onItem** (*{String}* **key**, *{\*}* **item**).
 
 | Context  | Signature        |
@@ -1060,7 +1060,7 @@ The same as *where*, except that the predicate function is invoked with the sign
 | static   | **whereKeys**(*{\*}* **obj**, *{Function}* **predicate**) → *{\*}* |
 
 #### invert
-**Inverts an object's keys and values.**
+**Inverts an object's keys and values.**     
 For numbers it computes the mathematical inverse (x<sup>-1</sup>).
 For strings, it reverses the string.
 For functions, invert returns a new function that wraps the given function and inverts it's result.
@@ -1099,7 +1099,7 @@ lib.object.invert(myObject);
 ```
 
 #### max
-**Get's the highest value from an object**
+**Get's the highest value from an object**   
 For numbers, strings, functions, and booleans, the object is simply returned.
 An optional predicate function is available to determine the max for objects. The predicate is called with the current value in the collection, whatever is returned from the predicate is used in the evaluation to determine the if the value is the max.
 
@@ -1140,7 +1140,7 @@ var max = data._.max(function (item) {
 lib.object.max(myObject);
 ```
 #### min
-**Get's the lowest value from an object**
+**Get's the lowest value from an object**   
 Same as [max](#max), except it returns the minimum value.
 
 | Context  | Signature        |
@@ -1149,7 +1149,7 @@ Same as [max](#max), except it returns the minimum value.
 | static   | **min**(*{\*}* **obj**, *{Function=}* **predicate**) → *{\*}* |
 
 #### implements
-**Determines if an object has the given properties, and those properties are methods**
+**Determines if an object has the given properties, and those properties are methods**   
 
 | Context  | Signature        |
 | :--------| :--------------- |
@@ -1180,7 +1180,7 @@ lib.object.max(myObject);
 ```
 
 #### implementsOwn
-**Determines if an object has the given properties, and those properties are methods which belongs to the object**
+**Determines if an object has the given properties, and those properties are methods which belongs to the object**   
 Same as [implements](#implements), except with added *hasOwnProperty* check.
 
 | Context  | Signature        |
@@ -1191,7 +1191,7 @@ Same as [implements](#implements), except with added *hasOwnProperty* check.
 ### Strings
 
 #### camelize
-**Converts a string to camel case.**
+**Converts a string to camel case.**   
 Replaces */[^a-z0-9$]/g* and makes the first letter of each word uppercase (except the first, of course).
 
 | Context  | Signature        |
@@ -1208,7 +1208,7 @@ myString._.camelize(); // -> 'helloWorld'
 ```
 
 #### decamelize
-**Converts a camel case string to "somewhat" sentence form.**
+**Converts a camel case string to "somewhat" sentence form.**   
 
 | Context  | Signature        |
 | :--------| :--------------- |
@@ -1226,7 +1226,7 @@ myString._.decamelize(); // -> 'this is camel cased'
 // -> 'interesting b e h a v i o r'
 ```
 #### repeat
-**Repeats a string *n* times.**
+**Repeats a string *n* times.**   
 
 | Context  | Signature        |
 | :--------| :--------------- |
@@ -1245,7 +1245,7 @@ lib.string.repeat(myString);
 ```
 
 #### ltrim
-**Left trims whitespace from a string.**
+**Left trims whitespace from a string.**   
 Functions just like *String.trim*, except only on the left side of the string.
 
 | Context  | Signature        |
@@ -1254,7 +1254,7 @@ Functions just like *String.trim*, except only on the left side of the string.
 | static   | **ltrim**(*{\*}* **myString**) → *{String}* |
 
 #### rtrim
-**Right trims whitespace from a string.**
+**Right trims whitespace from a string.**   
 Functions just like *String.trim*, except only on the right side of the string.
 
 | Context  | Signature        |
@@ -1263,7 +1263,7 @@ Functions just like *String.trim*, except only on the right side of the string.
 | static   | **rtrim**(*{\*}* **myString**) → *{String}* |
 
 #### htmlEncode
-**Escapes HTML special characters.**
+**Escapes HTML special characters.**   
 
 | Context  | Signature        |
 | :--------| :--------------- |
@@ -1279,7 +1279,7 @@ lib.string.htmlEncode(myString);
 ```
 
 #### htmlDecode
-**Unescapes HTML special characters.**
+**Unescapes HTML special characters.**   
 
 | Context  | Signature        |
 | :--------| :--------------- |
@@ -1295,7 +1295,7 @@ lib.string.htmlDecode(myString);
 ```
 
 #### addSlashes
-**Creates an 'eval' safe string, by adding slashes to ", ', \t, \n, \f, \r, and the NULL byte.**
+**Creates an 'eval' safe string, by adding slashes to ", ', \t, \n, \f, \r, and the NULL byte.**   
 
 | Context  | Signature        |
 | :--------| :--------------- |
@@ -1311,7 +1311,7 @@ lib.string.addSlashes(myString);
 ```
 
 #### ucFirst
-**Returns the string with the first letter capitalized.**
+**Returns the string with the first letter capitalized.**   
 
 | Context  | Signature        |
 | :--------| :--------------- |
@@ -1327,7 +1327,7 @@ lib.string.ucFirst(myString);
 ```
 
 #### lcFirst
-**Returns the string with the first letter lowercased.**
+**Returns the string with the first letter lowercased.**   
 
 | Context  | Signature        |
 | :--------| :--------------- |
@@ -1343,7 +1343,7 @@ lib.string.lcFirst(myString);
 ```
 
 #### titleCase
-**Returns the string in title case.**
+**Returns the string in title case.**   
 
 | Context  | Signature        |
 | :--------| :--------------- |
