@@ -152,7 +152,7 @@ arr._.only('string')                   // -> ['hello', 'world']
 ### [**Strings**](#strings)
 | Name                                | Description                      |
 | :---------------------------------- | :------------------------------- |
-| [addSlashes](#addslashes)           | Creates an eval-safe string, by escaping */['"\t\n\f\r\u0000]/* |
+| [addSlashes](#addslashes)           | Creates an eval-safe string, by escaping ```/['"\t\n\f\r\u0000]/``` |
 | [camelize](#camelize)               | Converts a string to camel case |
 | [decamelize](#decamelize)           | Converts a camel cased string to sentence form |
 | [ellipses](#ellipses)               | Truncates a string, adding ellipses if the string is longer than *length* |
@@ -160,14 +160,14 @@ arr._.only('string')                   // -> ['hello', 'world']
 | [htmlEncode](#htmlencode)           | Escapes HTML special characters |
 | [lcFirst](#lcfirst)                 | Lowercases the first character of a string |
 | [ltrim](#ltrim)                     | Left trims whitespace from a string |
-| [newlineToBreak](#newlinetobreak)   | Replaces newlines with *<br>* tags |
+| [newlineToBreak](#newlinetobreak)   | Replaces newlines with *\<br\>* tags |
 | [pad](#pad)                         | Pads (or truncates) a string to *length* |
 | [repeat](#repeat)                   | Repeats a string *n* times |
 | [reverse](#reverse)                 | Reverses a string |
 | [rtrim](#rtrim)                     | Right trims whitespace from a string |
 | [splice](#splice)                   | Splices a string like *Array.splice* |
 | [shuffle](#shuffle)                 | Shuffles a string |
-| [titleCase](#titleCase)             | Converts a string to title case |
+| [titleCase](#titlecase)             | Converts a string to title case |
 | [tabsToSpan](#tabstospan)           | Converts tab characters to a "tab" span |
 | [ucFirst](#ucfirst)                 | Uppercases the first character of a string |
 | [withoutTrailingSlash](#withouttrailingslash) | Removes trailing slashes from a string |
@@ -1577,7 +1577,7 @@ lib.string.pad(myString, length, delimiter, pre);
 ```
 
 #### newlineToBreak
-**Replaces newlines with <br> tags.**   
+**Replaces newlines with \<br\> tags.**   
 
 | Context  | Signature        |
 | :--------| :--------------- |
