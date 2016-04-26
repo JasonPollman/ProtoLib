@@ -227,7 +227,7 @@ lib.object.copy(something);
 ```
 
 #### occurrencesOf   
-**Counts the number of occurrences of *what***   
+**Counts the number of occurrences of *what**    
 For strings, numbers, and functions, the character occurrences are counted; For objects, the occurrences of "what" are counted by object reference or by value for non-object members.
 
 | Context  | Signature        |
@@ -977,7 +977,7 @@ lib.object.clone(myObject);
 ```
 
 #### only
-**Returns a new object with only the given types***   
+**Returns a new object with only the given types**   
 Filters an object by the specified list of types ('string', 'number', 'object', 'array', 'function', 'object object'). Any *typeof* type can be used, and multiple arguments can be specified. *object* will return both arrays and objects, *object object* will return only objects, and *array* will filter only arrays.
 
 Plural forms of the types can be used as well.
@@ -1018,7 +1018,7 @@ lib.object.only(myObject, 'typeA', 'typeB', 'typeC'...);
 ```
 
 #### where
-**Returns a new object, filtering by a predicate function***   
+**Returns a new object, filtering by a predicate function**   
 Filters an object by using a predicate function. If the predicate returns *true* the item is included in the results. The predicate function will be invoked for each item within the object with the following signature: **onItem** (*{\*}* **item**, *{String}* **key**).
 
 | Context  | Signature        |
@@ -1051,7 +1051,7 @@ lib.object.where(myObject, predicateFunction);
 ```
 
 #### whereKeys
-**Returns a new object, filtering an object's keys by a predicate function***   
+**Returns a new object, filtering an object's keys by a predicate function**   
 The same as *where*, except that the predicate function is invoked with the signature: **onItem** (*{String}* **key**, *{\*}* **item**).
 
 | Context  | Signature        |
