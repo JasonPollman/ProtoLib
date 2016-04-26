@@ -123,7 +123,7 @@ arr._.only('string')                   // -> ['hello', 'world']
 | [getNumeric](#getnumeric)           | Gets an object's numeric equivalent (or *NaN*) |
 | [histogram](#histogram)             | Computes an object's histogram of values |
 | [implements](#implements)           | Determines if an object has the given property, and that property is a method |
-| [implementsOwn](#implementsown)     | Determines if an object has the given property, that property is a method, and belongs to the object |
+| [implementsOwn](#implementsown)     | Determines if an object has the given property, and that property is a method which belongs to the object |
 | [invert](#invert)                   | Inverts an object's keys and values, or computes the mathematical inverse of a number |
 | [isArguments](#isarguments)         | Determines if the given objects are all Arguments objects |
 | [isArray](#isarray)                 | Determines if the given objects are all arrays |
@@ -1096,4 +1096,266 @@ function () {
 
 /* Static Use */
 lib.object.invert(myObject);
+```
+
+#### max
+**Get's the highest value from an object**
+For numbers, strings, functions, and booleans, the object is simply returned.
+An optional predicate function is available to determine the max for objects. The predicate is called with the current value in the collection, whatever is returned from the predicate is used in the evaluation to determine the if the value is the max.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **max**(*{Function=}* **predicate**) → *{\*}* |
+| static   | **max**(*{\*}* **obj**, *{Function=}* **predicate**) → *{\*}* |
+
+```js
+[1, 4, 7, 5, 99, 1, 2]._.max()          // -> 99
+['a', 'e', 'i', 'q', 'b', 'z']._.max()  // -> 'z'
+[1, 'a', 4, 'r', 999]._.max()           // -> 999, since 999 > 'r' char code
+{ a: 43, b: 123, c: 0 }._.max()         // -> 123
+
+// Predicate example
+var data = [
+    {
+        name: 'foo',
+        value: 1
+    },
+    {
+        name: 'bar',
+        value: 2
+    },
+    {
+        name: 'baz',
+        value: 3
+    }
+];
+
+var max = data._.max(function (item) {
+    return item.value;
+});
+
+// max = { name: 'baz', value: 3 }
+
+/* Static Use */
+lib.object.max(myObject);
+```
+#### min
+**Get's the lowest value from an object**
+Same as [max](#max), except it returns the minimum value.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **min**(*{Function=}* **predicate**) → *{\*}* |
+| static   | **min**(*{\*}* **obj**, *{Function=}* **predicate**) → *{\*}* |
+
+#### implements
+**Determines if an object has the given properties, and those properties are methods**
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **implements**(*{String}* **method**) → *{\*}* |
+| static   | **implements**(*{\*}* **obj**, *{String}* **method**) → *{\*}* |
+
+```js
+var MyClass = function () {
+    this.foo = function () {};
+    this.bar = 5;
+    this.baz = function () {};
+};
+
+var x = new MyClass();
+x._.implements('foo', 'baz'); // -> true
+x._.implements('bar', 'baz'); // -> false, baz is not a method
+
+var y = {
+    orange: function () {},
+    apple: false
+};
+
+y._.implements('orange'); // -> true
+y._.implements('apple'); // -> false, apple is not a method
+
+/* Static Use */
+lib.object.max(myObject);
+```
+
+#### implementsOwn
+**Determines if an object has the given properties, and those properties are methods which belongs to the object**
+Same as [implements](#implements), except with added *hasOwnProperty* check.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **implementsOwn**(*{String}* **method**) → *{\*}* |
+| static   | **implementsOwn**(*{\*}* **obj**, *{String}* **method**) → *{\*}* |
+
+### Strings
+
+#### camelize
+**Converts a string to camel case.**
+Replaces */[^a-z0-9$]/g* and makes the first letter of each word uppercase (except the first, of course).
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **camelize**() → *{String}* |
+| static   | **camelize**(*{\*}* **myString**) → *{String}* |
+
+```js
+var myString = 'hello world!';
+myString._.camelize(); // -> 'helloWorld'
+
+"we_don't_like_underscores_in_javascript"._.camelize();
+// -> 'weDontLikeUnderscoresInJavascript'
+```
+
+#### decamelize
+**Converts a camel case string to "somewhat" sentence form.**
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **decamelize**() → *{String}* |
+| static   | **decamelize**(*{\*}* **myString**) → *{String}* |
+
+```js
+var myString = 'thisIsCamelCased';
+myString._.decamelize(); // -> 'this is camel cased'
+
+'interestingBehavior'._.decamelize();
+// -> 'interesting behavior'
+
+'interestingBEHAVIOR'._.decamelize();
+// -> 'interesting b e h a v i o r'
+```
+#### repeat
+**Repeats a string *n* times.**
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **repeat**() → *{String}* |
+| static   | **repeat**(*{\*}* **myString**) → *{String}* |
+
+```js
+var myString = 'repeat me ';
+myString._.repeat(3); // -> 'repeat me repeat me repeat me '
+
+'*'._.repeat(10);     // -> '**********'
+'Racecar'._.repeat(3) // -> 'RacecarRacecarRacecar'
+
+/* Static Use */
+lib.string.repeat(myString);
+```
+
+#### ltrim
+**Left trims whitespace from a string.**
+Functions just like *String.trim*, except only on the left side of the string.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **ltrim**() → *{String}* |
+| static   | **ltrim**(*{\*}* **myString**) → *{String}* |
+
+#### rtrim
+**Right trims whitespace from a string.**
+Functions just like *String.trim*, except only on the right side of the string.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **rtrim**() → *{String}* |
+| static   | **rtrim**(*{\*}* **myString**) → *{String}* |
+
+#### htmlEncode
+**Escapes HTML special characters.**
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **htmlEncode**() → *{String}* |
+| static   | **htmlEncode**(*{\*}* **myString**) → *{String}* |
+
+```js
+var myString = '5 is > 7, but 7 < 9';
+myString._.htmlEncode(); // -> '5 is &gt; 7, but 7 is &lt; 9'
+
+/* Static Use */
+lib.string.htmlEncode(myString);
+```
+
+#### htmlDecode
+**Unescapes HTML special characters.**
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **htmlDecode**() → *{String}* |
+| static   | **htmlDecode**(*{\*}* **myString**) → *{String}* |
+
+```js
+var myString = '5 is &gt; 7, but 7 is &lt; 9';
+myString._.htmlDecode(); // -> '5 is > 7, but 7 < 9'
+
+/* Static Use */
+lib.string.htmlDecode(myString);
+```
+
+#### addSlashes
+**Creates an 'eval' safe string, by adding slashes to ", ', \t, \n, \f, \r, and the NULL byte.**
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **addSlashes**() → *{String}* |
+| static   | **addSlashes**(*{\*}* **myString**) → *{String}* |
+
+```js
+var myString = 'function () { return "hello world!"};';
+myString._.addSlashes(); // -> 'function () { return \"hello world!\"};'
+
+/* Static Use */
+lib.string.addSlashes(myString);
+```
+
+#### ucFirst
+**Returns the string with the first letter capitalized.**
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **ucFirst**() → *{String}* |
+| static   | **ucFirst**(*{\*}* **myString**) → *{String}* |
+
+```js
+var myString = 'hello world!';
+myString._.ucFirst(); // -> 'Hello world!'
+
+/* Static Use */
+lib.string.ucFirst(myString);
+```
+
+#### lcFirst
+**Returns the string with the first letter lowercased.**
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **lcFirst**() → *{String}* |
+| static   | **lcFirst**(*{\*}* **myString**) → *{String}* |
+
+```js
+var myString = 'Hello world!';
+myString._.lcFirst(); // -> 'hello world!'
+
+/* Static Use */
+lib.string.lcFirst(myString);
+```
+
+#### titleCase
+**Returns the string in title case.**
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **titleCase**() → *{String}* |
+| static   | **titleCase**(*{\*}* **myString**) → *{String}* |
+
+```js
+var myString   = 'the quick red fox jumped over the lazy brown dog!',
+    titleCased = myString._.titleCase();
+
+// titleCased = 'The Quick Red Fox Jumped Over The Lazy Brown Dog!'
+
+/* Static Use */
+lib.string.titleCase(myString);
 ```

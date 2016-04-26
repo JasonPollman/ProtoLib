@@ -27,6 +27,9 @@
             expect('$$$ helloWorld$$$'._.decamelize()).to.equal('$ $ $ hello world $ $ $');
             expect(' $$$ helloWorld$$$'._.decamelize()).to.equal('$ $ $ hello world $ $ $');
             expect(' one two three '._.decamelize()).to.equal('one two three');
+
+            expect('interestingBehavior'._.decamelize()).to.equal('interesting behavior');
+            expect('interestingBEHAVIOR'._.decamelize()).to.equal('interesting b e h a v i o r');
         });
 
         it('It should decamelize strings as expected (statically, using arguments)', function () {

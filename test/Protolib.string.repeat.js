@@ -33,6 +33,12 @@
             expect('*'._.repeat(function () {})).to.equal('*');
             expect('*'._.repeat({})).to.equal('*');
             expect('*'._.repeat([])).to.equal('*');
+
+            var myString = 'repeat me ';
+            expect(myString._.repeat(3)).to.equal('repeat me repeat me repeat me ');
+
+            expect('*'._.repeat(10)).to.equal('**********');
+            expect('Racecar'._.repeat(3)).to.equal('RacecarRacecarRacecar')
         });
     });
 
