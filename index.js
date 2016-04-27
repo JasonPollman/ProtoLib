@@ -132,7 +132,7 @@
             catch (e) {
                 // IE throw when calling Object.getPrototypeOf on primitive values...
                 // But not with deprecated __proto__ ???
-                return o.__proto__ || o.constructor.prototype.constructor; // jshint ignore:line
+                return o.__proto__ || o.constructor.prototype; // jshint ignore:line
             }
         }
 
