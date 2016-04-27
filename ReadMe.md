@@ -6,8 +6,7 @@
 ------
 ProtoLib is a fast, node and browser friendly JavaScript library. It "tucks" library methods inside a single, customizable property attached to *Object.prototype*.
 
-Currently working in Node.js, Chrome, Firefox, and Safari.
-**Untested in IE**
+Currently *tested* and working in Node.js, Chrome, Firefox, Safari, IE 10 & 11.
 
 Basically, I got sick of writing the same library methods over and over, dealing with static methods, and colliding libraries...   
 
@@ -17,24 +16,22 @@ Basically, I got sick of writing the same library methods over and over, dealing
 ---
 - **Over 100 library methods**
     - [See the list below...](#available-methods)
+    - Methods are attached to an object, attached to *Object.prototype*, which means more terse, readable code.
+    - Iterating functions like [each](#each), [every](#every), and [any](#any) work on objects, arrays, strings, numbers, and functions.
 - **Collision Free**
     - *You* define the property attached to *Object.prototype*.
     - The default is *_* (underscore), but this can be set to any string.
+    - No ES6 for browser compatibility.
 - **Extensible**
     - ProtoLib allows you to extend the library for any prototype.
     - Extend both custom objects and primitives.
 - **Switch the library on and off, on the fly**
 
-## Install
----
-```bash
-$ npm install protolib --save
-```
-
-## Table of Contents
+## Contents
 ---
 1. [Install](#install)
 2. [Getting Started](#getting-started)
+    - [Node.js](#nodejs)
     - [Browser Use](#browser-use)
 3. [Available Methods](#available-methods)
     - [Objects](#objects)
@@ -43,15 +40,24 @@ $ npm install protolib --save
     - [Functions](#functions)
     - [Numbers](#numbers)
     - [Date Objects](#date-objects)
+4. [Extending ProtoLib](#extending-protolib)
+    - [Custom Objects](#custom-objects)
 
-
+## Install
+---
+```bash
+$ npm install protolib --save
+```
 ## Getting Started
 ---
+
+### Node.js
+
 ```js
 // Require the protolib library.
 var ProtoLib = require('protolib');
 
-// Create a new instance, specifying the accessor property (e.g. "handle").
+// Create a new instance, specifying the accessor property (i.e. "handle").
 // This will default to '_' if unspecified.
 var lib = new ProtoLib('_');
 
@@ -812,7 +818,7 @@ Loops through each item in the object and calls *onIteration*. If a "non-undefin
 | {String} **key**       | The key of the current item |
 | {Number} **iteration** | The current iteration count.<br/>For arrays *key* and *iteration* will be the same. |
 | {Function} **exit**    | A function that, when called will break the loop and return the arguments passed to it as an array (or if a single value is passed, the value itself) |
-| {*} **parent**         | The object being iterated over. Typically, *this* and *parent* will be equal, however *parent* exists in the event *onIteration* has been bound. If using an arrow function *this* will be lexically block scoped, so *parent* should be used to be safe. |
+| {\*} **parent**        | The object being iterated over. Typically, *this* and *parent* will be equal, however *parent* exists in the event *onIteration* has been bound. If using an arrow function *this* will be lexically block scoped, so *parent* should be used to be safe. |
 
 Functions and Numbers are cast to strings with *Function/Number.toString*.
 
