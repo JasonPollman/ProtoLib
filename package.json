@@ -1,6 +1,6 @@
 {
     "name": "protolib",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "The namespace friendly prototype library for both node and browsers.",
     "author": "Jason Pollman <jasonjpollman@gmail.com>",
     "keywords": [
@@ -15,9 +15,6 @@
     "scripts": {
         "prepublish": "gulp",
         "test": "mocha"
-    },
-    "dependencies": {
-        "minimist": "^1.2.0"
     },
     "devDependencies": {
         "browserify": "^13.0.0",
