@@ -131,7 +131,7 @@
                     // Returns the libp library...
                     get: function () {
                         obj = {}; i = 0;
-                        p = Object.getPrototypeOf(this);
+                        p = this.__proto__;
                         var last = null;
 
                         do { // This will traverse the protoypes of the object, so inherited properties will be made available
@@ -162,7 +162,7 @@
 
                             i++;
 
-                        } while(p = Object.getPrototypeOf(p)); // jshint ignore:line
+                        } while(p = p.__proto__); // jshint ignore:line
                         return obj;
                     }
                 });
