@@ -55,7 +55,7 @@
             expect({ a: 1, b: 1, c: 1, d: 2 }._.histogram()).to.eql({ 1: 3, 2: 1 });
             expect({ a: 1, b: 1, c: 1, d: 2, e: null }._.histogram()).to.eql({ 1: 3, 2: 1, 'null': 1 });
             expect({ a: 1, b: 1, c: 1, d: 2, e: null, f: undefined }._.histogram()).to.eql({ 1: 3, 2: 1, 'null': 1, 'undefined': 1 });
-            expect({ a: 1, b: 1, c: 1, d: 2, e: null, f: undefined, function () {} }._.histogram()).to.eql({ 1: 3, 2: 1, 'null': 1, 'undefined': 1, 'function': 1 });
+            expect({ a: 1, b: 1, c: 1, d: 2, e: null, f: undefined, h: function () {} }._.histogram()).to.eql({ 1: 3, 2: 1, 'null': 1, 'undefined': 1, 'function': 1 });
             expect({ a: 'foo', b: 'foo', c: 'foo', d: 'foo', e: 'foo' }._.histogram()).to.eql({ 'foo': 5 });
         });
 
