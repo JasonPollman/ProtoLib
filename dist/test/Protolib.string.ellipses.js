@@ -8,7 +8,7 @@
     else {
         expect = require('chai').expect;
     }
-    
+
     describe('Protolib.string.ellipses', function () {
         before(function () {
             if(typeof window !== 'object' && !Object._) new (require('../'))('_');
@@ -32,6 +32,27 @@
             expect('hello world'._.ellipses(-10)).to.equal('');
             expect('hello world'._.ellipses(0)).to.equal('');
             expect('hello world'._.ellipses()).to.equal('hello world');
+
+            var myString = 'the quick red fox jumped over the lazy brown dog!';
+
+            myString = myString._.ellipses(10);
+            expect(myString).to.equal('the qui...');
+
+            myString = 'the quick red fox jumped over the lazy brown dog!';
+            myString = myString._.ellipses(20);
+            expect(myString).to.equal('the quick red fox...');
+
+            myString = 'the quick red fox jumped over the lazy brown dog!';
+            myString = myString._.ellipses(20, 'front');
+            expect(myString).to.equal('...the quick red fox');
+
+            myString = 'the quick red fox jumped over the lazy brown dog!';
+            myString = myString._.ellipses(20, 'front', '•••');
+            expect(myString).to.equal('•••the quick red fox');
+
+            myString = 'the quick red fox jumped over the lazy brown dog!';
+            myString = myString._.ellipses(20, 'back', '??????');
+            expect(myString).to.equal('the quick red ??????');
         });
 
         it('It should add ellipses to the front of a string if "front" is specified', function () {

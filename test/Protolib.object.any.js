@@ -115,7 +115,7 @@
                 keys = [],
                 vals = [];
 
-            nobj._.any((val, key) => {
+            nobj._.any(function (val, key) {
                 vals.push(val);
                 keys.push(key);
             });
@@ -123,12 +123,12 @@
             expect(vals).to.eql([1, 2, 3]);
             expect(keys).to.eql(['a', 'b', 'c']);
 
-            var result = nobj._.any(val => {
+            var result = nobj._.any(function (val) {
                 if(val === 3) return val;
             });
             expect(result).to.equal(3);
 
-            result = nobj._.any(val => {
+            result = nobj._.any(function (val) {
                 if(val === 999) return val;
             });
             expect(result).to.equal(undefined);

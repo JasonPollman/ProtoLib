@@ -117,10 +117,10 @@
             var foo, bar;
             foo = [1, 2, 3, 4];
 
-            bar = foo._.where(item => item > 2);
+            bar = foo._.where(function (item) { return item > 2; });
             expect(bar).to.eql([3, 4]);
 
-            bar = foo._.where(() => true);
+            bar = foo._.where(function () { return true; });
             expect(bar).to.eql([1, 2, 3, 4]);
 
             foo = {
@@ -131,10 +131,10 @@
                 e: { z: 9, y: 8 }
             };
 
-            bar = foo._.where((item, key) => key === 'a');      // bar = { a: [1, 2, 3] }
+            bar = foo._.where(function (item, key) { return key === 'a'; });
             expect(bar).to.eql({ a: [1, 2, 3] });
 
-            bar = foo._.where(function (item, key) {            // bar = { b: 'a string' }
+            bar = foo._.where(function (item, key) {
                 return typeof item !== 'object' && key !== 'c';
             });
             expect(bar).to.eql({ b: 'a string' });

@@ -115,19 +115,19 @@
                 keys = [],
                 vals = [];
 
-            nobj._.every((val, key) => {
+            nobj._.every(function (val, key) {
                 vals.push(val);
                 keys.push(key);
             });
             expect(vals).to.eql([1, 2, 3]);
             expect(keys).to.eql(['a', 'b', 'c']);
 
-            var didLoopThroughAllItems = nobj._.every((val) => {
+            var didLoopThroughAllItems = nobj._.every(function (val) {
                 if(val === 3) return false;
             });
             expect(didLoopThroughAllItems).to.equal(false);
 
-            didLoopThroughAllItems = nobj._.every((val) => {
+            didLoopThroughAllItems = nobj._.every(function (val) {
                 if(val === 999) return false;
             });
             expect(didLoopThroughAllItems).to.equal(true);

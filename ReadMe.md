@@ -110,6 +110,8 @@ arr._.only('string')                   // -> ['hello', 'world']
 ## Available Methods
 ---
 ### [**Objects**](#objects)
+Methods available to all *Objects* (objects, arrays, strings, functions, etc.).   
+
 | Name                              | Description                      |
 | :-------------------------------- | :------------------------------- |
 | [any](#any)                         | Loops through each item in an object until a *non-undefined* value is returned |
@@ -150,6 +152,8 @@ arr._.only('string')                   // -> ['hello', 'world']
 | [whereKeys](#wherekeys)             | Filters an object by its keys using a predicate function |
 
 ### [**Strings**](#strings)
+Methods available to all *String* objects.    
+
 | Name                                | Description                      |
 | :---------------------------------- | :------------------------------- |
 | [addSlashes](#addslashes)           | Creates an eval-safe string, by escaping ```/['"\t\n\f\r\u0000]/``` |
@@ -162,6 +166,7 @@ arr._.only('string')                   // -> ['hello', 'world']
 | [ltrim](#ltrim)                     | Left trims whitespace from a string |
 | [newlineToBreak](#newlinetobreak)   | Replaces newlines with *\<br\>* tags |
 | [pad](#pad)                         | Pads (or truncates) a string to *length* |
+| [regexpSafe](#regexpsafe)           | Returns a regular expression safe string |
 | [repeat](#repeat)                   | Repeats a string *n* times |
 | [reverse](#reverse)                 | Reverses a string |
 | [rtrim](#rtrim)                     | Right trims whitespace from a string |
@@ -173,12 +178,78 @@ arr._.only('string')                   // -> ['hello', 'world']
 | [withoutTrailingSlash](#withouttrailingslash) | Removes trailing slashes from a string |
 | [withTrailingSlash](#withtrailingslash)       | Adds a trailing slash to a string |
 
-### [**Arrays**](#arrays)
-### [**Functions**](#functions)
-### [**Numbers**](#numbers)
-### [**Dates**](#dates)
+### [**Arrays**](#arrays)    
+Methods available to all *Array* objects and their inheritors.   
 
-**The examples below assume you have set 'lib' to a new instance of protolib and that you're using the default handler ('_'), that is:**
+| Name                                | Description                      |
+| :---------------------------------- | :------------------------------- |
+| [ascending](#ascending) | Sorts an array in ascending order |
+| [descending](#descending) | Sorts an array in descending order |
+| [difference](#difference) | Computes the set difference of the given arrays |
+| [intersect](#intersect) | Computes the set intersection of the given arrays |
+| [makeUnique](#makeunique) | Removes duplicates from the array (modifies the array) |
+| [unique](#unique) | Returns a new array with duplicates removed |
+| [rotate](#rotate) | Rotates an array's contents left or right |
+| [rotateLeft](#rotateleft) | Rotates an array's contents left |
+| [rotateRight](#rotateright) | Rotates an array's contents right |
+| [shuffle](#shuffle-2) | Shuffles the contents of an array |
+| [union](#union) | Computes the **unique** union of the given arrays |
+| [without](#without) | Returns a new array with all occurrences of the arguments omitted |
+
+### [**Functions**](#functions)
+Methods available to all *Function* objects and their inheritors.    
+
+| Name                                | Description                      |
+| :---------------------------------- | :------------------------------- |
+| [inherits](#inherits) | Inherit the prototype methods from one constructor into another |
+
+### [**Numbers**](#numbers)    
+Methods available to all *Number* objects and their inheritors.   
+
+| Name                                | Description                      |
+| :---------------------------------- | :------------------------------- |
+| [choose](#choose) | Computes *n* choose *k* |
+| [clockTime](#clocktime) | Returns a string in the *HH:MM:SS:MSEC* format |
+| [daysAgo](#daysago) | Gets a date that occurs *n* days ago |
+| [daysFrom](#daysfrom) | Gets a date that occurs *n* days from the given date |
+| [daysFromNow](#daysfromnow) | Gets a date that occurs *n* days from the current date |
+| [factorial](#factorial) | Returns the factorial of a number |
+| [hoursAgo](#hoursago) | Gets a date that occurs *n* hours ago |
+| [hoursFrom](#hoursfrom) | Gets a date that occurs *n* hours from the given date |
+| [hoursFromNow](#hoursfromnow) | Gets a date that occurs *n* hours from the current time |
+| [isInt](#isint) | True if all arguments are integers, false otherwise |
+| [minutesAgo](#minutesago) | Gets a date that occurs *n* minutes ago |
+| [minutesFrom](#minutesfrom) | Gets a date that occurs *n* minutes from the given date |
+| [minutesFromNow](#minutesfromnow) | Gets a date that occurs *n* minutes from the current time |
+| [monthsAgo](#monthsago) | Gets a date that occurs *n* months ago |
+| [monthsFrom](#monthsfrom) | Gets a date that occurs *n* months from the given date |
+| [monthsFromNow](#monthsfromnow) | Gets a date that occurs *n* months from the current date |
+| [pad](#pad) | Pads a number with leading (or trailing) zeros |
+| [randomNumberInRange](#randomnumberinrange) | Get a random number in the range [min, max] (inclusive) |
+| [randomIntInRange](#randomintinrange) | Get a random integer in the range [min, max] (inclusive) |
+| [secondsAgo](#secondsago) | Gets a date that occurs *n* seconds ago |
+| [secondsFrom](#secondsfrom) | Gets a date that occurs *n* seconds from the given date |
+| [secondsFromNow](#secondsfromnow) | Gets a date that occurs *n* seconds from the current time |
+| [to](#to) | Returns a random integer (if passed an int), or float (if passed a float) in the given range |
+| [yearsAgo](#yearsago) | Gets a date that occurs *n* years ago |
+| [yearsFrom](#yearsfrom) | Gets a date that occurs *n* years from the given date |
+| [yearsFromNow](#yearsfromnow) | Gets a date that occurs *n* years from the current date |
+| [yyyymmdd](#yyyymmdd) | Returns a number in the YYYY-MM-DD format |
+
+### [**Dates**](#dates)   
+Methods available to all *Date* objects and their inheritors.   
+
+| Name                                | Description                      |
+| :---------------------------------- | :------------------------------- |
+| [advanceDays](#advancedays) | Advances the date *n* days |
+| [advanceMonths](#advancemonths) | Advances the date *n* months |
+| [advanceYears](#advanceyears) | Advances the date *n* years |
+| [clockTime](#clocktime-2) | Returns a string in the *HH:MM:SS:MSEC* format |
+| [yyyymmdd](#yyyymmdd) | Returns a number in the YYYY-MM-DD format |     
+
+
+---
+**The examples below assume you have set 'lib' to a new instance of ProtoLib and that you're using the default handler ('_'), that is...**
 
 ```js
 var ProtoLib = require('protolib'),
@@ -1224,7 +1295,7 @@ Replaces */[^a-z0-9$]/g* and makes the first letter of each word uppercase (exce
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **camelize**() → *{String}* |
-| static   | **camelize**(*{\*}* **myString**) → *{String}* |
+| static   | **camelize**(*{String}* **myString**) → *{String}* |
 
 ```js
 var myString = 'hello world!';
@@ -1240,7 +1311,7 @@ myString._.camelize(); // -> 'helloWorld'
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **decamelize**() → *{String}* |
-| static   | **decamelize**(*{\*}* **myString**) → *{String}* |
+| static   | **decamelize**(*{String}* **myString**) → *{String}* |
 
 ```js
 var myString = 'thisIsCamelCased';
@@ -1258,7 +1329,7 @@ myString._.decamelize(); // -> 'this is camel cased'
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **repeat**() → *{String}* |
-| static   | **repeat**(*{\*}* **myString**) → *{String}* |
+| static   | **repeat**(*{String}* **myString**) → *{String}* |
 
 ```js
 var myString = 'repeat me ';
@@ -1278,7 +1349,7 @@ Functions just like *String.trim*, except only on the left side of the string.
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **ltrim**() → *{String}* |
-| static   | **ltrim**(*{\*}* **myString**) → *{String}* |
+| static   | **ltrim**(*{String}* **myString**) → *{String}* |
 
 #### rtrim
 **Right trims whitespace from a string.**   
@@ -1287,7 +1358,7 @@ Functions just like *String.trim*, except only on the right side of the string.
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **rtrim**() → *{String}* |
-| static   | **rtrim**(*{\*}* **myString**) → *{String}* |
+| static   | **rtrim**(*{String}* **myString**) → *{String}* |
 
 #### htmlEncode
 **Escapes HTML special characters.**   
@@ -1295,7 +1366,7 @@ Functions just like *String.trim*, except only on the right side of the string.
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **htmlEncode**() → *{String}* |
-| static   | **htmlEncode**(*{\*}* **myString**) → *{String}* |
+| static   | **htmlEncode**(*{String}* **myString**) → *{String}* |
 
 ```js
 var myString = '5 is > 7, but 7 < 9';
@@ -1311,7 +1382,7 @@ lib.string.htmlEncode(myString);
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **htmlDecode**() → *{String}* |
-| static   | **htmlDecode**(*{\*}* **myString**) → *{String}* |
+| static   | **htmlDecode**(*{String}* **myString**) → *{String}* |
 
 ```js
 var myString = '5 is &gt; 7, but 7 is &lt; 9';
@@ -1327,7 +1398,7 @@ lib.string.htmlDecode(myString);
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **addSlashes**() → *{String}* |
-| static   | **addSlashes**(*{\*}* **myString**) → *{String}* |
+| static   | **addSlashes**(*{String}* **myString**) → *{String}* |
 
 ```js
 var myString = 'function () { return "hello world!"};';
@@ -1343,7 +1414,7 @@ lib.string.addSlashes(myString);
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **ucFirst**() → *{String}* |
-| static   | **ucFirst**(*{\*}* **myString**) → *{String}* |
+| static   | **ucFirst**(*{String}* **myString**) → *{String}* |
 
 ```js
 var myString = 'hello world!';
@@ -1359,7 +1430,7 @@ lib.string.ucFirst(myString);
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **lcFirst**() → *{String}* |
-| static   | **lcFirst**(*{\*}* **myString**) → *{String}* |
+| static   | **lcFirst**(*{String}* **myString**) → *{String}* |
 
 ```js
 var myString = 'Hello world!';
@@ -1375,7 +1446,7 @@ lib.string.lcFirst(myString);
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **titleCase**() → *{String}* |
-| static   | **titleCase**(*{\*}* **myString**) → *{String}* |
+| static   | **titleCase**(*{String}* **myString**) → *{String}* |
 
 ```js
 var myString   = 'the quick red fox jumped over the lazy brown dog!',
@@ -1393,7 +1464,7 @@ lib.string.titleCase(myString);
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **splice**(*{Number}* **index**, *{Number}* **delete**, *{String=}* **append**) → *{String}* |
-| static   | **splice**(*{\*}* **myString**, *{Number}* **index**, *{Number}* **delete**, *{String=}* **append**) → *{String}* |
+| static   | **splice**(*{String}* **myString**, *{Number}* **index**, *{Number}* **delete**, *{String=}* **append**) → *{String}* |
 
 ```js
 var myString = 'the quick red fox jumped over the lazy brown dog!';
@@ -1419,7 +1490,7 @@ Truncates the given string to length. If the string is longer than length, ellip
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **ellipses**(*{Number}* **length**, *{String=}* [**place**='back'], *{String=}* **ellipses**) → *{String}* |
-| static   | **ellipses**(*{\*}* **myString**, *{Number}* **length**, *{String=}* **place**, *{String=}* **ellipses**) → *{String}* |
+| static   | **ellipses**(*{String}* **myString**, *{Number}* **length**, *{String=}* **place**, *{String=}* **ellipses**) → *{String}* |
 
 ```js
 var myString = 'the quick red fox jumped over the lazy brown dog!';
@@ -1442,7 +1513,7 @@ If the optional *splitter* argument is passed, it will be tokenized by the value
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **shuffle**(*{String=}* **splitter**) → *{String}* |
-| static   | **shuffle**(*{\*}* **myString**, *{String=}* **splitter**) → *{String}* |
+| static   | **shuffle**(*{String}* **myString**, *{String=}* **splitter**) → *{String}* |
 
 ```js
 var aString = 'hello world';
@@ -1467,7 +1538,7 @@ lib.string.shuffle(myString, splitter);
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **reverse**() → *{String}* |
-| static   | **reverse**(*{\*}* **myString**) → *{String}* |
+| static   | **reverse**(*{String}* **myString**) → *{String}* |
 
 ```js
 var myString = 'hello world';
@@ -1485,7 +1556,7 @@ lib.string.reverse(myString);
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **withoutTrailingSlash**() → *{String}* |
-| static   | **withoutTrailingSlash**(*{\*}* **myString**) → *{String}* |
+| static   | **withoutTrailingSlash**(*{String}* **myString**) → *{String}* |
 
 ```js
 var path = 'path/to/some/directory/';
@@ -1512,7 +1583,7 @@ lib.string.withoutTrailingSlash(myString);
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **withTrailingSlash**() → *{String}* |
-| static   | **withTrailingSlash**(*{\*}* **myString**) → *{String}* |
+| static   | **withTrailingSlash**(*{String}* **myString**) → *{String}* |
 
 ```js
 var path = 'path/to/some/directory';
@@ -1533,7 +1604,7 @@ Prepends slashes to ```/[-\/\\^$*+?.()|[\]{}]/g```
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **regexpSafe**() → *{String}* |
-| static   | **regexpSafe**(*{\*}* **myString**) → *{String}* |
+| static   | **regexpSafe**(*{String}* **myString**) → *{String}* |
 
 ```js
 var money  = '$1,000.00',
@@ -1558,7 +1629,7 @@ Prepends slashes to ```/[-\/\\^$*+?.()|[\]{}]/g```
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **regexpSafe**(*{String}* **length**, *{String=}* [**delimiter**= ' '], *{Boolean=}* **pre**) → *{String}* |
-| static   | **regexpSafe**(*{\*}* **myString**, *{String}* **length**, *{String=}* **delimiter**, *{Boolean=}* **pre**) → *{String}* |
+| static   | **regexpSafe**(*{String}* **myString**, *{String}* **length**, *{String=}* **delimiter**, *{Boolean=}* **pre**) → *{String}* |
 
 ```js
 'hello world!'._.pad(3);  // -> 'hel'
@@ -1582,14 +1653,14 @@ lib.string.pad(myString, length, delimiter, pre);
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **newlineToBreak**() → *{String}* |
-| static   | **newlineToBreak**(*{\*}* **myString**) → *{String}* |
+| static   | **newlineToBreak**(*{String}* **myString**) → *{String}* |
 
 ```js
-'line 1\nline 2\n line 3'._.newlineToBreak();
+'line 1\nline 2\nline 3'._.newlineToBreak();
 // -> 'line 1<br>line 2<br>line 3'
 
 /* Static Use */
-lib.string.pad(myString, length, delimiter, pre);
+lib.string.newlineToBreak(myString);
 ```
 
 #### tabsToSpan
@@ -1598,12 +1669,152 @@ lib.string.pad(myString, length, delimiter, pre);
 | Context  | Signature        |
 | :--------| :--------------- |
 | instance | **tabsToSpan**() → *{String}* |
-| static   | **tabsToSpan**(*{\*}* **myString**) → *{String}* |
+| static   | **tabsToSpan**(*{String}* **myString**) → *{String}* |
 
 ```js
-'line 1\tline 2\t line 3'._.newlineToBreak();
+'line 1\tline 2\tline 3'._.tabsToSpan();
 // -> 'line 1<span class="tab"></span>line 2<span class="tab"></span>line 3'
 
 /* Static Use */
-lib.string.pad(myString, length, delimiter, pre);
+lib.string.tabsToSpan(myString);
+```
+
+### Numbers
+
+#### randomIntInRange
+** Get a random integer in the range [min, max] (inclusive)**   
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | *N/A* |
+| static   | **randomNumberInRange**(*{Number}* [**a**=0], *{Number}* [**b**=*Number.MAX_VALUE*]) → *{Number}* |
+
+```js
+lib.number.randomIntInRange(0, 100);    //-> Some integer between 0 and 100
+lib.number.randomIntInRange(-100, 100); //-> Some integer between -100 and 100
+```
+
+#### randomNumberInRange
+** Get a random float in the range [min, max] (inclusive)**   
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | *N/A* |
+| static   | **randomNumberInRange**(*{Number}* [**a**=0], *{Number}* [**b**=*Number.MAX_VALUE*]) → *{Number}* |
+
+```js
+lib.number.randomNumberInRange(0.123, 100.784);    //-> Some integer between 0.123 and 100.784
+lib.number.randomNumberInRange(-100.1, 5); //-> Some integer between -100.1 and 5
+```
+
+#### to   
+**Gets a random integer/float using the number as the lower range and *n* as the upper range (both inclusive)**   
+If *n* is omitted, *Number.MAX_VALUE* will be used. If the number is an integer, an integer will be returned; same for floats.   
+
+| Context  | Signature            |
+| :--------| :------------------- |
+| instance | **to**() → *{Number}*|
+| static   | *N/A                 |
+
+```js
+(5)._.to(100);      // -> Some integer between 5 and 100
+(5.1)._.to(100);    // -> Some float between 5.1 and 100
+(-1)._.to(1)        // -> -1, 0, or 1
+(-1.000001)._.to(1) // -> Some float value between -1.000001 to 1
+```
+
+#### factorial
+**Returns the factorial value of a number.**   
+Any number greater than 170 returns Infinity (as the factorial of 171 > Number.MAX_VALUE). All negative numbers return NaN.
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **factorial**() → *{Number|Infinity}* |
+| static   | **factorial**(*{\*}* **myNumber**) → *{Number|Infinity}* |
+
+```js
+(3)._.factorial();   // -> 6
+(0)._.factorial();   // -> 1
+(100)._.factorial(); // -> ~9.332622e+157
+
+(-1)._.factorial();  // -> NaN
+
+/* Static Use */
+lib.number.factorial(myNumber);
+```
+
+#### choose
+**Computes the number of combinations between n and k.**   
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **choose**() → *{Number|Infinity}* |
+| static   | **choose**(*{Number}* **n**, *{Number}* **k**) → *{Number|Infinity}* |
+
+```js
+(3)._.choose(2);            // -> 3
+(10000)._.choose(1);        // -> 1000
+(10000)._.choose(10000);    // -> 1
+(1000)._.choose(170);       // -> ~3.27184e+196
+
+/* Static Use */
+lib.number.choose(n, k);
+```
+
+#### isInt
+**True if all arguments are integers, false otherwise.**   
+This method checks for a '.' using *Number.toString*, so any number with a period is considered a "float".
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **isInt**() → *{Boolean}* |
+| static   | **isInt**(*{...Number}* **n**) → *{Boolean}* |
+
+```js
+(5)._.isInt()       // -> true
+(5.123)._.isInt()   // -> false
+(0)._.isInt()       // -> true
+(5.0)._.isInt()     // -> false
+(-1.2)._.isInt()    // -> false
+
+/* Static Use */
+lib.number.isInt(a, b, c, d, e...);
+```
+
+#### pad
+**Pads a number with leading zeros.**    
+Returns a string representation of a number padded with leading or trailing zeros.
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **pad**(*{Number}* **length**) → *{String}* |
+| static   | **pad**(*{Number}* **n**, *{Number}* **length**) → *{String}* |
+
+```js
+(5)._.isInt()       // -> true
+(5.123)._.isInt()   // -> false
+(0)._.isInt()       // -> true
+(5.0)._.isInt()     // -> false
+(-1.2)._.isInt()    // -> false
+
+/* Static Use */
+lib.number.pad(n, length);
+```
+
+#### daysFrom
+**Gets a date that occurs *n* days from the given date.**    
+
+| Context  | Signature        |
+| :--------| :--------------- |
+| instance | **pad**() → *{Date}* |
+| static   | **pad**(*{Number}* **n**) → *{Date}* |
+
+```js
+(5)._.isInt()       // -> true
+(5.123)._.isInt()   // -> false
+(0)._.isInt()       // -> true
+(5.0)._.isInt()     // -> false
+(-1.2)._.isInt()    // -> false
+
+/* Static Use */
+lib.number.daysFrom(n, length);
 ```

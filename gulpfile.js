@@ -19,6 +19,7 @@ gulp.task('default', function () {
         })
         .bundle()
         .pipe(source('protolib.js'))
+        .pipe(gulp.dest('dist/'))
         .pipe(grename({
             basename : 'protolib',
             extname  : '.js'

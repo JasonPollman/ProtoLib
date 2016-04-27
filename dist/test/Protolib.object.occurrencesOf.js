@@ -29,6 +29,9 @@
             expect('hello world'._.occurrencesOf(function () {})).to.equal(0);
             expect('hello world'._.occurrencesOf({})).to.equal(0);
             expect('hello world'._.occurrencesOf([])).to.equal(0);
+
+            expect('the rain falls mainly in the plain in spain'._.occurrencesOf('ain')).to.equal(4);
+            expect('word word word word word'._.occurrencesOf('word ')).to.equal(4);
         });
 
         it('It should return the expected number of occurences in arrays', function () {
