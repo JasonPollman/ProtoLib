@@ -272,7 +272,7 @@ var lib = new window.ProtoLib('_');
 For objects (arrays and pure objects), it will count the frequency of values. For strings, it will count character frequencies. Numbers and functions will be converted using *toString*.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **histogram**() → *{Object<Number>}* |
 | static   | **histogram**(*{...\*}* **items**) → *{Object<Number>}* |
 
@@ -309,7 +309,7 @@ lib.object.histogram([1, 2, 3, [3, 4, 5], ['a', 'b', 'c']]);
 For non-objects, the provided value is simply returned. For objects, a shallow copy is made.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **copy**() → *{\*}* |
 | static   | **copy**(*{\*}* **item**) → *{\*}* |
 
@@ -331,7 +331,7 @@ lib.object.copy(something);
 **Counts the number of occurrences of *what**    
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **occurrencesOf**(*{\*}* **what**) → *{Number}* |
 | static   | **occurrencesOf**(*{\*}* **item**, *{\*}* **what**) → *{Number}* |
 
@@ -361,7 +361,7 @@ lib.object.occurrencesOf(haystack, needle);
 Note: For numbers and functions, this will *always* return an empty array.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **keys**() → *{Array<String>}* |
 | static   | **keys**(*{\*}* item) → *{Array<String>}* |
 
@@ -390,7 +390,7 @@ lib.object.keys(item);
 For strings, it will return *the string's length*, for numbers: the *number of digits*, for objects: *Object.keys(...).length*, for arrays: *Array.length*, and for functions: *1*.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **size**() → *{Number}* |
 | static   | **size**(*{\*}* **item**) → *{Number}* |
 
@@ -423,7 +423,7 @@ Returns true if the object can be parsed as a number and is finite, false otherw
 If used in the static context, it will return true if and only if all arguments are numeric.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **isNumeric**() → *{Boolean}* |
 | static   | **isNumeric**(*{...\*}* **items**) → *{Boolean}* |
 
@@ -454,7 +454,7 @@ Returns the number represented by the given value, or *NaN*.
 If used in the static context, it will return an array with the results for each argument *if more than one argument is supplied*.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **getNumeric**() → *{Number|NaN}* |
 | static   | **getNumeric**(*{...\*}* **objs**) → *{Number|NaN}* |
 
@@ -490,7 +490,7 @@ For collections, it will assert that the object has a length of more than zero.
 If used in the static context, it will return true if and only if all arguments are empty.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **isEmpty**() → *{Boolean}* |
 | static   | **isEmpty**(*{...\*}* **objs**) → *{Boolean}* |
 
@@ -515,7 +515,7 @@ lib.object.isEmpty(null, undefined); // true
 If used in the static context, it will return true if and only if all arguments are arrays.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **isArray**() → *{Boolean}* |
 | static   | **isArray**(*{...\*}* **objs**) → *{Boolean}* |
 
@@ -538,7 +538,7 @@ lib.object.isArray(null, []);                       // false
 If used in the static context, it will return true if and only if all arguments are "pure objects".
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **isPureObject**() → *{Boolean}* |
 | static   | **isPureObject**(*{...\*}* **objs**) → *{Boolean}* |
 
@@ -561,7 +561,7 @@ lib.object.isPureObject(null, {});   // false
 If used in the static context, it will return true if and only if all arguments are strings.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **isString**() → *{Boolean}* |
 | static   | **isString**(*{...\*}* **objs**) → *{Boolean}* |
 
@@ -570,7 +570,7 @@ If used in the static context, it will return true if and only if all arguments 
 If used in the static context, it will return true if and only if all arguments are booleans.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **isBoolean**() → *{Boolean}* |
 | static   | **isBoolean**(*{...\*}* **objs**) → *{Boolean}* |
 
@@ -579,7 +579,7 @@ If used in the static context, it will return true if and only if all arguments 
 If used in the static context, it will return true if and only if all arguments are functions.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **isFunction**() → *{Boolean}* |
 | static   | **isFunction**(*{...\*}* **objs**) → *{Boolean}* |
 
@@ -588,7 +588,7 @@ If used in the static context, it will return true if and only if all arguments 
 If used in the static context, it will return true if and only if all arguments are null.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **isNull**() → *{Boolean}* |
 | static   | **isNull**(*{...\*}* **objs**) → *{Boolean}* |
 
@@ -597,7 +597,7 @@ If used in the static context, it will return true if and only if all arguments 
 If used in the static context, it will return true if and only if all arguments are undefined.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **isUndefined**() → *{Boolean}* |
 | static   | **isUndefined**(*{...\*}* **objs**) → *{Boolean}* |
 
@@ -606,7 +606,7 @@ If used in the static context, it will return true if and only if all arguments 
 If used in the static context, it will return true if and only if all arguments are Arguments instances.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **isArguments**() → *{Boolean}* |
 | static   | **isArguments**(*{...\*}* **objs**) → *{Boolean}* |
 
@@ -640,7 +640,7 @@ Returns the integer value represented by the given value(s), or *NaN*.
 If used in the static context, it will return an array with the results for each argument *if more than one argument is supplied*.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **toInt**() |
 | static   | **toInt**(*{...\*}* **objs**) |
 
@@ -670,7 +670,7 @@ lib.object.toInt('1', '0xFF', 'hello world', 7); // Returns [1, 255, NaN, 7]
 Functions are cast to strings with *Function.toString*
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **random**() → *{\*\}* |
 | static   | **random**(*{\*}* **obj**) → *{\*\}* |
 
@@ -700,7 +700,7 @@ For each item in the collection, a callback (*onIteration*) is invoked with the 
 Functions and Numbers are cast to strings with *Function/Number.toString*.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **each**(*{Number=}* [**startRange**=0], *{Number=}* [**endRange**=obj.length - 1], *{Function}* **onInteration**) → *{\*\|null}* |
 | static   | **each**(*{\*}* **obj**, *{Number=}* [**startRange**=0], *{Number=}* [**endRange**=obj.length - 1], *{Function}* **onInteration**)) → *{\*\|null}* |
 
@@ -776,7 +776,7 @@ Loops through each item in the object and calls *onIteration*. If *false* is ret
 Functions and Numbers are cast to strings with *Function/Number.toString*.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **every**(*{Function}* **onInteration**) → *{Boolean}* |
 | static   | **every**(*{\*}* **obj**, *{Function}* **onInteration**)) → *{Boolean}* |
 
@@ -823,7 +823,7 @@ Loops through each item in the object and calls *onIteration*. If a "non-undefin
 Functions and Numbers are cast to strings with *Function/Number.toString*.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **any**(*{Function}* **onInteration**) → *{\*\|undefined}* |
 | static   | **any**(*{\*}* **obj**, *{Function}* **onInteration**)) → *{\*\|undefined}* |
 
@@ -866,7 +866,7 @@ Useful for converting *arguments* objects to arrays.
 If an array is passed, a shallow copy of the array will be returned.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **toArray**() → *{Array<\*>}* |
 | static   | **toArray**(*{\*}* **obj**) → *{Array<\*>}* |
 
@@ -894,7 +894,7 @@ IF a string is passed, a single string will always be returned... in this way it
 Strings, numbers and functions will be cast to string using *toString*.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **first**(*{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
 | static   | **first**(*{\*}* **obj**, *{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
 
@@ -932,7 +932,7 @@ var staticFirst = lib.object.first([1, 2, 3]);
 Works similar to *first*, except it returns the last *n* items, rather than the first *n*,
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **last**(*{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
 | static   | **last**(*{\*}* **obj**, *{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
 
@@ -943,7 +943,7 @@ If the last item in the object is a function, it will be returned, otherwise an 
 This method is useless against strings, numbers, and functions. It will however, return an "empty" function if called on one.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **getCallback**() → *{Function}* |
 | static   | **getCallback**(*{\*}* **obj**) → *{Function}* |
 
@@ -978,7 +978,7 @@ var staticFirst = lib.object.getCallback(someObject);
 Finds the child specified by the given string "path" and delimiter (default '.') by walking the objects keys.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **findChildAtPath**(*{String}* **path**, *{String=}* [**delimiter**='.'], *{Function=}* **done**) → *{\*\|null}* |
 | static   | **findChildAtPath**(*{\*}* **obj**, *{String}* **path**, *{String=}* [**delimiter**='.'], *{Function=}* **done**) → *{\*\|null}* |
 
@@ -1063,7 +1063,7 @@ var child = lib.object.findChildAtPath(someObject, 'somePath');
 Throws an error if the object is circular.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **clone**() → *{\*}* |
 | static   | **clone**(*{\*}* **obj**) → *{\*}* |
 
@@ -1087,7 +1087,7 @@ Filters an object by the specified list of types ('string', 'number', 'object', 
 Plural forms of the types can be used as well.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **only**(*{...String}* **types**) → *{\*}* |
 | static   | **only**(*{\*}* **obj**, *{...String}* **types**) → *{\*}* |
 
@@ -1126,7 +1126,7 @@ lib.object.only(myObject, 'typeA', 'typeB', 'typeC'...);
 Filters an object by using a predicate function. If the predicate returns *true* the item is included in the results. The predicate function will be invoked for each item within the object with the following signature: **onItem** (*{\*}* **item**, *{String}* **key**).
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **where**(*{Function}* **predicate**) → *{\*}* |
 | static   | **where**(*{\*}* **obj**, *{Function}* **predicate**) → *{\*}* |
 
@@ -1159,7 +1159,7 @@ lib.object.where(myObject, predicateFunction);
 The same as *where*, except that the predicate function is invoked with the signature: **onItem** (*{String}* **key**, *{\*}* **item**).
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **whereKeys**(*{Function}* **predicate**) → *{\*}* |
 | static   | **whereKeys**(*{\*}* **obj**, *{Function}* **predicate**) → *{\*}* |
 
@@ -1170,7 +1170,7 @@ For strings, it reverses the string.
 For functions, invert returns a new function that wraps the given function and inverts it's result.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **invert**() → *{\*}* |
 | static   | **invert**(*{\*}* **obj**) → *{\*}* |
 
@@ -1208,7 +1208,7 @@ For numbers, strings, functions, and booleans, the object is simply returned.
 An optional predicate function is available to determine the max for objects. The predicate is called with the current value in the collection, whatever is returned from the predicate is used in the evaluation to determine the if the value is the max.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **max**(*{Function=}* **predicate**) → *{\*}* |
 | static   | **max**(*{\*}* **obj**, *{Function=}* **predicate**) → *{\*}* |
 
@@ -1248,7 +1248,7 @@ lib.object.max(myObject);
 Same as [max](#max), except it returns the minimum value.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **min**(*{Function=}* **predicate**) → *{\*}* |
 | static   | **min**(*{\*}* **obj**, *{Function=}* **predicate**) → *{\*}* |
 
@@ -1256,7 +1256,7 @@ Same as [max](#max), except it returns the minimum value.
 **Determines if an object has the given properties, and those properties are methods**   
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **implements**(*{String}* **method**) → *{\*}* |
 | static   | **implements**(*{\*}* **obj**, *{String}* **method**) → *{\*}* |
 
@@ -1288,7 +1288,7 @@ lib.object.max(myObject);
 Same as [implements](#implements), except with added *hasOwnProperty* check.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **implementsOwn**(*{String}* **method**) → *{\*}* |
 | static   | **implementsOwn**(*{\*}* **obj**, *{String}* **method**) → *{\*}* |
 
@@ -1299,7 +1299,7 @@ Same as [implements](#implements), except with added *hasOwnProperty* check.
 Replaces */[^a-z0-9$]/g* and makes the first letter of each word uppercase (except the first, of course).
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **camelize**() → *{String}* |
 | static   | **camelize**(*{String}* **myString**) → *{String}* |
 
@@ -1315,7 +1315,7 @@ myString._.camelize(); // -> 'helloWorld'
 **Converts a camel case string to "somewhat" sentence form.**   
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **decamelize**() → *{String}* |
 | static   | **decamelize**(*{String}* **myString**) → *{String}* |
 
@@ -1333,7 +1333,7 @@ myString._.decamelize(); // -> 'this is camel cased'
 **Repeats a string *n* times.**   
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **repeat**() → *{String}* |
 | static   | **repeat**(*{String}* **myString**) → *{String}* |
 
@@ -1353,7 +1353,7 @@ lib.string.repeat(myString);
 Functions just like *String.trim*, except only on the left side of the string.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **ltrim**() → *{String}* |
 | static   | **ltrim**(*{String}* **myString**) → *{String}* |
 
@@ -1362,7 +1362,7 @@ Functions just like *String.trim*, except only on the left side of the string.
 Functions just like *String.trim*, except only on the right side of the string.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **rtrim**() → *{String}* |
 | static   | **rtrim**(*{String}* **myString**) → *{String}* |
 
@@ -1370,7 +1370,7 @@ Functions just like *String.trim*, except only on the right side of the string.
 **Escapes HTML special characters.**   
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **htmlEncode**() → *{String}* |
 | static   | **htmlEncode**(*{String}* **myString**) → *{String}* |
 
@@ -1386,7 +1386,7 @@ lib.string.htmlEncode(myString);
 **Unescapes HTML special characters.**   
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **htmlDecode**() → *{String}* |
 | static   | **htmlDecode**(*{String}* **myString**) → *{String}* |
 
@@ -1402,7 +1402,7 @@ lib.string.htmlDecode(myString);
 **Creates an 'eval' safe string, by adding slashes to ", ', \t, \n, \f, \r, and the NULL byte.**   
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **addSlashes**() → *{String}* |
 | static   | **addSlashes**(*{String}* **myString**) → *{String}* |
 
@@ -1418,7 +1418,7 @@ lib.string.addSlashes(myString);
 **Returns the string with the first letter capitalized.**   
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **ucFirst**() → *{String}* |
 | static   | **ucFirst**(*{String}* **myString**) → *{String}* |
 
@@ -1434,7 +1434,7 @@ lib.string.ucFirst(myString);
 **Returns the string with the first letter lowercased.**   
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **lcFirst**() → *{String}* |
 | static   | **lcFirst**(*{String}* **myString**) → *{String}* |
 
@@ -1450,7 +1450,7 @@ lib.string.lcFirst(myString);
 **Returns the string in title case.**   
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **titleCase**() → *{String}* |
 | static   | **titleCase**(*{String}* **myString**) → *{String}* |
 
@@ -1468,7 +1468,7 @@ lib.string.titleCase(myString);
 **Splices a string, like *Array.splice*.**   
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **splice**(*{Number}* **index**, *{Number}* **delete**, *{String=}* **append**) → *{String}* |
 | static   | **splice**(*{String}* **myString**, *{Number}* **index**, *{Number}* **delete**, *{String=}* **append**) → *{String}* |
 
@@ -1494,7 +1494,7 @@ Truncates the given string to length. If the string is longer than length, ellip
 - The optional *ellipses* argument allows '...' to be replaces with any string value.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **ellipses**(*{Number}* **length**, *{String=}* [**place**='back'], *{String=}* **ellipses**) → *{String}* |
 | static   | **ellipses**(*{String}* **myString**, *{Number}* **length**, *{String=}* **place**, *{String=}* **ellipses**) → *{String}* |
 
@@ -1517,7 +1517,7 @@ lib.string.splice(myString, index, deleteCount, stringToAppendAtIndex);
 If the optional *splitter* argument is passed, it will be tokenized by the value of *splitter* before being shuffled. Otherwise the strings characters will be moved around.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **shuffle**(*{String=}* **splitter**) → *{String}* |
 | static   | **shuffle**(*{String}* **myString**, *{String=}* **splitter**) → *{String}* |
 
@@ -1542,7 +1542,7 @@ lib.string.shuffle(myString, splitter);
 **Reverses a string.**   
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **reverse**() → *{String}* |
 | static   | **reverse**(*{String}* **myString**) → *{String}* |
 
@@ -1560,7 +1560,7 @@ lib.string.reverse(myString);
 *On Node.js withoutTrailingSlash uses path.sep for a platform agnostic replacement.*
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **withoutTrailingSlash**() → *{String}* |
 | static   | **withoutTrailingSlash**(*{String}* **myString**) → *{String}* |
 
@@ -1587,7 +1587,7 @@ lib.string.withoutTrailingSlash(myString);
 *On Node.js withoutTrailingSlash uses path.sep for a platform agnostic replacement.*
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **withTrailingSlash**() → *{String}* |
 | static   | **withTrailingSlash**(*{String}* **myString**) → *{String}* |
 
@@ -1608,7 +1608,7 @@ lib.string.withTrailingSlash(myString);
 Prepends slashes to ```/[-\/\\^$*+?.()|[\]{}]/g```
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **regexpSafe**() → *{String}* |
 | static   | **regexpSafe**(*{String}* **myString**) → *{String}* |
 
@@ -1633,7 +1633,7 @@ lib.string.regexpSafe(myString);
 Prepends slashes to ```/[-\/\\^$*+?.()|[\]{}]/g```
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **regexpSafe**(*{String}* **length**, *{String=}* [**delimiter**= ' '], *{Boolean=}* **pre**) → *{String}* |
 | static   | **regexpSafe**(*{String}* **myString**, *{String}* **length**, *{String=}* **delimiter**, *{Boolean=}* **pre**) → *{String}* |
 
@@ -1657,7 +1657,7 @@ lib.string.pad(myString, length, delimiter, pre);
 **Replaces newlines with \<br\> tags.**   
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **newlineToBreak**() → *{String}* |
 | static   | **newlineToBreak**(*{String}* **myString**) → *{String}* |
 
@@ -1673,7 +1673,7 @@ lib.string.newlineToBreak(myString);
 **Replaces tab characters with <span class="tab"></span> tags.**   
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **tabsToSpan**() → *{String}* |
 | static   | **tabsToSpan**(*{String}* **myString**) → *{String}* |
 
@@ -1688,10 +1688,10 @@ lib.string.tabsToSpan(myString);
 ### Numbers
 
 #### randomIntInRange
-** Get a random integer in the range [min, max] (inclusive)**   
+**Get a random integer in the range [min, max] (inclusive)**   
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | *N/A* |
 | static   | **randomNumberInRange**(*{Number}* [**a**=0], *{Number}* [**b**=*Number.MAX_VALUE*]) → *{Number}* |
 
@@ -1701,10 +1701,10 @@ lib.number.randomIntInRange(-100, 100); //-> Some integer between -100 and 100
 ```
 
 #### randomNumberInRange
-** Get a random float in the range [min, max] (inclusive)**   
+**Get a random float in the range [min, max] (inclusive)**   
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | *N/A* |
 | static   | **randomNumberInRange**(*{Number}* [**a**=0], *{Number}* [**b**=*Number.MAX_VALUE*]) → *{Number}* |
 
@@ -1718,7 +1718,7 @@ lib.number.randomNumberInRange(-100.1, 5); //-> Some integer between -100.1 and 
 If *n* is omitted, *Number.MAX_VALUE* will be used. If the number is an integer, an integer will be returned; same for floats.   
 
 | Context  | Signature            |
-| :--------| :------------------- |
+| :------- | :------------------- |
 | instance | **to**() → *{Number}*|
 | static   | *N/A                 |
 
@@ -1731,9 +1731,10 @@ If *n* is omitted, *Number.MAX_VALUE* will be used. If the number is an integer,
 
 #### factorial
 **Returns the factorial value of a number.**   
-Any number greater than 170 returns Infinity (as the factorial of 171 > Number.MAX_VALUE). All negative numbers return NaN.
+Any number greater than 170 returns Infinity (as the factorial of 171 > Number.MAX_VALUE). All negative numbers return NaN.   
+
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **factorial**() → *{Number|Infinity}* |
 | static   | **factorial**(*{\*}* **myNumber**) → *{Number|Infinity}* |
 
@@ -1752,7 +1753,7 @@ lib.number.factorial(myNumber);
 **Computes the number of combinations between n and k.**   
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **choose**() → *{Number|Infinity}* |
 | static   | **choose**(*{Number}* **n**, *{Number}* **k**) → *{Number|Infinity}* |
 
@@ -1771,7 +1772,7 @@ lib.number.choose(n, k);
 This method checks for a '.' using *Number.toString*, so any number with a period is considered a "float".
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **isInt**() → *{Boolean}* |
 | static   | **isInt**(*{...Number}* **n**) → *{Boolean}* |
 
@@ -1791,7 +1792,7 @@ lib.number.isInt(a, b, c, d, e...);
 Returns a string representation of a number padded with leading or trailing zeros.
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **pad**(*{Number}* **length**) → *{String}* |
 | static   | **pad**(*{Number}* **n**, *{Number}* **length**) → *{String}* |
 
@@ -1810,7 +1811,7 @@ lib.number.pad(n, length);
 **Gets a date that occurs *n* days from the given date.**    
 
 | Context  | Signature        |
-| :--------| :--------------- |
+| :------- | :--------------- |
 | instance | **pad**() → *{Date}* |
 | static   | **pad**(*{Number}* **n**) → *{Date}* |
 

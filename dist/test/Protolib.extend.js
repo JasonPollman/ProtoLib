@@ -245,7 +245,6 @@
         });
 
         it('It should properly extend custom objects, #2', function () {
-
             var MyClass2 = function MyClass2 () {
                 var self = this;
 
@@ -272,13 +271,167 @@
             expect(myClass._.custom_test2).to.be.a('function');
             expect(myClass._.custom_test2(1, 2, 'a')).to.equal(myClass);
 
-            expect(pString._.custom_test2).to.be.a('function');
-            expect(pString._.custom_test2(1, 2, 'a')).to.equal(pString);
-
-            expect('string'._.custom_test2).to.be.a('function');
+            expect(pString._.custom_test2).to.be.a('undefined');
+            expect('string'._.custom_test2).to.be.a('undefined');
             expect(({})._.custom_test2).to.be.a('undefined');
             expect((5)._.custom_test2).to.be.a('undefined');
             expect([1, 2, 3]._.custom_test2).to.be.a('undefined');
+        });
+
+        it('It should properly extend custom objects, #3', function () {
+            var MyClassA = function MyClassA () {
+                this.foo = function () {
+                    console.log('instance method');
+                };
+            };
+
+            var MyClassB = function MyClassB () {
+                this.bar = function () {
+                    console.log('instance method');
+                };
+            };
+
+            var MyClassC = function MyClassC () {
+                this.baz = function () {
+                    console.log('instance method');
+                };
+            };
+
+            lib.function.inherits(MyClassB, MyClassA);
+            lib.function.inherits(MyClassC, MyClassB);
+
+            lib.extend('custom_test3', MyClassA, function ($1, $2) {
+                expect($1).to.equal(1);
+                expect($2).to.equal(2);
+                return this;
+            });
+
+            var myClassA = new MyClassA(),
+                myClassB = new MyClassB(),
+                myClassC = new MyClassC();
+
+            expect(myClassA._.custom_test3).to.be.a('function');
+            expect(myClassB._.custom_test3).to.be.a('function');
+            expect(myClassC._.custom_test3).to.be.a('function');
+
+            expect(myClassA._.custom_test3(1, 2, 'a')).to.equal(myClassA);
+            expect(myClassB._.custom_test3(1, 2, 'a')).to.equal(myClassB);
+            expect(myClassC._.custom_test3(1, 2, 'a')).to.equal(myClassC);
+
+            expect(function () {}._.custom_testA).to.be.a('undefined');
+            expect('string'._.custom_testA).to.be.a('undefined');
+            expect(({})._.custom_testA).to.be.a('undefined');
+            expect((5)._.custom_testA).to.be.a('undefined');
+            expect([1, 2, 3]._.custom_testA).to.be.a('undefined');
+
+            expect(lib.remove('custom_test3', MyClassC)).to.equal(false);
+            expect(lib.remove('custom_test3', MyClassB)).to.equal(false);
+            expect(lib.remove('custom_test3', MyClassA)).to.equal(true);
+
+            expect(myClassC._.custom_test3).to.be.a('undefined');
+            expect(myClassB._.custom_test3).to.be.a('undefined');
+            expect(myClassA._.custom_test3).to.be.a('undefined');
+        });
+
+        it('It should properly extend custom objects, #4', function () {
+            var MyClassA = function MyClassA () {
+                this.foo = function () {
+                    console.log('instance method');
+                };
+            };
+
+            var MyClassB = function MyClassB () {
+                this.bar = function () {
+                    console.log('instance method');
+                };
+            };
+
+            var MyClassC = function MyClassC () {
+                this.baz = function () {
+                    console.log('instance method');
+                };
+            };
+
+            lib.function.inherits(MyClassB, MyClassA);
+            lib.function.inherits(MyClassC, MyClassB);
+
+            lib.extend('custom_test4', MyClassB, function ($1, $2) {
+                expect($1).to.equal(1);
+                expect($2).to.equal(2);
+                return this;
+            });
+
+            var myClassA = new MyClassA(),
+                myClassB = new MyClassB(),
+                myClassC = new MyClassC();
+
+            expect(myClassA._.custom_test4).to.be.a('undefined');
+            expect(myClassB._.custom_test4).to.be.a('function');
+            expect(myClassC._.custom_test4).to.be.a('function');
+
+            expect(myClassB._.custom_test4(1, 2, 'a')).to.equal(myClassB);
+            expect(myClassC._.custom_test4(1, 2, 'a')).to.equal(myClassC);
+
+            expect(function () {}._.custom_test4).to.be.a('undefined');
+            expect('string'._.custom_test4).to.be.a('undefined');
+            expect(({})._.custom_test4).to.be.a('undefined');
+            expect((5)._.custom_test4).to.be.a('undefined');
+            expect([1, 2, 3]._.custom_test3).to.be.a('undefined');
+
+            expect(lib.remove('custom_test4', MyClassA)).to.equal(false);
+            expect(lib.remove('custom_test4', MyClassC)).to.equal(false);
+            expect(lib.remove('custom_test4', MyClassB)).to.equal(true);
+            expect(myClassC._.custom_test4).to.be.a('undefined');
+            expect(myClassB._.custom_test4).to.be.a('undefined');
+            expect(myClassA._.custom_test4).to.be.a('undefined');
+        });
+
+        it('It should properly extend custom objects, #5', function () {
+            var MyClassA = function MyClassA () {
+                this.foo = function () {
+                    console.log('instance method');
+                };
+            };
+
+            var MyClassB = function MyClassB () {
+                this.bar = function () {
+                    console.log('instance method');
+                };
+            };
+
+            var MyClassC = function MyClassC () {
+                this.baz = function () {
+                    console.log('instance method');
+                };
+            };
+
+            lib.function.inherits(MyClassB, MyClassA);
+            lib.function.inherits(MyClassC, MyClassB);
+
+            lib.extend('custom_test5', MyClassC, function ($1, $2) {
+                expect($1).to.equal(1);
+                expect($2).to.equal(2);
+                return this;
+            });
+
+            var myClassA = new MyClassA(),
+                myClassB = new MyClassB(),
+                myClassC = new MyClassC();
+
+            expect(myClassA._.custom_test5).to.be.a('undefined');
+            expect(myClassB._.custom_test5).to.be.a('undefined');
+            expect(myClassC._.custom_test5).to.be.a('function');
+
+            expect(myClassC._.custom_test5(1, 2, 'a')).to.equal(myClassC);
+
+            expect(function () {}._.custom_test5).to.be.a('undefined');
+            expect('string'._.custom_test5).to.be.a('undefined');
+            expect(({})._.custom_test5).to.be.a('undefined');
+            expect((5)._.custom_test5).to.be.a('undefined');
+            expect([1, 2, 3]._.custom_test5).to.be.a('undefined');
+
+            expect(lib.remove('custom_test5', MyClassC)).to.equal(true);
+            expect(myClassC._.custom_test5).to.be.a('undefined');
         });
 
         it('It should properly remove methods', function () {

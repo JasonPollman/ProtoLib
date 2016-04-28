@@ -19,6 +19,7 @@
         enumerable   : false,
         get          : function () {
             if(typeof this.__protolib_id__ !== 'string' && (typeof this === 'object' || typeof this === 'function')) {
+                console.log('setting id of', this.name ? this.name : this, 'to 0x' + (oid + 1).toString(16));
                 Object.defineProperty(this, '__protolib_id__', {
                     configurable : false,
                     enumberable  : false,
@@ -74,7 +75,7 @@
          * Another example: { myCustomClassThatExtendsString: ['object', 'string', 'myCustomClassThatExtendsString'] }
          * @type {Object}
          */
-        inheritanceList = {},
+        inheritanceChain = {},
 
         /**
          * The static library
@@ -104,11 +105,11 @@
          * @return {ProtoLib} The current ProtoLib instance
          */
         function deleteCacheForConstructor (constr) {
-            for(var i in inheritanceList) {
-                if(inheritanceList.hasOwnProperty(i)) {
-                    if(inheritanceList[i].indexOf(constr.__get_protolib_id__) > -1) {
+            for(var i in inheritanceChain) {
+                if(inheritanceChain.hasOwnProperty(i)) {
+                    if(inheritanceChain[i].indexOf(constr.__get_protolib_id__) > -1) {
                         delete cached[i];
-                        delete inheritanceList[i];
+                        delete inheritanceChain[i];
                     }
                 }
             }
@@ -159,32 +160,37 @@
                     },
                     // Returns the libp library...
                     get: function () {
-                        var pid, proto, addMethod,
-                            lib  = {},
-                            i    = 0,
-                            last = null;
+                        var ccId,
+                            proto = getProto(this),
+                            cId   = proto.constructor.__get_protolib_id__,
+                            lib   = {},
+                            i     = 0,
+                            last  = null;
 
-                        addMethod = function addMethod (o, k) { if(!lib[k]) lib[k] = o; };
-                        proto = getProto(this);
+                        currentThis = this;
 
                         do {
-                            currentThis = this;
-                            pid = proto.constructor.__get_protolib_id__;
-
-                            if(cached[pid] && i === 0) {
-                                return cached[pid];
+                            ccId = proto.constructor.__get_protolib_id__;
+                            if(cached[ccId] && i === 0) {
+                                return cached[ccId];
                             }
-                            else if(libp[pid]) {
-                                libs.object.each(libp[pid], addMethod);
-                                if(!inheritanceList[pid]) inheritanceList[pid] = [pid];
-                                if(last) inheritanceList[last].unshift(pid);
-                                cached[last] = lib;
-                                last = pid;
+                            else {
+                                if(!libp[ccId]) libp[ccId] = {};
+                                for(var m in libp[ccId])
+                                    if(libp[ccId].hasOwnProperty(m)) lib[m] = libp[ccId][m];
+
+                                if(!inheritanceChain[ccId]) inheritanceChain[ccId] = [];
+                                inheritanceChain[cId].unshift(ccId);
+
+                                cached[cId] = lib;
+                                last = ccId;
                             }
 
                             ++i;
                         }
                         while (proto = getProto(proto)); // jshint ignore:line
+
+                        lib.__protolib_cId__ = cId;
                         return lib;
                     }
                 });
