@@ -2335,8 +2335,19 @@ The new method will be available both statically and as a member on instance lib
 ```js
 var lib = ProtoLib.get('_');
 
+// Example: add a method to String to console.log the string...
+var wasExtended = lib.extend(String, 'log', function (str) {
+    console.log(str);
+});
+
+'Hello World'._.log();
+// Console logs 'Hello World!'
+
+lib.string.log('Hello world, Static Version!');
+// Console logs 'Hello world, Static Version!'
+
 // Example: write a method to remove all objects from an array,
-// except for the first n.
+// except for the first n...
 
 var wasExtended = lib.extend(Array, 'empty', function (array, leaveFirstN) {
     leaveFirstN = typeof leaveFirstN === 'number' ? leaveFirstN : 0;
