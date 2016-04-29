@@ -246,7 +246,7 @@
          */
         function getThisValueAndInvoke (callback) {
             return callback(currentThis !== undefined && currentThis !== null ?
-                typeof currentThis === 'object' ? currentThis : currentThis.valueOf() : currentThis
+                (typeof currentThis === 'object' ? currentThis : currentThis.valueOf()) : currentThis
             );
         }
 
