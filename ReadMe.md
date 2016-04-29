@@ -347,8 +347,8 @@ For non-objects, the provided value is simply returned. For objects, a shallow c
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **copy**() → *{\*}* |
-| static   | **copy**(*{\*}* **item**) → *{\*}* |
+| instance | **copy**() → *{*\**}* |
+| static   | **copy**(*{*\**}* **item**) → *{*\**}* |
 
 ```js
 [1, 2, 3, 'a', 'b', 'c']._.copy();
@@ -369,8 +369,8 @@ lib.object.copy(something);
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **occurrencesOf**(*{\*}* **what**) → *{Number}* |
-| static   | **occurrencesOf**(*{\*}* **item**, *{\*}* **what**) → *{Number}* |
+| instance | **occurrencesOf**(*{*\**}* **what**) → *{Number}* |
+| static   | **occurrencesOf**(*{*\**}* **item**, *{*\**}* **what**) → *{Number}* |
 
 ```js
 [1, 1, 1, 1, 3]._.occurrencesOf(1);
@@ -400,7 +400,7 @@ Note: For numbers and functions, this will *always* return an empty array.
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **keys**() → *{Array<String>}* |
-| static   | **keys**(*{\*}* item) → *{Array<String>}* |
+| static   | **keys**(*{*\**}* item) → *{Array<String>}* |
 
 ```js
 [1, 1, 1, 1, 3]._.keys();
@@ -429,7 +429,7 @@ For strings, it will return *the string's length*, for numbers: the *number of d
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **size**() → *{Number}* |
-| static   | **size**(*{\*}* **item**) → *{Number}* |
+| static   | **size**(*{*\**}* **item**) → *{Number}* |
 
 ```js
 [1, 1, 1, 1, 3]._.size();
@@ -709,7 +709,7 @@ Functions are cast to strings with *Function.toString*
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **random**() → *{\*\}* |
-| static   | **random**(*{\*}* **obj**) → *{\*\}* |
+| static   | **random**(*{*\**}* **obj**) → *{\*\}* |
 
 ```js
 [1, 2, 3, 4].random()._.random();         // Could be any of: 1, 2, 3, or 4
@@ -739,7 +739,7 @@ Functions and Numbers are cast to strings with *Function/Number.toString*.
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **each**(*{Number=}* [**startRange**=0], *{Number=}* [**endRange**=obj.length - 1], *{Function}* **onInteration**) → *{\*\|null}* |
-| static   | **each**(*{\*}* **obj**, *{Number=}* [**startRange**=0], *{Number=}* [**endRange**=obj.length - 1], *{Function}* **onInteration**)) → *{\*\|null}* |
+| static   | **each**(*{*\**}* **obj**, *{Number=}* [**startRange**=0], *{Number=}* [**endRange**=obj.length - 1], *{Function}* **onInteration**)) → *{\*\|null}* |
 
 **Note:** All ranges are inclusive. If *startRange* is greater than *endRange* it will perform a decrementing loop.
 ```js
@@ -815,7 +815,7 @@ Functions and Numbers are cast to strings with *Function/Number.toString*.
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **every**(*{Function}* **onInteration**) → *{Boolean}* |
-| static   | **every**(*{\*}* **obj**, *{Function}* **onInteration**)) → *{Boolean}* |
+| static   | **every**(*{*\**}* **obj**, *{Function}* **onInteration**)) → *{Boolean}* |
 
 ```js
 var obj = { a: 1, b: 2, c: 3 },
@@ -862,7 +862,7 @@ Functions and Numbers are cast to strings with *Function/Number.toString*.
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **any**(*{Function}* **onInteration**) → *{\*\|undefined}* |
-| static   | **any**(*{\*}* **obj**, *{Function}* **onInteration**)) → *{\*\|undefined}* |
+| static   | **any**(*{*\**}* **obj**, *{Function}* **onInteration**)) → *{\*\|undefined}* |
 
 ```js
 var obj = { a: 1, b: 2, c: 3 },
@@ -905,7 +905,7 @@ If an array is passed, a shallow copy of the array will be returned.
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **toArray**() → *{Array<\*>}* |
-| static   | **toArray**(*{\*}* **obj**) → *{Array<\*>}* |
+| static   | **toArray**(*{*\**}* **obj**) → *{Array<\*>}* |
 
 ```js
 var string = 'a string',
@@ -933,7 +933,7 @@ Strings, numbers and functions will be cast to string using *toString*.
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **first**(*{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
-| static   | **first**(*{\*}* **obj**, *{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
+| static   | **first**(*{*\**}* **obj**, *{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
 
 ```js
 var string = 'a string',
@@ -971,7 +971,7 @@ Works similar to *first*, except it returns the last *n* items, rather than the 
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **last**(*{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
-| static   | **last**(*{\*}* **obj**, *{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
+| static   | **last**(*{*\**}* **obj**, *{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
 
 #### getCallback
 **Always returns a callback**   
@@ -982,7 +982,7 @@ This method is useless against strings, numbers, and functions. It will however,
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **getCallback**() → *{Function}* |
-| static   | **getCallback**(*{\*}* **obj**) → *{Function}* |
+| static   | **getCallback**(*{*\**}* **obj**) → *{Function}* |
 
 ```js
 // For this example EMPTY_CALLBACK_REPLACEMENT is a "blank" function.
@@ -1017,7 +1017,7 @@ Finds the child specified by the given string "path" and delimiter (default '.')
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **findChildAtPath**(*{String}* **path**, *{String=}* [**delimiter**='.'], *{Function=}* **done**) → *{\*\|null}* |
-| static   | **findChildAtPath**(*{\*}* **obj**, *{String}* **path**, *{String=}* [**delimiter**='.'], *{Function=}* **done**) → *{\*\|null}* |
+| static   | **findChildAtPath**(*{*\**}* **obj**, *{String}* **path**, *{String=}* [**delimiter**='.'], *{Function=}* **done**) → *{\*\|null}* |
 
 ```js
 var someObject = {
@@ -1101,8 +1101,8 @@ Throws an error if the object is circular.
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **clone**() → *{\*}* |
-| static   | **clone**(*{\*}* **obj**) → *{\*}* |
+| instance | **clone**() → *{*\**}* |
+| static   | **clone**(*{*\**}* **obj**) → *{*\**}* |
 
 ```js
 var foo, bar;
@@ -1125,8 +1125,8 @@ Plural forms of the types can be used as well.
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **only**(*{...String}* **types**) → *{\*}* |
-| static   | **only**(*{\*}* **obj**, *{...String}* **types**) → *{\*}* |
+| instance | **only**(*{...String}* **types**) → *{*\**}* |
+| static   | **only**(*{*\**}* **obj**, *{...String}* **types**) → *{*\**}* |
 
 ```js
 var foo, bar;
@@ -1160,12 +1160,12 @@ lib.object.only(myObject, 'typeA', 'typeB', 'typeC'...);
 
 #### where
 **Returns a new object, filtering by a predicate function**   
-Filters an object by using a predicate function. If the predicate returns *true* the item is included in the results. The predicate function will be invoked for each item within the object with the following signature: **onItem** (*{\*}* **item**, *{String}* **key**).
+Filters an object by using a predicate function. If the predicate returns *true* the item is included in the results. The predicate function will be invoked for each item within the object with the following signature: **onItem** (*{*\**}* **item**, *{String}* **key**).
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **where**(*{Function}* **predicate**) → *{\*}* |
-| static   | **where**(*{\*}* **obj**, *{Function}* **predicate**) → *{\*}* |
+| instance | **where**(*{Function}* **predicate**) → *{*\**}* |
+| static   | **where**(*{*\**}* **obj**, *{Function}* **predicate**) → *{*\**}* |
 
 ```js
 var foo, bar;
@@ -1193,12 +1193,12 @@ lib.object.where(myObject, predicateFunction);
 
 #### whereKeys
 **Returns a new object, filtering an object's keys by a predicate function**   
-The same as *where*, except that the predicate function is invoked with the signature: **onItem** (*{String}* **key**, *{\*}* **item**).
+The same as *where*, except that the predicate function is invoked with the signature: **onItem** (*{String}* **key**, *{*\**}* **item**).
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **whereKeys**(*{Function}* **predicate**) → *{\*}* |
-| static   | **whereKeys**(*{\*}* **obj**, *{Function}* **predicate**) → *{\*}* |
+| instance | **whereKeys**(*{Function}* **predicate**) → *{*\**}* |
+| static   | **whereKeys**(*{*\**}* **obj**, *{Function}* **predicate**) → *{*\**}* |
 
 #### invert
 **Inverts an object's keys and values.**     
@@ -1208,8 +1208,8 @@ For functions, invert returns a new function that wraps the given function and i
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **invert**() → *{\*}* |
-| static   | **invert**(*{\*}* **obj**) → *{\*}* |
+| instance | **invert**() → *{*\**}* |
+| static   | **invert**(*{*\**}* **obj**) → *{*\**}* |
 
 ```js
 (1)._.invert()     // -> 1
@@ -1246,8 +1246,8 @@ An optional predicate function is available to determine the max for objects. Th
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **max**(*{Function=}* **predicate**) → *{\*}* |
-| static   | **max**(*{\*}* **obj**, *{Function=}* **predicate**) → *{\*}* |
+| instance | **max**(*{Function=}* **predicate**) → *{*\**}* |
+| static   | **max**(*{*\**}* **obj**, *{Function=}* **predicate**) → *{*\**}* |
 
 ```js
 [1, 4, 7, 5, 99, 1, 2]._.max()          // -> 99
@@ -1286,16 +1286,16 @@ Same as [max](#max), except it returns the minimum value.
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **min**(*{Function=}* **predicate**) → *{\*}* |
-| static   | **min**(*{\*}* **obj**, *{Function=}* **predicate**) → *{\*}* |
+| instance | **min**(*{Function=}* **predicate**) → *{*\**}* |
+| static   | **min**(*{*\**}* **obj**, *{Function=}* **predicate**) → *{*\**}* |
 
 #### implements
 **Determines if an object has the given properties, and those properties are methods**   
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **implements**(*{String}* **method**) → *{\*}* |
-| static   | **implements**(*{\*}* **obj**, *{String}* **method**) → *{\*}* |
+| instance | **implements**(*{String}* **method**) → *{*\**}* |
+| static   | **implements**(*{*\**}* **obj**, *{String}* **method**) → *{*\**}* |
 
 ```js
 var MyClass = function () {
@@ -1326,8 +1326,8 @@ Same as [implements](#implements), except with added *hasOwnProperty* check.
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **implementsOwn**(*{String}* **method**) → *{\*}* |
-| static   | **implementsOwn**(*{\*}* **obj**, *{String}* **method**) → *{\*}* |
+| instance | **implementsOwn**(*{String}* **method**) → *{*\**}* |
+| static   | **implementsOwn**(*{*\**}* **obj**, *{String}* **method**) → *{*\**}* |
 
 #### uniqueId
 **Returns a unique id for non-literals**   
@@ -1336,7 +1336,7 @@ Returns a unique hex string for objects and functions. *Throws on numbers and st
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **uniqueId**() → *{String}* |
-| static   | **uniqueId**(*{\*}* **obj**) → *{String}* |
+| static   | **uniqueId**(*{*\**}* **obj**) → *{String}* |
 
 ```js
 var obj = { foo: 1, bar: 2 },
@@ -1799,7 +1799,7 @@ Any number greater than 170 returns Infinity (as the factorial of 171 > Number.M
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **factorial**() → *{Number|Infinity}* |
-| static   | **factorial**(*{\*}* **myNumber**) → *{Number|Infinity}* |
+| static   | **factorial**(*{*\**}* **myNumber**) → *{Number|Infinity}* |
 
 ```js
 (3)._.factorial();   // -> 6
@@ -2076,8 +2076,8 @@ lib.array.intersect(arrayA, arrayB, arrayC...);
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **without**(*{\*}* **objA**, *{\*}* **objA**, *{\*}* **objA**...) → *{Array}* |
-| static   | **without**(*{Array}* **arrayToFilter**, *{\*}* **objA**, *{\*}* **objB**...) → *{Array}* |
+| instance | **without**(*{*\**}* **objA**, *{*\**}* **objA**, *{*\**}* **objA**...) → *{Array}* |
+| static   | **without**(*{Array}* **arrayToFilter**, *{*\**}* **objA**, *{*\**}* **objB**...) → *{Array}* |
 
 ```js
 [1, 2, 3]._.without(2, 3);      // -> [1]
