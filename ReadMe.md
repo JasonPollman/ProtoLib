@@ -15,7 +15,7 @@ Currently tested and working in Node.js, Chrome, Firefox, Safari, IE 10 & 11.
 ---
 - **Over 100 library methods**
     - [See the list below...](#available-methods)
-    - Methods are attached to an object, attached to *Object.prototype*, which means more terse, readable code.
+    - Methods are attached to *Object.prototype*, which means more terse, readable code.
     - Iterating functions like [each](#each), [every](#every), and [any](#any) work on objects, arrays, strings, numbers, and functions.
 - **Collision Free**
     - *You* define the property attached to *Object.prototype*.
@@ -216,8 +216,9 @@ Methods available to all *String* objects.
 | [rtrim](#rtrim)                     | Right trims whitespace from a string |
 | [splice](#splice)                   | Splices a string like *Array.splice* |
 | [shuffle](#shuffle)                 | Shuffles a string |
-| [titleCase](#titlecase)             | Converts a string to title case |
 | [tabsToSpan](#tabstospan)           | Converts tab characters to a "tab" span |
+| [titleCase](#titlecase)             | Converts a string to title case |
+| [toJSValue](#tojsvalue)             | Converts 'true', 'false', 'null', 'undefined' to it's JS equivalent and parses numeric values as a number |
 | [ucFirst](#ucfirst)                 | Uppercases the first character of a string |
 | [withoutTrailingSlash](#withouttrailingslash) | Removes trailing slashes from a string |
 | [withTrailingSlash](#withtrailingslash)       | Adds a trailing slash to a string |
@@ -1357,6 +1358,33 @@ lib.object.uniqueId(myObject);
 ```
 
 ### Strings
+
+#### toJSValue
+**Converts 'true', 'false', 'null', 'undefined' to it's JS equivalent and parses numeric values as a number**
+The string will be trimmed. If the string value is numeric, a number will be returned. If the trimmed string is non-numeric or doesn't evaluate to *true*, *false*, *null*, or *undefined* the original (untrimmed) string will be returned.
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **toJSValue**() → *{String}* |
+| static   | **toJSValue**(*{String}* **myString**) → *{String}* |
+
+```js
+'true'._.toJSValue()        // -> returns boolean true
+'false'._.toJSValue()       // -> returns boolean false
+
+'  true  '._.toJSValue()    // -> returns boolean true
+'  false  '._.toJSValue()   // -> returns boolean false
+
+'True'._.toJSValue()        // -> returns the original string
+'falsE'._.toJSValue()       // -> returns the original string
+
+'null'._.toJSValue()        // -> returns null
+'undefined'._.toJSValue()   // -> returns undefined
+
+'5.46'._.toJSValue()        // -> returns the number 5.46
+
+lib.string.toJSValue(myString);
+```
 
 #### camelize
 **Converts a string to camel case.**   
