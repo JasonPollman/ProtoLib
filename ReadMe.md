@@ -1875,19 +1875,128 @@ lib.number.pad(n, length);
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **pad**() → *{Date}* |
-| static   | **pad**(*{Number}* **n**) → *{Date}* |
+| instance | **daysFrom**(*{Date}* **date**) → *{Date}* |
+| static   | **daysFrom**(*{Number}* **n**, *{Date}* **date**) → *{Date}* |
 
-```js
-(5)._.isInt()       // -> true
-(5.123)._.isInt()   // -> false
-(0)._.isInt()       // -> true
-(5.0)._.isInt()     // -> false
-(-1.2)._.isInt()    // -> false
+#### hoursFrom
+**Gets a date that occurs *n* hours from the given date.**    
 
-/* Static Use */
-lib.number.daysFrom(n, length);
-```
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **hoursFrom**(*{Date}* **date**) → *{Date}* |
+| static   | **hoursFrom**(*{Number}* **n**, *{Date}* **date**) → *{Date}* |
+
+#### minutesFrom
+**Gets a date that occurs *n* minutes from the given date.**    
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **minutesFrom**(*{Date}* **date**) → *{Date}* |
+| static   | **minutesFrom**(*{Number}* **n**, *{Date}* **date**) → *{Date}* |
+
+#### secondsFrom
+**Gets a date that occurs *n* seconds from the given date.**    
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **secondsFrom**(*{Date}* **date**) → *{Date}* |
+| static   | **secondsFrom**(*{Number}* **n**, *{Date}* **date**) → *{Date}* |
+
+#### yearsFrom
+**Gets a date that occurs *n* years from the given date.**    
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **yearsFrom**(*{Date}* **date**) → *{Date}* |
+| static   | **yearsFrom**(*{Number}* **n**, *{Date}* **date**) → *{Date}* |
+
+#### monthsFrom
+**Gets a date that occurs *n* month from the given date.**    
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **monthsFrom**(*{Date}* **date**) → *{Date}* |
+| static   | **monthsFrom**(*{Number}* **n**, *{Date}* **date**) → *{Date}* |
+
+#### daysFromNow
+**Gets a date that occurs *n* days from the current time.**    
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **daysFrom**() → *{Date}* |
+| static   | **daysFrom**(*{Number}* **n**) → *{Date}* |
+
+#### secondsFromNow
+**Gets a date that occurs *n* seconds from the current time.**    
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **secondsFromNow**() → *{Date}* |
+| static   | **secondsFromNow**(*{Number}* **n**) → *{Date}* |
+
+#### yearsFromNow
+**Gets a date that occurs *n* years from the current time.**    
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **yearsFromNow**() → *{Date}* |
+| static   | **yearsFromNow**(*{Number}* **n**) → *{Date}* |
+
+#### monthsFromNow
+**Gets a date that occurs *n* months from the current time.**    
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **monthsFromNow**() → *{Date}* |
+| static   | **monthsFromNow**(*{Number}* **n**) → *{Date}* |
+
+#### hoursFromNow
+**Gets a date that occurs *n* hours from the current time.**    
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **hoursFromNow**() → *{Date}* |
+| static   | **hoursFromNow**(*{Number}* **n**) → *{Date}* |
+
+#### daysAgo
+**Gets a date that occurs *n* days before the current time.**    
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **daysAgo**() → *{Date}* |
+| static   | **daysAgo**(*{Number}* **n**) → *{Date}* |
+
+#### secondsAgo
+**Gets a date that occurs *n* days before the current time.**    
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **secondsAgo**() → *{Date}* |
+| static   | **secondsAgo**(*{Number}* **n**) → *{Date}* |
+
+#### minutesAgo
+**Gets a date that occurs *n* days before the current time.**    
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **minutesAgo**() → *{Date}* |
+| static   | **minutesAgo**(*{Number}* **n**) → *{Date}* |
+
+#### yearsAgo
+**Gets a date that occurs *n* days before the current time.**    
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **yearsAgo**() → *{Date}* |
+| static   | **yearsAgo**(*{Number}* **n**) → *{Date}* |
+
+#### monthsAgo
+**Gets a date that occurs *n* days before the current time.**    
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **monthsAgo**() → *{Date}* |
+| static   | **monthsAgo**(*{Number}* **n**) → *{Date}* |
 
 ### Arrays
 
