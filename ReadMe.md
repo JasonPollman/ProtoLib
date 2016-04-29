@@ -492,8 +492,8 @@ If used in the static context, it will return an array with the results for each
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **getNumeric**() → *{Number|NaN}* |
-| static   | **getNumeric**(*{*...\**}* **objs**) → *{Number|NaN}* |
+| instance | **getNumeric**() → *{Number\|NaN}* |
+| static   | **getNumeric**(*{*...\**}* **objs**) → *{Number\|NaN}* |
 
 ```js
 []._.getNumeric();               // NaN
@@ -708,8 +708,8 @@ Functions are cast to strings with *Function.toString*
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **random**() → *{\*\}* |
-| static   | **random**(*{*\**}* **obj**) → *{\*\}* |
+| instance | **random**() → *{*\**\}* |
+| static   | **random**(*{*\**}* **obj**) → *{*\**\}* |
 
 ```js
 [1, 2, 3, 4].random()._.random();         // Could be any of: 1, 2, 3, or 4
@@ -732,14 +732,14 @@ For each item in the collection, a callback (*onIteration*) is invoked with the 
 | {String} **key**       | The key of the current item |
 | {Number} **iteration** | The current iteration count.<br/>For arrays *key* and *iteration* will be the same. |
 | {Function} **exit**    | A function that, when called will break the loop and return the arguments passed to it as an array (or if a single value is passed, the value itself) |
-| {*} **parent**         | The object being iterated over. Typically, *this* and *parent* will be equal, however *parent* exists in the event *onIteration* has been bound. If using an arrow function *this* will be lexically block scoped, so *parent* should be used to be safe. |
+| {\*} **parent**         | The object being iterated over. Typically, *this* and *parent* will be equal, however *parent* exists in the event *onIteration* has been bound. If using an arrow function *this* will be lexically block scoped, so *parent* should be used to be safe. |
 
 Functions and Numbers are cast to strings with *Function/Number.toString*.
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **each**(*{Number=}* [**startRange**=0], *{Number=}* [**endRange**=obj.length - 1], *{Function}* **onInteration**) → *{\*\|null}* |
-| static   | **each**(*{*\**}* **obj**, *{Number=}* [**startRange**=0], *{Number=}* [**endRange**=obj.length - 1], *{Function}* **onInteration**)) → *{\*\|null}* |
+| instance | **each**(*{Number=}* [**startRange**=0], *{Number=}* [**endRange**=obj.length - 1], *{Function}* **onInteration**) → *{*\**\|null}* |
+| static   | **each**(*{*\**}* **obj**, *{Number=}* [**startRange**=0], *{Number=}* [**endRange**=obj.length - 1], *{Function}* **onInteration**)) → *{*\**\|null}* |
 
 **Note:** All ranges are inclusive. If *startRange* is greater than *endRange* it will perform a decrementing loop.
 ```js
@@ -808,7 +808,7 @@ Loops through each item in the object and calls *onIteration*. If *false* is ret
 | {String} **key**       | The key of the current item |
 | {Number} **iteration** | The current iteration count.<br/>For arrays *key* and *iteration* will be the same. |
 | {Function} **exit**    | A function that, when called will break the loop and return the arguments passed to it as an array (or if a single value is passed, the value itself) |
-| {*} **parent**         | The object being iterated over. Typically, *this* and *parent* will be equal, however *parent* exists in the event *onIteration* has been bound. If using an arrow function *this* will be lexically block scoped, so *parent* should be used to be safe. |
+| {\*} **parent**         | The object being iterated over. Typically, *this* and *parent* will be equal, however *parent* exists in the event *onIteration* has been bound. If using an arrow function *this* will be lexically block scoped, so *parent* should be used to be safe. |
 
 Functions and Numbers are cast to strings with *Function/Number.toString*.
 
@@ -861,8 +861,8 @@ Functions and Numbers are cast to strings with *Function/Number.toString*.
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **any**(*{Function}* **onInteration**) → *{\*\|undefined}* |
-| static   | **any**(*{*\**}* **obj**, *{Function}* **onInteration**)) → *{\*\|undefined}* |
+| instance | **any**(*{Function}* **onInteration**) → *{*\**\|undefined}* |
+| static   | **any**(*{*\**}* **obj**, *{Function}* **onInteration**)) → *{*\**\|undefined}* |
 
 ```js
 var obj = { a: 1, b: 2, c: 3 },
@@ -904,8 +904,8 @@ If an array is passed, a shallow copy of the array will be returned.
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **toArray**() → *{Array<\*>}* |
-| static   | **toArray**(*{*\**}* **obj**) → *{Array<\*>}* |
+| instance | **toArray**() → *{Array<*\**>}* |
+| static   | **toArray**(*{*\**}* **obj**) → *{Array<*\**>}* |
 
 ```js
 var string = 'a string',
@@ -932,8 +932,8 @@ Strings, numbers and functions will be cast to string using *toString*.
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **first**(*{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
-| static   | **first**(*{*\**}* **obj**, *{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
+| instance | **first**(*{Number=}* [**n**=1]) → *{\*\|Array<*\**>\|Object<*\**>}* |
+| static   | **first**(*{*\**}* **obj**, *{Number=}* [**n**=1]) → *{\*\|Array<*\**>\|Object<*\**>}* |
 
 ```js
 var string = 'a string',
@@ -970,8 +970,8 @@ Works similar to *first*, except it returns the last *n* items, rather than the 
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **last**(*{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
-| static   | **last**(*{*\**}* **obj**, *{Number=}* [**n**=1]) → *{\*\|Array<\*>\|Object<\*>}* |
+| instance | **last**(*{Number=}* [**n**=1]) → *{*\**\|Array<*\**>\|Object<*\**>}* |
+| static   | **last**(*{*\**}* **obj**, *{Number=}* [**n**=1]) → *{*\**\|Array<*\**>\|Object<*\**>}* |
 
 #### getCallback
 **Always returns a callback**   
@@ -1016,8 +1016,8 @@ Finds the child specified by the given string "path" and delimiter (default '.')
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **findChildAtPath**(*{String}* **path**, *{String=}* [**delimiter**='.'], *{Function=}* **done**) → *{\*\|null}* |
-| static   | **findChildAtPath**(*{*\**}* **obj**, *{String}* **path**, *{String=}* [**delimiter**='.'], *{Function=}* **done**) → *{\*\|null}* |
+| instance | **findChildAtPath**(*{String}* **path**, *{String=}* [**delimiter**='.'], *{Function=}* **done**) → *{*\**\|null}* |
+| static   | **findChildAtPath**(*{*\**}* **obj**, *{String}* **path**, *{String=}* [**delimiter**='.'], *{Function=}* **done**) → *{*\**\|null}* |
 
 ```js
 var someObject = {
