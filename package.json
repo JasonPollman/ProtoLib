@@ -12,6 +12,14 @@
         "standard lib",
         "protolib"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/JasonPollman/ProtoLib.git"
+    },
+    "bugs": {
+        "url": "https://github.com/JasonPollman/ProtoLib/issues",
+        "email": "jasonjpollman@gmail.com"
+    },
     "scripts": {
         "prepublish": "gulp",
         "test": "mocha"

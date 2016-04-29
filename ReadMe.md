@@ -932,8 +932,8 @@ Strings, numbers and functions will be cast to string using *toString*.
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **first**(*{Number=}* [**n**=1]) → *{\*\|Array<*\**>\|Object<*\**>}* |
-| static   | **first**(*{*\**}* **obj**, *{Number=}* [**n**=1]) → *{\*\|Array<*\**>\|Object<*\**>}* |
+| instance | **first**(*{Number=}* [**n**=1]) → *{*\**\|Array<*\**>\|Object<*\**>}* |
+| static   | **first**(*{*\**}* **obj**, *{Number=}* [**n**=1]) → *{*\**\|Array<*\**>\|Object<*\**>}* |
 
 ```js
 var string = 'a string',
@@ -1783,7 +1783,7 @@ If *n* is omitted, *Number.MAX_VALUE* will be used. If the number is an integer,
 | Context  | Signature            |
 | :------- | :------------------- |
 | instance | **to**() → *{Number}*|
-| static   | *N/A                 |
+| static   | *N/A*                |
 
 ```js
 (5)._.to(100);      // -> Some integer between 5 and 100
@@ -1798,8 +1798,8 @@ Any number greater than 170 returns Infinity (as the factorial of 171 > Number.M
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **factorial**() → *{Number|Infinity}* |
-| static   | **factorial**(*{*\**}* **myNumber**) → *{Number|Infinity}* |
+| instance | **factorial**() → *{Number\|Infinity}* |
+| static   | **factorial**(*{*\**}* **myNumber**) → *{Number\|Infinity}* |
 
 ```js
 (3)._.factorial();   // -> 6
@@ -1817,8 +1817,8 @@ lib.number.factorial(myNumber);
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **choose**() → *{Number|Infinity}* |
-| static   | **choose**(*{Number}* **n**, *{Number}* **k**) → *{Number|Infinity}* |
+| instance | **choose**() → *{Number\|Infinity}* |
+| static   | **choose**(*{Number}* **n**, *{Number}* **k**) → *{Number\|Infinity}* |
 
 ```js
 (3)._.choose(2);            // -> 3
