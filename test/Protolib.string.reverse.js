@@ -31,6 +31,9 @@
             expect((123456789).toString()._.reverse()).to.equal('987654321');
 
             expect('Donec id elit non mi porta gravida at eget metus. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Vestibulum id ligula porta felis euismod semper. Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Sed posuere consectetur est at lobortis.'._.reverse()).to.equal('.sitrobol ta tse rutetcesnoc ereusop deS .mauq tege satsege ,ni sisilicaf ca subipad ,oido otsuj sarC .mudretni sillom subicuaf saneceaM .repmes domsiue silef atrop alugil di mulubitseV .rotcua rolod subicuaf murtur teeroal eugua lev sucal sittigas sumaviV .sutem tege ta adivarg atrop im non tile di cenoD');
+
+            var str = 'hello world!';
+            expect(str._.titleCase()._.reverse()).to.equal('!dlroW olleH');
         });
     });
 

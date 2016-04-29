@@ -23,14 +23,19 @@
         var o = {}, a = [], s = 'string', f = function () {}, n = 123, d = new Date();
 
         it('It should properly extend objects', function () {
-            lib.extend('test', Object, function ($1, $2) {
+            lib.extend(Object, 'test', function (o, $1, $2) {
+                expect(o).to.equal(this);
                 expect($1).to.equal(1);
                 expect($2).to.equal(2);
+                return this;
             });
 
             expect(o._.test).to.be.a('function');
             expect(lib.object.test).to.be.a('function');
             o._.test(1, 2);
+
+            var testObj = {};
+            expect(lib.object.test(testObj, 1, 2)).to.equal(testObj);
 
             expect(a._.test).to.be.a('function');
             a._.test(1, 2);
@@ -47,7 +52,8 @@
             expect(d._.test).to.be.a('function');
             d._.test(1, 2);
 
-            lib.extend('test2', function ($1, $2) {
+            lib.extend('test2', function (o, $1, $2) {
+                expect(o).to.equal(this);
                 expect($1).to.equal(1);
                 expect($2).to.equal(2);
             });
@@ -68,8 +74,9 @@
             expect(f._.test2).to.be.a('function');
             f._.test(1, 2);
 
-            // Make sure second argument is optional, and that we can overwrite library methods.
-            lib.extend('test', function ($1, $2, $3) {
+            // Make sure first argument is optional, and that we can overwrite library methods.
+            lib.extend('test', function (o, $1, $2, $3) {
+                expect(o).to.equal(this);
                 expect($1).to.equal(1);
                 expect($2).to.equal(2);
                 expect($3).to.equal('a');
@@ -93,11 +100,14 @@
         });
 
         it('It should properly extend strings', function () {
-            lib.extend('string_test', String, function ($1, $2) {
+            lib.extend(String, 'string_test', function (s, $1, $2) {
+                expect(s).to.equal(this);
                 expect($1).to.equal(1);
                 expect($2).to.equal(2);
                 return this;
             });
+
+            expect(lib.string.string_test('abc', 1, 2)).to.equal('abc');
 
             expect(lib.string.string_test).to.be.a('function');
             expect(lib.object.string_test).to.be.a('undefined');
@@ -118,11 +128,14 @@
         it('It should properly extend numbers', function () {
             var o = {}, a = [], s = 'string', f = function () {}, n = 123;
 
-            lib.extend('number_test', Number, function ($1, $2) {
+            lib.extend(Number, 'number_test', function (n, $1, $2) {
+                expect(n).to.equal(this);
                 expect($1).to.equal(1);
                 expect($2).to.equal(2);
                 return this;
             });
+
+            expect(lib.number.number_test(5, 1, 2)).to.equal(5);
 
             expect(lib.string.number_test).to.be.a('undefined');
             expect(lib.object.number_test).to.be.a('undefined');
@@ -142,11 +155,15 @@
         });
 
         it('It should properly extend functions', function () {
-            lib.extend('function_test', Function, function ($1, $2) {
+            lib.extend(Function, 'function_test', function (f, $1, $2) {
+                expect(f).to.equal(this);
                 expect($1).to.equal(1);
                 expect($2).to.equal(2);
                 return this;
             });
+
+            var f = function () {};
+            expect(lib.function.function_test(f, 1, 2)).to.equal(f);
 
             expect(lib.string.function_test).to.be.a('undefined');
             expect(lib.object.function_test).to.be.a('undefined');
@@ -166,11 +183,15 @@
         });
 
         it('It should properly extend arrays', function () {
-            lib.extend('array_test', Array, function ($1, $2) {
+            lib.extend(Array, 'array_test', function (o, $1, $2) {
+                expect(o).to.equal(this);
                 expect($1).to.equal(1);
                 expect($2).to.equal(2);
                 return this;
             });
+
+            var a = [];
+            expect(lib.array.array_test(a, 1, 2)).to.equal(a);
 
             expect(lib.string.array_test).to.be.a('undefined');
             expect(lib.object.array_test).to.be.a('undefined');
@@ -187,14 +208,34 @@
             expect(d._.array_test).to.be.a('undefined');
 
             expect(a._.array_test(1, 2, 'a')).to.equal(a);
+
+            var wasExtended = lib.extend(Array, 'empty', function (array, leaveFirstN) {
+                leaveFirstN = typeof leaveFirstN === 'number' ? leaveFirstN : 0;
+
+                for(var i = leaveFirstN; i < this.length; i++) {
+                    this.splice(i, 1);
+                    i--;
+                }
+                return this;
+            });
+
+            var arr = [1, 2, 3];
+            expect(wasExtended).to.equal(true);
+            expect(arr._.empty).to.be.a('function');
+            expect(arr._.empty()).to.eql([]);
+            expect(arr._.empty()).to.equal(arr);
         });
 
         it('It should properly extend dates', function () {
-            lib.extend('date_test', Date, function ($1, $2) {
+            lib.extend(Date, 'date_test', function (d, $1, $2) {
+                expect(d).to.equal(this);
                 expect($1).to.equal(1);
                 expect($2).to.equal(2);
                 return this;
             });
+
+            var d = new Date();
+            expect(lib.array.array_test(d, 1, 2)).to.equal(d);
 
             expect(lib.string.date_test).to.be.a('undefined');
             expect(lib.object.date_test).to.be.a('undefined');
@@ -223,11 +264,15 @@
 
             lib.function.inherits(MyClass, Array);
 
-            lib.extend('custom_test', Array, function ($1, $2) {
+            lib.extend(Array, 'custom_test', function (o, $1, $2) {
+                expect(o).to.equal(this);
                 expect($1).to.equal(1);
                 expect($2).to.equal(2);
                 return this;
             });
+
+            var a = [];
+            expect(lib.array.custom_test(a, 1, 2)).to.equal(a);
 
             var myClass = new MyClass(),
                 pArr    = [];
@@ -259,7 +304,8 @@
 
             lib.function.inherits(MyClass2, String);
 
-            lib.extend('custom_test2', MyClass2, function ($1, $2) {
+            lib.extend(MyClass2, 'custom_test2', function (o, $1, $2) {
+                expect(o).to.equal(this);
                 expect($1).to.equal(1);
                 expect($2).to.equal(2);
                 return this;
@@ -267,6 +313,11 @@
 
             var myClass = new MyClass2(),
                 pString = 'a string';
+
+            expect(lib.my.custom_test2).to.be.a('function');
+
+            var nClass2 = new MyClass2();
+            expect(lib.my.custom_test2(nClass2, 1, 2)).to.equal(nClass2);
 
             expect(myClass._.custom_test2).to.be.a('function');
             expect(myClass._.custom_test2(1, 2, 'a')).to.equal(myClass);
@@ -276,6 +327,11 @@
             expect(({})._.custom_test2).to.be.a('undefined');
             expect((5)._.custom_test2).to.be.a('undefined');
             expect([1, 2, 3]._.custom_test2).to.be.a('undefined');
+
+            lib.remove(MyClass2, 'custom_test2');
+            expect(lib.my.custom_test2).to.be.a('undefined');
+            expect(myClass._.custom_test2).to.be.a('undefined');
+            expect(nClass2._.custom_test2).to.be.a('undefined');
         });
 
         it('It should properly extend custom objects, #3', function () {
@@ -300,7 +356,8 @@
             lib.function.inherits(MyClassB, MyClassA);
             lib.function.inherits(MyClassC, MyClassB);
 
-            lib.extend('custom_test3', MyClassA, function ($1, $2) {
+            lib.extend(MyClassA, 'custom_test3', function (o, $1, $2) {
+                expect(o).to.equal(this);
                 expect($1).to.equal(1);
                 expect($2).to.equal(2);
                 return this;
@@ -324,9 +381,9 @@
             expect((5)._.custom_testA).to.be.a('undefined');
             expect([1, 2, 3]._.custom_testA).to.be.a('undefined');
 
-            expect(lib.remove('custom_test3', MyClassC)).to.equal(false);
-            expect(lib.remove('custom_test3', MyClassB)).to.equal(false);
-            expect(lib.remove('custom_test3', MyClassA)).to.equal(true);
+            expect(lib.remove(MyClassC, 'custom_test3')).to.equal(false);
+            expect(lib.remove(MyClassB, 'custom_test3')).to.equal(false);
+            expect(lib.remove(MyClassA, 'custom_test3')).to.equal(true);
 
             expect(myClassC._.custom_test3).to.be.a('undefined');
             expect(myClassB._.custom_test3).to.be.a('undefined');
@@ -355,7 +412,8 @@
             lib.function.inherits(MyClassB, MyClassA);
             lib.function.inherits(MyClassC, MyClassB);
 
-            lib.extend('custom_test4', MyClassB, function ($1, $2) {
+            lib.extend(MyClassB, 'custom_test4', function (o, $1, $2) {
+                expect(o).to.equal(this);
                 expect($1).to.equal(1);
                 expect($2).to.equal(2);
                 return this;
@@ -378,9 +436,9 @@
             expect((5)._.custom_test4).to.be.a('undefined');
             expect([1, 2, 3]._.custom_test3).to.be.a('undefined');
 
-            expect(lib.remove('custom_test4', MyClassA)).to.equal(false);
-            expect(lib.remove('custom_test4', MyClassC)).to.equal(false);
-            expect(lib.remove('custom_test4', MyClassB)).to.equal(true);
+            expect(lib.remove(MyClassA, 'custom_test4')).to.equal(false);
+            expect(lib.remove(MyClassC, 'custom_test4')).to.equal(false);
+            expect(lib.remove(MyClassB, 'custom_test4')).to.equal(true);
             expect(myClassC._.custom_test4).to.be.a('undefined');
             expect(myClassB._.custom_test4).to.be.a('undefined');
             expect(myClassA._.custom_test4).to.be.a('undefined');
@@ -408,7 +466,8 @@
             lib.function.inherits(MyClassB, MyClassA);
             lib.function.inherits(MyClassC, MyClassB);
 
-            lib.extend('custom_test5', MyClassC, function ($1, $2) {
+            lib.extend(MyClassC, 'custom_test5', function (o, $1, $2) {
+                expect(o).to.equal(this);
                 expect($1).to.equal(1);
                 expect($2).to.equal(2);
                 return this;
@@ -430,7 +489,7 @@
             expect((5)._.custom_test5).to.be.a('undefined');
             expect([1, 2, 3]._.custom_test5).to.be.a('undefined');
 
-            expect(lib.remove('custom_test5', MyClassC)).to.equal(true);
+            expect(lib.remove(MyClassC, 'custom_test5')).to.equal(true);
             expect(myClassC._.custom_test5).to.be.a('undefined');
         });
 
@@ -459,7 +518,7 @@
             expect(lib.array.array_test).to.be.a('function');
             expect(a._.array_test).to.be.a('function');
 
-            expect(lib.remove('test', Object)).to.equal(true);
+            expect(lib.remove(Object, 'test')).to.equal(true);
             expect(o._.test).to.be.a('undefined');
             expect(s._.test).to.be.a('undefined');
             expect(n._.test).to.be.a('undefined');
@@ -469,25 +528,25 @@
 
             expect(lib.object.test).to.be.a('undefined');
 
-            expect(lib.remove('test', Object)).to.equal(false);
+            expect(lib.remove(Object, 'test')).to.equal(false);
 
-            expect(lib.remove('string_test', String)).to.equal(true);
+            expect(lib.remove(String, 'string_test')).to.equal(true);
             expect(lib.string.string_test).to.be.a('undefined');
             expect(s._.string_test).to.be.a('undefined');
 
-            expect(lib.remove('number_test', Number)).to.equal(true);
+            expect(lib.remove(Number, 'number_test')).to.equal(true);
             expect(lib.number.number_test).to.be.a('undefined');
             expect(n._.number_test).to.be.a('undefined');
 
-            expect(lib.remove('function_test', Function)).to.equal(true);
+            expect(lib.remove(Function, 'function_test')).to.equal(true);
             expect(lib.function.function_test).to.be.a('undefined');
             expect(f._.function_test).to.be.a('undefined');
 
-            expect(lib.remove('array_test', Array)).to.equal(true);
+            expect(lib.remove(Array, 'array_test')).to.equal(true);
             expect(lib.array.array_test).to.be.a('undefined');
             expect(a._.array_test).to.be.a('undefined');
 
-            expect(lib.remove('date_test', Date)).to.equal(true);
+            expect(lib.remove(Date, 'date_test')).to.equal(true);
             expect(lib.date.date_test).to.be.a('undefined');
             expect(d._.date_test).to.be.a('undefined');
 

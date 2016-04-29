@@ -1,16 +1,15 @@
 # ProtoLib
 ------
 **The namespace friendly prototype library.**   
-*"There's nothing wrong with modifying primitive prototypes, as long as you do it right."*   
+> There's nothing wrong with modifying built-in prototypes, as long as you do it right.
 
 ------
-ProtoLib is a fast, node and browser friendly JavaScript library. It "tucks" library methods inside a single, customizable property attached to *Object.prototype*.
+**Some of the magic from Javascript comes from the ability to modify built-in types... but it's also taboo.**    
+It can lead to dangerous library collisions. That's where *ProtoLib* comes to the rescue. It's is a fast, Node.js and browser friendly JavaScript library that "tucks" utility methods inside a single, customizable property added to *Object.prototype*.
 
-Currently *tested* and working in Node.js, Chrome, Firefox, Safari, IE 10 & 11.
+Static utility methods are cumbersome and don't lend themselves to *easy reading*. Basically, I grew tired of using static libraries, and re-writing utility methods over various projects... enter ProtoLib.
 
-Basically, I got sick of writing the same library methods over and over, dealing with static methods, and colliding libraries...   
-
-...Enter ProtoLib.
+Currently tested and working in Node.js, Chrome, Firefox, Safari, IE 10 & 11.
 
 ## Features
 ---
@@ -40,8 +39,12 @@ Basically, I got sick of writing the same library methods over and over, dealing
     - [Functions](#functions)
     - [Numbers](#numbers)
     - [Date Objects](#date-objects)
-4. [Extending ProtoLib](#extending-protolib)
-    - [Custom Objects](#custom-objects)
+5. [Extending ProtoLib](#extending-protolib)
+    - [Adding Methods](#adding-methods)
+    - [Deleting Methods](#deleting-methods)
+6. [Advanced](#advanced)
+    - [Instance Methods](#protolib-instance-methods)
+    - [Static Methods](#static-methods)
 
 ## Install
 ---
@@ -57,9 +60,9 @@ $ npm install protolib --save
 // Require the protolib library.
 var ProtoLib = require('protolib');
 
-// Create a new instance, specifying the accessor property (i.e. "handle").
+// Get a new instance, specifying the accessor property (i.e. "handle").
 // This will default to '_' if unspecified.
-var lib = new ProtoLib('_');
+var lib = ProtoLib.get('_');
 
 // That's it!
 // All objects now have access to the defined library methods from the '_' property.
@@ -78,13 +81,46 @@ str._.titleCase()._.reverse()) // ->'!dlroW olleH'
 ```js
 var ProtoLib = require('protolib');
 
-// Just instantiate ProtoLib with a different handle.
-var lib = new ProtoLib('lib'),
+// Just get a new ProtoLib instance with a different handle.
+var lib = ProtoLib.get('lib'),
     obj = { foo: 'hello', bar: 'world' };
 
 obj.lib.invert()        // -> { hello: 'foo', world: 'bar' }
    .lib.histogram()     // -> { 'foo': 1, 'bar': 1 }
    .lib.size()          // -> 2
+```
+
+**Do not use *new* with ProtoLib**    
+ProtoLib has a static function: *ProtoLib.get*. It should be used to prevent instantiating new *ProtoLib* instances across files. By using *ProtoLib.get* you can retrieve the same instance of the library across namespaces.
+
+```js
+// Bad, don't do it.
+var lib = new ProtoLib('handle');
+
+// Correct way to instantiate ProtoLib...
+var lib = ProtoLib.get('_');
+```
+
+**Example: Cross-file use:**   
+``foo.js``
+```js
+var ProtoLib = require('protolib'),
+    lib      = ProtoLib.get('_');
+
+// Library now available to objects...
+'string'._.reverse();
+```
+
+``bar.js``
+```js
+
+// If called after foo.js, bar.js will still have the library methods attached.
+// This still works...
+'string'._.reverse();
+
+// However, just to be safe you should include the library at the top of each file.
+// If you don't need a reference to the class itself, just call:
+require('protolib').get('_');
 ```
 
 ### Browser Use
@@ -97,7 +133,7 @@ Use ***/dist/protolib.min.js***... */index.js* is for Node.js only.
 ```
 *my-script.js*
 ```js
-var lib = new window.ProtoLib('_');
+var lib = window.ProtoLib.get('_');
 var arr = [1, 2, 3, 4];
 
 arr._.rotate('left', 2)                 // -> [3, 4, 1, 2]
@@ -154,6 +190,7 @@ Methods available to all *Objects* (objects, arrays, strings, functions, etc.).
 | [toNumber](#tonumber)               | Gets an object's numeric equivalent (or *NaN*) |
 | [toInt](#toint)                     | Gets an object's integer equivalent (or *NaN*) |
 | [only](#only)                       | Filters an object by the given types |
+| [uniqueId](#uniqueid)               | Gets a unique id for non-literal types |
 | [where](#where)                     | Filters an object using a predicate function |
 | [whereKeys](#wherekeys)             | Filters an object by its keys using a predicate function |
 
@@ -259,10 +296,10 @@ Methods available to all *Date* objects and their inheritors.
 
 ```js
 var ProtoLib = require('protolib'),
-    lib = new ProtoLib('_');
+    lib = ProtoLib.get('_');
 
 // Or in the browser...
-var lib = new window.ProtoLib('_');
+var lib = window.ProtoLib.get('_');
 ```
 
 ### Objects
@@ -1292,6 +1329,32 @@ Same as [implements](#implements), except with added *hasOwnProperty* check.
 | instance | **implementsOwn**(*{String}* **method**) → *{\*}* |
 | static   | **implementsOwn**(*{\*}* **obj**, *{String}* **method**) → *{\*}* |
 
+#### uniqueId
+**Returns a unique id for non-literals**   
+Returns a unique hex string for objects and functions. *Throws on numbers and strings*. The id is generated on a *as requested* basis, so the first time it's called 0x0 is returned, then 0x1, etc. etc. However, once assigned to the object, the same id will *always* be returned for that object.
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **uniqueId**() → *{String}* |
+| static   | **uniqueId**(*{\*}* **obj**) → *{String}* |
+
+```js
+var obj = { foo: 1, bar: 2 },
+    id  = obj._.uniqueId();  // -> '0xN', where N is some base 16 number
+
+var arr = [1, 2, 3],
+    id  = arr._.uniqueId();  // -> '0xN', where N is some base 16 number
+
+var func = function () {},
+    id  = func._.uniqueId(); // -> '0xN', where N is some base 16 number
+
+(5).uniqueId();              // Throws an Error
+('a string').uniqueId();     // Throws an Error
+
+/* Static Use */
+lib.object.uniqueId(myObject);
+```
+
 ### Strings
 
 #### camelize
@@ -1825,3 +1888,164 @@ lib.number.pad(n, length);
 /* Static Use */
 lib.number.daysFrom(n, length);
 ```
+
+## Extending ProtoLib
+---
+
+### Adding Methods
+**You can add your own utility methods to a ProtoLib instance by using *ProtoLib#extend*...**   
+
+#### ProtoLib#extend(*{Function=}* [**constructor**=*Object*], *{String}* **name**, *{String=}* **staticNamepace**, *{Function}* **method**) → *{Boolean}*
+**Adds a method to the given constructor and all inheritors of the constructor.**   
+Returns true if successful, false otherwise.    
+
+The new method will be available both statically and as a member on instance libraries. **You should write your methods statically.** That is, you should include the object as the *first* argument to the method. Objects calling the instance version of the method will adjust for this automagically, and use the arguments *1-n* provided in the method callback; that is: with the first argument omitted.
+
+**Example: Adding a method to all Array objects...**
+
+```js
+var lib = ProtoLib.get('_');
+
+// Example: write a method to remove all objects from an array,
+// except for the first n.
+
+var wasExtended = lib.extend(Array, 'empty', function (array, leaveFirstN) {
+    leaveFirstN = typeof leaveFirstN === 'number' ? leaveFirstN : 0;
+    // this refers to object being operated on when using ProtoLib#extend
+    // So, this === array
+    for(var i = leaveFirstN; i < this.length; i++) {
+        this.splice(i, 1);
+        // We have to adjust our array pointer here,
+        // since splice modifies the array internally.
+        i--;
+    }
+    return this;
+});
+
+var [1, 2, 3]._.empty();  // -> []
+var [1, 2, 3]._.empty(2); // -> [1, 2]
+
+// For the record, it's typically faster to assign an array
+// to a new array, than empty it.
+```
+
+##### Extended Static Versions
+The static version of an extended method will be added to *lib[staticNamespace]* and *lib.my* where *lib* is the reference to a ProtoLib instance and *staticNamespace* is the 3rd argument of *Protolib#extend*. So calling Protolib#extend with:
+
+```js
+lib.extend(MyClass, 'methodName', 'MyClass', someFunction);
+```
+Will result in the following static methods...
+```js
+lib.MyClass.methodName
+lib.my.methodName
+```
+
+If staticNamespace is omitted... ProtoLib will add the method to the *my* static namespace, and if the constructor function has a name, it will use the constructor name. **Note, Internet Explorer doesn't support *Function.name*, so for IE the following is not true.**   
+
+```js
+var MyClass = function myClassConstructor () { ... }
+lib.extend(MyClass, 'example', someFunction);
+
+lib.myClassConstructor.example
+lib.my.example
+
+// In IE only lib.my.example is available...
+```
+
+If the constructor is a built-in type (i.e. *Object*, *Array*, *Date*, *Number*, *String*, *Error*, *Function*, *RegExp*, etc.), **the *staticNamepace* argument will be ignored** and the lowercased version of the constructor name will be used. For example:
+
+```js
+
+var MyClass = function myClassConstructor () { ... }
+lib.extend(Array, 'example', 'myStaticNamepace' someFunction);
+
+// 'example' function will be added to the following static namespaces...
+lib.array.example
+lib.my.example
+
+// It will *not* be added to:
+lib.myStaticNamepace.example
+
+```
+
+### Deleting Methods
+**You can delete utility methods from a ProtoLib instance by using *ProtoLib#delete*...**   
+
+#### ProtoLib#delete(*{Function}* **constructor**, *{String}* **name**) → *{Boolean}*
+**Deletes a library method from the ProtoLib instance for the given constructor.**   
+Returns true if successful, false otherwise.    
+
+```js
+var lib = ProtoLib.get('_');
+var MyClass = function () {};
+
+// Add a new library method...
+lib.extend(MyClass, 'example', myObject => {
+    console.log('Example called!');
+});
+
+var myClassObject = new MyClass();
+myClassObject._.example(); // Logs 'Example called!'
+
+// Delete the library method...
+var wasDeleted = lib.delete(MyClass, 'example');
+myClassObject._.example(); // TypeError: myClassObject._.example is not a function
+```
+
+## Advanced
+---
+**This section is basically informational.**   
+You probably won't ever use it, but it's here just in case.
+
+### Instance Methods
+
+#### ProtoLib#load → *{ProtoLib}*
+**Adds the library (handle) object to all objects.**    
+Returns a reference to the current *ProtoLib* instance.
+
+#### ProtoLib#unload → *{ProtoLib}*
+**Removes the handle object from all objects.**    
+Returns a reference to the current *ProtoLib* instance.
+
+#### ProtoLib#killCache(*{Function=}* constr) → *{ProtoLib}*
+**Kills the library cache, forcing handle objects to be recreated on the next call.**    
+If a Function is passed in for parameter *constr*, only the given constructor's cache will be deleted.
+Returns a reference to the current *ProtoLib* instance.
+
+#### ProtoLib#setHandle() → *{ProtoLib}*
+**Resets the handle, for accessing the library.**    
+Returns a reference to the current *ProtoLib* instance.
+
+```js
+var lib = ProtoLib.get('_');
+
+'example'._.reverse();  // -> 'elpmaxe'
+
+lib.setHandle('pl');
+
+'example'._.reverse();  // TypeError: 'example'._.reverse is not a function
+'example'.pl.reverse(); // -> 'elpmaxe'
+```
+#### ProtoLib#extend(*{Function=}* [**constructor**=*Object*], *{String}* **name**, *{String=}* **staticNamepace**, *{Function}* **method**) → *{Boolean}*
+**See [Adding Methods](#adding-methods)**    
+
+#### ProtoLib#delete(*{Function}* **constructor**, *{String}* **name**) → *{Boolean}*
+**See [Deleting Methods](#deleting-methods)**    
+
+### Static Methods
+
+#### ProtoLib.get(*{String}* **handle**) → *{ProtoLib}* **instance**
+**Retrieves the ProtoLib instance with the given handle, or creates a new one.**    
+
+#### ProtoLib.killCache(*{String=}* **handle**) → *{Function}* **ProtoLib**
+**Kills the cache for the ProtoLib instance with the given handle**
+If no handle is specified, all ProtoLib instances will have their cache cleared.  
+
+#### ProtoLib.killCacheForConstructor(*{String=}* **constr**) → *{Function}* **ProtoLib**
+**Kills the cache for the given constructor for all ProtoLib instances.**
+If no constructor is specified, or if *constr* isn't a function, no action will be taken. 
+
+#### ProtoLib.destroy(*{String}* **handle**) → *{Function}* **ProtoLib**
+**Destroys a ProtoLib instance, and removes it's library methods from all objects**    
+This also frees up the ProtoLib instance with the given handle to be garbage collected, if not referenced elsewhere.
