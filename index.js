@@ -160,7 +160,6 @@
          */
         function applyLibraryToPrototypes () {
             if(!attached) {
-                attached = true;
                 Object.defineProperty(Object.prototype, handle, {
                     configurable : true,
                     enumerable   : false,
@@ -221,6 +220,7 @@
                         return lib;
                     }
                 });
+                attached = true;
             }
             return self;
         }
@@ -230,10 +230,8 @@
          * @return {ProtoLib} The current ProtoLib instance
          */
         function removeLibraryFromPrototypes () {
-            if(attached) {
-                delete Object.prototype[handle];
-                attached = false;
-            }
+            delete Object.prototype[handle];
+            attached = false;
             return self;
         }
 
