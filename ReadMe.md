@@ -311,7 +311,7 @@ For objects (arrays and pure objects), it will count the frequency of values. Fo
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **histogram**() → *{Object<Number>}* |
-| static   | **histogram**(*{...\*}* **items**) → *{Object<Number>}* |
+| static   | **histogram**(*{*...\**}* **items**) → *{Object<Number>}* |
 
 ```js
 [1, 2, 3, 4, 1, 1, 1, 5, 5]._.histogram()
@@ -462,7 +462,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **isNumeric**() → *{Boolean}* |
-| static   | **isNumeric**(*{...\*}* **items**) → *{Boolean}* |
+| static   | **isNumeric**(*{*...\**}* **items**) → *{Boolean}* |
 
 ```js
 []._.isNumeric();               // false
@@ -493,7 +493,7 @@ If used in the static context, it will return an array with the results for each
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **getNumeric**() → *{Number|NaN}* |
-| static   | **getNumeric**(*{...\*}* **objs**) → *{Number|NaN}* |
+| static   | **getNumeric**(*{*...\**}* **objs**) → *{Number|NaN}* |
 
 ```js
 []._.getNumeric();               // NaN
@@ -529,7 +529,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **isEmpty**() → *{Boolean}* |
-| static   | **isEmpty**(*{...\*}* **objs**) → *{Boolean}* |
+| static   | **isEmpty**(*{*...\**}* **objs**) → *{Boolean}* |
 
 ```js
 []._.isEmpty()                // true
@@ -554,7 +554,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **isArray**() → *{Boolean}* |
-| static   | **isArray**(*{...\*}* **objs**) → *{Boolean}* |
+| static   | **isArray**(*{*...\**}* **objs**) → *{Boolean}* |
 
 ```js
 []._.isArray()                // true
@@ -577,7 +577,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **isPureObject**() → *{Boolean}* |
-| static   | **isPureObject**(*{...\*}* **objs**) → *{Boolean}* |
+| static   | **isPureObject**(*{*...\**}* **objs**) → *{Boolean}* |
 
 ```js
 []._.isPureObject()                // false
@@ -600,7 +600,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **isString**() → *{Boolean}* |
-| static   | **isString**(*{...\*}* **objs**) → *{Boolean}* |
+| static   | **isString**(*{*...\**}* **objs**) → *{Boolean}* |
 
 #### isBoolean
 **Determines if the given objects are all booleans.**
@@ -609,7 +609,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **isBoolean**() → *{Boolean}* |
-| static   | **isBoolean**(*{...\*}* **objs**) → *{Boolean}* |
+| static   | **isBoolean**(*{*...\**}* **objs**) → *{Boolean}* |
 
 #### isFunction
 **Determines if the given objects are all functions.**   
@@ -618,7 +618,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **isFunction**() → *{Boolean}* |
-| static   | **isFunction**(*{...\*}* **objs**) → *{Boolean}* |
+| static   | **isFunction**(*{*...\**}* **objs**) → *{Boolean}* |
 
 #### isNull
 **Determines if the given objects are all null.**   
@@ -627,7 +627,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **isNull**() → *{Boolean}* |
-| static   | **isNull**(*{...\*}* **objs**) → *{Boolean}* |
+| static   | **isNull**(*{*...\**}* **objs**) → *{Boolean}* |
 
 #### isUndefined
 **Determines if the given objects are all undefined.**   
@@ -636,7 +636,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **isUndefined**() → *{Boolean}* |
-| static   | **isUndefined**(*{...\*}* **objs**) → *{Boolean}* |
+| static   | **isUndefined**(*{*...\**}* **objs**) → *{Boolean}* |
 
 #### isArguments
 **Determines if the given objects are all arguments objects.**   
@@ -645,7 +645,7 @@ If used in the static context, it will return true if and only if all arguments 
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **isArguments**() → *{Boolean}* |
-| static   | **isArguments**(*{...\*}* **objs**) → *{Boolean}* |
+| static   | **isArguments**(*{*...\**}* **objs**) → *{Boolean}* |
 
 ```js
 []._.isArguments()                // false
@@ -679,7 +679,7 @@ If used in the static context, it will return an array with the results for each
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **toInt**() |
-| static   | **toInt**(*{...\*}* **objs**) |
+| static   | **toInt**(*{*...\**}* **objs**) |
 
 ```js
 []._.toInt();               // NaN
