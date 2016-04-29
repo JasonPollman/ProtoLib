@@ -125,7 +125,10 @@
             for(var i in inheritanceChain) {
                 if(inheritanceChain.hasOwnProperty(i)) {
                     if(inheritanceChain[i].indexOf(constr.__get_protolib_id__) > -1) {
+                        cached[i] = undefined;
                         delete cached[i];
+
+                        inheritanceChain[i] = undefined;
                         delete inheritanceChain[i];
                     }
                 }
@@ -230,6 +233,7 @@
          * @return {ProtoLib} The current ProtoLib instance
          */
         function removeLibraryFromPrototypes () {
+            Object.defineProperty(Object.prototype, handle, { value: undefined });
             delete Object.prototype[handle];
             attached = false;
             return self;
@@ -351,14 +355,20 @@
 
             var uid = constr.__get_protolib_id__;
             if(libp[uid] && libp[uid][name]) {
+                libp[uid][name] = undefined;
                 delete libp[uid][name];
 
                 // Remove from static namespace, if added there...
-                if(libs[constr.__protolib_static_namespace__] && libs[constr.__protolib_static_namespace__][name])
+                if(libs[constr.__protolib_static_namespace__] && libs[constr.__protolib_static_namespace__][name]) {
+                    libs[constr.__protolib_static_namespace__][name] = undefined;
                     delete libs[constr.__protolib_static_namespace__][name];
+                }
 
                 // Remove from libs.my
-                if(libs.my[name]) delete libs.my[name];
+                if(libs.my[name]) {
+                    libs.my[name] = undefined;
+                    delete libs.my[name];
+                }
 
                 deleteCacheForConstructor(constr);
                 return true;
@@ -372,6 +382,7 @@
          */
         this.unload = function () {
             removeLibraryFromPrototypes();
+            ProtoLib[handle] = undefined;
             delete ProtoLib[handle];
             return self;
         };
@@ -395,7 +406,10 @@
         this.killCache = function (constr) {
             if(constr) {
                 if(typeof constr === 'function') {
+                    cached[constr.__get_protolib_id__] = undefined;
                     delete cached[constr.__get_protolib_id__];
+
+                    inheritanceChain[constr.__get_protolib_id__] = undefined;
                     delete inheritanceChain[constr.__get_protolib_id__];
                 }
             }
@@ -464,6 +478,7 @@
         handle = typeof handle === 'string' ? handle : '_';
         if(typeof Protolibs[handle] === 'object') {
             Protolibs[handle].unload();
+            Protolibs[handle] = undefined;
             delete Protolibs[handle];
         }
         return ProtoLib;

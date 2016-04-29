@@ -286,7 +286,7 @@
             expect('string'._.custom_test).to.be.a('undefined');
             expect(({})._.custom_test).to.be.a('undefined');
             expect([1, 2, 3]._.custom_test).to.be.a('function');
-            expect((5)._.custom_test2).to.be.a('undefined');
+            expect((5)._.custom_test).to.be.a('undefined');
         });
 
         it('It should properly extend custom objects, #2', function () {
@@ -375,11 +375,11 @@
             expect(myClassB._.custom_test3(1, 2, 'a')).to.equal(myClassB);
             expect(myClassC._.custom_test3(1, 2, 'a')).to.equal(myClassC);
 
-            expect(function () {}._.custom_testA).to.be.a('undefined');
-            expect('string'._.custom_testA).to.be.a('undefined');
-            expect(({})._.custom_testA).to.be.a('undefined');
-            expect((5)._.custom_testA).to.be.a('undefined');
-            expect([1, 2, 3]._.custom_testA).to.be.a('undefined');
+            expect(function () {}._.custom_test3).to.be.a('undefined');
+            expect('string'._.custom_test3).to.be.a('undefined');
+            expect(({})._.custom_test3).to.be.a('undefined');
+            expect((5)._.custom_test3).to.be.a('undefined');
+            expect([1, 2, 3]._.custom_test3).to.be.a('undefined');
 
             expect(lib.remove(MyClassC, 'custom_test3')).to.equal(false);
             expect(lib.remove(MyClassB, 'custom_test3')).to.equal(false);
@@ -434,7 +434,7 @@
             expect('string'._.custom_test4).to.be.a('undefined');
             expect(({})._.custom_test4).to.be.a('undefined');
             expect((5)._.custom_test4).to.be.a('undefined');
-            expect([1, 2, 3]._.custom_test3).to.be.a('undefined');
+            expect([1, 2, 3]._.custom_test4).to.be.a('undefined');
 
             expect(lib.remove(MyClassA, 'custom_test4')).to.equal(false);
             expect(lib.remove(MyClassC, 'custom_test4')).to.equal(false);
