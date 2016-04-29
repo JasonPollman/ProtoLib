@@ -1,5 +1,5 @@
 {
-    "name": "protolib",
+    "name": "proto-lib",
     "version": "0.2.0",
     "description": "The namespace friendly prototype library for both node and browsers.",
     "author": "Jason Pollman <jasonjpollman@gmail.com>",

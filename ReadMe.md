@@ -49,7 +49,7 @@ Currently tested and working in Node.js, Chrome, Firefox, Safari, IE 10 & 11.
 ## Install
 ---
 ```bash
-$ npm install protolib --save
+$ npm install proto-lib --save
 ```
 ## Getting Started
 ---
@@ -58,7 +58,7 @@ $ npm install protolib --save
 
 ```js
 // Require the protolib library.
-var ProtoLib = require('protolib');
+var ProtoLib = require('proto-lib');
 
 // Get a new instance, specifying the accessor property (i.e. "handle").
 // This will default to '_' if unspecified.
@@ -79,7 +79,7 @@ str._.titleCase()._.reverse()) // ->'!dlroW olleH'
 **Oh Noes! I'm using a library that uses '_', what can I do?**
 
 ```js
-var ProtoLib = require('protolib');
+var ProtoLib = require('proto-lib');
 
 // Just get a new ProtoLib instance with a different handle.
 var lib = ProtoLib.get('lib'),
@@ -104,7 +104,7 @@ var lib = ProtoLib.get('_');
 **Example: Cross-file use:**   
 ``foo.js``
 ```js
-var ProtoLib = require('protolib'),
+var ProtoLib = require('proto-lib'),
     lib      = ProtoLib.get('_');
 
 // Library now available to objects...
@@ -120,7 +120,7 @@ var ProtoLib = require('protolib'),
 
 // However, just to be safe you should include the library at the top of each file.
 // If you don't need a reference to the class itself, just call:
-require('protolib').get('_');
+require('proto-lib').get('_');
 ```
 
 ### Browser Use
@@ -296,7 +296,7 @@ Methods available to all *Date* objects and their inheritors.
 **The examples below assume you have set 'lib' to a new instance of ProtoLib and that you're using the default handler ('_'), that is...**
 
 ```js
-var ProtoLib = require('protolib'),
+var ProtoLib = require('proto-lib'),
     lib = ProtoLib.get('_');
 
 // Or in the browser...
