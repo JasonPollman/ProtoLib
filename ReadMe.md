@@ -2043,7 +2043,10 @@ That is, the objects that are unique to only one array.
 
 ```js
 [1, 2, 3]._.difference([3, 4, 5, 6]);                      // -> [1, 2, 4, 5, 6]
-[1, 2, 3]._.difference([3, 4, 5, 6], [1, 7, 8, 9], ['a']); // -> [2, 4, 5, 6, 'a']
+[1, 2, 3]._.difference([3, 4, 5, 6], [1, 7, 8, 9], ['a']); // -> [2, 4, 5, 6, 7, 8, 9, 'a']
+
+[2, 2, 2, 1]._.difference([3, 3, 3, 1], [1]); // -> [2, 2, 2, 3, 3, 3]
+[2, 2, 1, 1]._.difference([3, 3, 1, 1], [1]); // -> [2, 2, 3, 3]
 
 /* Static Use */
 lib.array.difference(arrayA, arrayB, arrayC...);
