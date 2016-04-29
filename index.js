@@ -308,6 +308,18 @@
                 case constr === Date:
                     constructorName = 'date';
                     break;
+
+                case constr === Boolean:
+                    constructorName = 'boolean';
+                    break;
+
+                case constr === Error:
+                    constructorName = 'date';
+                    break;
+
+                case constr === RegExp:
+                    constructorName = 'regexp';
+                    break;
             }
 
             if(!libp[constructorId])   libp[constructorId]   = {};

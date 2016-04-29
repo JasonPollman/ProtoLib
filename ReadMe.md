@@ -207,8 +207,9 @@ Methods available to all *String* objects.
 | [htmlEncode](#htmlencode)           | Escapes HTML special characters |
 | [lcFirst](#lcfirst)                 | Lowercases the first character of a string |
 | [ltrim](#ltrim)                     | Left trims whitespace from a string |
-| [newlineToBreak](#newlinetobreak)   | Replaces newlines with *\<br\>* tags |
+| [newlineToBreak](#newlinetobreak)   | Replaces newlines with *br* tags |
 | [pad](#pad)                         | Pads (or truncates) a string to *length* |
+| [randomString](#randomstring)       | Generate a random string with the given length |
 | [regexpSafe](#regexpsafe)           | Returns a regular expression safe string |
 | [repeat](#repeat)                   | Repeats a string *n* times |
 | [reverse](#reverse)                 | Reverses a string |
@@ -1746,6 +1747,21 @@ lib.string.newlineToBreak(myString);
 
 /* Static Use */
 lib.string.tabsToSpan(myString);
+```
+
+#### randomString
+**Generate a random string with the given length.**    
+If the *charPool* argument isn't a string, the string below will be used:    
+``0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSUVWXYZ_ `~!@#$%^&*()_+\\|][\';/.,|}{":?><``
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | *N/A* |
+| static   | **randomString**(*{Number=}* [**length**=10], *{String=}* **charPool**) → *{String}* |
+
+```js
+libs.string.randomString(10);      // ew@64cvll- is one possibility
+libs.string.randomString(2, 'aA'); // Possibilities: aa, aA, Aa, AA
 ```
 
 ### Numbers
