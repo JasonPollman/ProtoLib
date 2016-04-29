@@ -37,6 +37,15 @@
 
             o = eobj._.size();
             expect(o).to.equal(0);
+
+            var oobj = { foo: 'hello', bar: 'world' };
+
+            var res = oobj
+                ._.invert()
+                ._.histogram()
+                ._.size();
+
+            expect(res).to.equal(2);
         });
 
         it('It should return the correct number of members given undefined', function () {

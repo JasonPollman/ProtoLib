@@ -95,7 +95,7 @@ ProtoLib has a static function: *ProtoLib.get*. It should be used to prevent ins
 
 ```js
 // Bad, don't do it.
-var lib = new ProtoLib('handle');
+var lib = new ProtoLib('_');
 
 // Correct way to instantiate ProtoLib...
 var lib = ProtoLib.get('_');

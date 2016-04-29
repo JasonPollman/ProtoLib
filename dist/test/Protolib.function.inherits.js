@@ -9,7 +9,7 @@
         expect = require('chai').expect;
     }
 
-    describe('Protolib.string.inherits', function () {
+    describe('Protolib.function.inherits', function () {
         before(function () {
             if(typeof window !== 'object' && !Object._) new (require('../'))('_');
         });
