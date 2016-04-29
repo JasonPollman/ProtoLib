@@ -262,8 +262,6 @@
                 };
             };
 
-            lib.function.inherits(MyClass, Array);
-
             lib.extend(Array, 'custom_test', function (o, $1, $2) {
                 expect(o).to.equal(this);
                 expect($1).to.equal(1);
@@ -271,6 +269,8 @@
                 return this;
             });
 
+            lib.function.inherits(MyClass, Array);
+            
             var a = [];
             expect(lib.array.custom_test(a, 1, 2)).to.equal(a);
 
@@ -353,15 +353,15 @@
                 };
             };
 
-            lib.function.inherits(MyClassB, MyClassA);
-            lib.function.inherits(MyClassC, MyClassB);
-
             lib.extend(MyClassA, 'custom_test3', function (o, $1, $2) {
                 expect(o).to.equal(this);
                 expect($1).to.equal(1);
                 expect($2).to.equal(2);
                 return this;
             });
+
+            lib.function.inherits(MyClassB, MyClassA);
+            lib.function.inherits(MyClassC, MyClassB);
 
             var myClassA = new MyClassA(),
                 myClassB = new MyClassB(),
@@ -409,15 +409,15 @@
                 };
             };
 
-            lib.function.inherits(MyClassB, MyClassA);
-            lib.function.inherits(MyClassC, MyClassB);
-
             lib.extend(MyClassB, 'custom_test4', function (o, $1, $2) {
                 expect(o).to.equal(this);
                 expect($1).to.equal(1);
                 expect($2).to.equal(2);
                 return this;
             });
+
+            lib.function.inherits(MyClassB, MyClassA);
+            lib.function.inherits(MyClassC, MyClassB);
 
             var myClassA = new MyClassA(),
                 myClassB = new MyClassB(),
