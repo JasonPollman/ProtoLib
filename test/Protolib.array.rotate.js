@@ -32,6 +32,12 @@
             expect([1, 2, 3, 4]._.rotate('right', 6)).to.eql([3, 4, 1, 2]);
             expect([1, 2, 3, 4]._.rotate('right', 7)).to.eql([2, 3, 4, 1]);
             expect([1, 2, 3, 4]._.rotate('right', 8)).to.eql([1, 2, 3, 4]);
+
+            var array = [1, 2, 3];
+            expect(array._.rotate('left', 1)).to.eql([2, 3, 1]);
+            expect(array._.rotate('left', 2)).to.eql([1, 2, 3]);
+            expect(array._.rotate('left', 3)).to.eql([1, 2, 3]);
+            expect(array._.rotate('left', 4)).to.eql([2, 3, 1]);
         });
 
         it('It should default to rotate left if no string argument is passed in first', function () {

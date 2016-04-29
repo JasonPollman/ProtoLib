@@ -47,6 +47,12 @@
             expect([null]._.without(undefined)).to.eql([null]);
 
             expect([1, null, 2, null, undefined]._.without(null, undefined)).to.eql([1, 2]);
+
+            expect([1, 2, 3]._.without(2, 3)).to.eql([1]);
+            expect(['a', 'b', 'c']._.without('e')).to.eql(['a', 'b', 'c']);
+
+            var obj = { foo: 'bar' };
+            expect([obj, 1, 'a string', obj, obj]._.without(obj)).to.eql([1, 'a string']);
         });
     });
 }());

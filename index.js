@@ -182,7 +182,8 @@
                             cId   = proto.constructor.__get_protolib_id__,
                             lib   = {},
                             i     = 0,
-                            last  = null;
+                            last  = null,
+                            m;
 
                         currentThis = this;
 
@@ -191,13 +192,22 @@
                             if(cached[ccId] && i === 0) {
                                 return cached[ccId];
                             }
+                            else if(cached[ccId]) {
+                                for(m in cached[ccId])
+                                    if(cached[ccId].hasOwnProperty(m)) lib[m] = cached[ccId][m];
+
+                                if(!inheritanceChain[cId]) inheritanceChain[cId] = [];
+                                inheritanceChain[cId] = inheritanceChain[ccId].concat(inheritanceChain[cId]);
+                                cached[cId] = lib;
+                                return lib;
+                            }
                             else {
                                 if(!libp[ccId]) libp[ccId] = {};
-                                for(var m in libp[ccId])
+                                for(m in libp[ccId])
                                     if(libp[ccId].hasOwnProperty(m)) lib[m] = libp[ccId][m];
 
-                                if(!inheritanceChain[ccId]) inheritanceChain[ccId] = [];
-                                inheritanceChain[cId].unshift(ccId);
+                                    if(!inheritanceChain[ccId]) inheritanceChain[ccId] = [];
+                                    inheritanceChain[cId].unshift(ccId);
 
                                 cached[cId] = lib;
                                 last = ccId;
@@ -233,7 +243,9 @@
          * @return The result of the invocation of the callback.
          */
         function getThisValueAndInvoke (callback) {
-            return callback(currentThis !== undefined && currentThis !== null ? currentThis.valueOf() : currentThis);
+            return callback(currentThis !== undefined && currentThis !== null ?
+                typeof currentThis === 'object' ? currentThis : currentThis.valueOf() : currentThis
+            );
         }
 
         /**

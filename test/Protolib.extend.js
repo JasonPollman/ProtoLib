@@ -251,7 +251,7 @@
             expect(n._.date_test).to.be.a('undefined');
             expect(a._.date_test).to.be.a('undefined');
 
-            expect(d._.date_test(1, 2, 'a')).to.equal(d.getTime());
+            expect(d._.date_test(1, 2, 'a')).to.equal(d);
         });
 
         it('It should properly extend custom objects', function () {

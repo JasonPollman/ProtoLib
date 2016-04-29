@@ -1889,6 +1889,323 @@ lib.number.pad(n, length);
 lib.number.daysFrom(n, length);
 ```
 
+### Arrays
+
+#### shuffle
+**Shuffles an arrays contents.**    
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **shuffle**() → *{Array}* |
+| static   | **shuffle**(*{Array}* **a**) → *{Array}* |
+
+```js
+[1, 2, 3]._.shuffle(); // [3, 1, 2] is one possibility
+
+/* Static Use */
+lib.array.shuffle(n, length);
+```
+
+#### union
+**Returns a new array containing the *unique* union from the given arrays.**     
+If you want the set union, use *Array.concat*
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **union**(*{Array}* **a**, *{Array}* **b**, *{Array}* **c**...) → *{Array}* |
+| static   | **union**(*{Array}* **a**, *{Array}* **b**, *{Array}* **c**...) → *{Array}* |
+
+```js
+[1, 2, 3]._.union([3, 4, 5, 6]);               // -> [1, 2, 3, 4, 5, 6]
+[1, 2, 3]._.union([3, 4, 5, 6], [1, 7, 8, 9]); // -> [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+/* Static Use */
+lib.array.union(arrayA, arrayB, arrayC...);
+```
+
+#### difference
+**Returns a new array the set difference from the given arrays.**     
+That is, the objects that are unique to only one array.
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **difference**(*{Array}* **a**, *{Array}* **b**, *{Array}* **c**...) → *{Array}* |
+| static   | **difference**(*{Array}* **a**, *{Array}* **b**, *{Array}* **c**...) → *{Array}* |
+
+```js
+[1, 2, 3]._.difference([3, 4, 5, 6]);                      // -> [1, 2, 4, 5, 6]
+[1, 2, 3]._.difference([3, 4, 5, 6], [1, 7, 8, 9], ['a']); // -> [2, 4, 5, 6, 'a']
+
+/* Static Use */
+lib.array.difference(arrayA, arrayB, arrayC...);
+```
+
+#### intersect
+**Returns a new array the set intersection from the given arrays.**     
+That is, the objects that are contained in all the arrays.
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **intersect**(*{Array}* **a**, *{Array}* **b**, *{Array}* **c**...) → *{Array}* |
+| static   | **intersect**(*{Array}* **a**, *{Array}* **b**, *{Array}* **c**...) → *{Array}* |
+
+```js
+[1, 2, 3]._.intersect([3, 4, 5, 6]);                            // -> [3]
+[1, 2, 3]._.intersect([3, 4, 5, 6], [1, 7, 8, 9], ['a']);       // -> []
+[1, 2, 3]._.intersect([3, 4, 5, 6], [1, 3, 7, 8, 9], ['a']);    // -> []
+[1, 2, 3]._.intersect([3, 4, 5, 6], [1, 3, 7, 8, 9], ['a', 3]); // -> [3]
+
+/* Static Use */
+lib.array.intersect(arrayA, arrayB, arrayC...);
+```
+
+#### without
+**Returns a new array without the given objects.**     
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **without**(*{\*}* **objA**, *{\*}* **objA**, *{\*}* **objA**...) → *{Array}* |
+| static   | **without**(*{Array}* **arrayToFilter**, *{\*}* **objA**, *{\*}* **objB**...) → *{Array}* |
+
+```js
+[1, 2, 3]._.without(2, 3);      // -> [1]
+['a', 'b', 'c']._.without('e'); // -> ['a', 'b', 'c']
+
+var obj = { foo: 'bar' };
+
+[obj, 1, 'a string', obj, obj]._.without(obj); // -> [1, 'a string']
+
+/* Static Use */
+lib.array.without(arrayToFilter, objA, objB...);
+```
+
+#### rotate
+**Rotates an array's contents left or right.**     
+This is useful for circular array data structures.   
+*Modifies the original array!*
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **rotate**(*{String=}* [**direction**='left'], *{Number=}* [**amount**=1]) → *{Array}* |
+| static   | **rotate**(*{Array}* **arrayToRotate**, *{String=}* [**direction**='left'], *{Number=}* [**amount**=1]) → *{Array}* |
+
+```js
+[1, 2, 3]._.rotate('left', 1); // -> [2, 3, 1]
+[1, 2, 3]._.rotate('right');   // -> [3, 1, 2]
+
+[1, 2, 3]._.rotate('left', 1); // -> [2, 3, 1]
+[1, 2, 3]._.rotate('left', 2); // -> [3, 1, 2]
+[1, 2, 3]._.rotate('left', 3); // -> [1, 2, 3]
+[1, 2, 3]._.rotate('left', 4); // -> [2, 3, 1]
+
+// Since it modifies the array,
+// the following *might* not be expected
+var array = [1, 2, 3];
+array._.rotate('left', 1); // -> [2, 3, 1]
+array._.rotate('left', 2); // -> [1, 2, 3]
+array._.rotate('left', 3); // -> [1, 2, 3]
+array._.rotate('left', 4); // -> [2, 3, 1]
+
+/* Static Use */
+lib.array.rotate(arrayToRotate, direction, amount);
+```
+
+#### rotateLeft
+**Rotates an array's contents left.**     
+Functions just like *rotate*.
+*Modifies the original array!*
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **rotateLeft**(*{Number=}* [**amount**=1]) → *{Array}* |
+| static   | **rotateLeft**(*{Array}* **arrayToRotate**, *{Number=}* [**amount**=1]) → *{Array}* |
+
+#### rotateRight
+**Rotates an array's contents left.**     
+Functions just like *rotate*.
+*Modifies the original array!*
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **rotateLeft**(*{Number=}* [**amount**=1]) → *{Array}* |
+| static   | **rotateLeft**(*{Array}* **arrayToRotate**, *{Number=}* [**amount**=1]) → *{Array}* |
+
+#### makeUnique
+**Removes duplicates from the current array.**     
+*Modifies the original array!*
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **makeUnique**() → *{Array}* |
+| static   | **makeUnique**(*{Array}* **arrayToModify**) → *{Array}* |
+
+```js
+var arr = [1, 2, 3, 3, 4];
+arr._.makeUnique(); // arr = [1, 2, 3, 4]
+
+var objA = { foo: 'bar' },
+    objB = { foo: 'bar' };
+
+arr = [objA, objB, objA];
+arr._.makeUnique() // arr = [objA, objB]
+
+/* Static Use */
+lib.array.makeUnique(arrayToModify);
+```
+
+#### unique
+**Returns a new array with the unique items from the given array.**     
+Same as *makeUnique*, but does not modify the original array.
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **unique**() → *{Array}* |
+| static   | **unique**(*{Array}* **array**) → *{Array}* |
+
+#### ascending
+**Sorts the array in ascending order.**     
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **ascending**() → *{Array}* |
+| static   | **ascending**(*{Array}* **array**) → *{Array}* |
+
+#### descending
+**Sorts the array in descending order.**     
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **descending**() → *{Array}* |
+| static   | **descending**(*{Array}* **array**) → *{Array}* |
+
+### Functions
+
+#### inherits
+**Inherit the prototype methods from one constructor into another.**     
+In addition, a *super_* property will be added to the inheriting class, which references the super constructor.
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **inherit**(*{Function}* **superConstructor**) → *{Function}* |
+| static   | **inherit**(*{Function}* **inheritingConstructor**, *{Function}* **superConstructor**) → *{Function}* |
+
+```js
+// Inherit the prototype methods from Array
+var MyClass = function () { ... };
+MyClass._.inherits(Array);
+
+var Dog = function () {};
+Dog.prototype.speak = function () {
+    return 'Bark!';
+};
+
+var BlackDog = function () {
+    this.color = 'black';
+};
+
+var dog = new BlackDog();
+dog._.inherits(Dog);
+dog.speak(); // Returns 'Bark!';
+
+/* Static Use */
+lib.function.inherits(inheritingConstructor, superConstructor);
+```
+
+### Dates
+
+#### advanceDays
+**Advances the date the given number of days.**     
+If *adjustForWeeked* is evaluates to true and the date falls on a weekend, it will be fast forwarded to Monday.   
+*Modifies the given date!*
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **advanceDays**(*{Number}* **numberOfDays**, *{Boolean=}* **adjustForWeekend**) → *{Date}* |
+| static   | **advanceDays**(*{Date}* **dateToModify**, *{Number}* **days**, *{Boolean=}* **adjustForWeekend**) → *{Date}* |
+
+```js
+var date = new Date();
+date._.advanceDays(5); // Advances the date 5 days ahead
+
+/* Static Use */
+lib.date.advanceDays(dateToModify, numberOfDays, adjustForWeekend);
+```
+
+#### advanceMonths
+**Advances the date the given number of months.**     
+If *adjustForWeeked* is evaluates to true and the date falls on a weekend, it will be fast forwarded to Monday.   
+*Modifies the given date!*
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **advanceMonths**(*{Number}* **numberOfMonths**, *{Boolean=}* **adjustForWeekend**) → *{Date}* |
+| static   | **advanceMonths**(*{Date}* **dateToModify**, *{Number}* **numberOfMonths**, *{Boolean=}* **adjustForWeekend**) → *{Date}* |
+
+```js
+var date = new Date();
+date._.advanceMonths(3); // Advances the date 3 months ahead
+
+/* Static Use */
+lib.date.advanceMonths(dateToModify, numberOfMonths, adjustForWeekend);
+```
+
+#### advanceYears
+**Advances the date the given number of years.**     
+If *adjustForWeeked* is evaluates to true and the date falls on a weekend, it will be fast forwarded to Monday.   
+*Modifies the given date!*
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **advanceYears**(*{Number}* **numberOfYears**, *{Boolean=}* **adjustForWeekend**) → *{Date}* |
+| static   | **advanceYears**(*{Date}* **dateToModify**, *{Number}* **numberOfYoears**, *{Boolean=}* **adjustForWeekend**) → *{Date}* |
+
+```js
+var date = new Date();
+date._.advanceYears(3); // Advances the date 3 years ahead
+
+/* Static Use */
+lib.date.advanceYears(dateToModify, numberOfYears, adjustForWeekend);
+```
+
+#### yyyymmdd
+**Returns a string from a Date object in the YYYY-MM-DD format.**     
+If *separator* is set to a string, it will be used instead of '-'.
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **yyymmdd**(*{String=}* **separator**) → *{String}* |
+| static   | **yyymmdd**(*{Date}* **dateObject**, *{String=}* **separator**) → *{String}* |
+
+```js
+var date = new Date('4/28/2016');
+date._.yyyymmdd();    // -> '2016-04-28'
+date._.yyyymmdd('.'); // -> '2016.04.28'
+
+/* Static Use */
+lib.date.yyyymmdd(dateObject, separator);
+```
+
+#### clockTime
+**Returns a string from a Date object in the format HH:MM:SS.MSEC.**     
+If *omitMS* is true, the millisecond portion of the string will be omitted.
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **clockTime**(*{Boolean=}* **omitMS**) → *{String}* |
+| static   | **clockTime**(*{Date}* **dateObject**, *{Boolean=}* **omitMS**) → *{String}* |
+
+```js
+var date = new Date('4/26/2016 8:32:00 GMT-0400');
+date._.clockTime(); // -> '20:32:00.00'
+
+date = new Date('4/26/2016 8:32:15 GMT-0400');
+date._.clockTime(true); // -> '20:32:15'
+
+/* Static Use */
+lib.date.clockTime(dateObject, omitMS);
+```
+
+
 ## Extending ProtoLib
 ---
 
@@ -2039,13 +2356,13 @@ lib.setHandle('pl');
 **Retrieves the ProtoLib instance with the given handle, or creates a new one.**    
 
 #### ProtoLib.killCache(*{String=}* **handle**) → *{Function}* **ProtoLib**
-**Kills the cache for the ProtoLib instance with the given handle**
+**Kills the cache for the ProtoLib instance with the given handle**    
 If no handle is specified, all ProtoLib instances will have their cache cleared.  
 
 #### ProtoLib.killCacheForConstructor(*{String=}* **constr**) → *{Function}* **ProtoLib**
-**Kills the cache for the given constructor for all ProtoLib instances.**
-If no constructor is specified, or if *constr* isn't a function, no action will be taken. 
+**Kills the cache for the given constructor for all ProtoLib instances.**    
+If no constructor is specified, or if *constr* isn't a function, no action will be taken.
 
 #### ProtoLib.destroy(*{String}* **handle**) → *{Function}* **ProtoLib**
-**Destroys a ProtoLib instance, and removes it's library methods from all objects**    
+**Destroys a ProtoLib instance, and removes it's library methods from all objects**     
 This also frees up the ProtoLib instance with the given handle to be garbage collected, if not referenced elsewhere.

@@ -24,6 +24,9 @@
             expect([]._.union([])).to.eql([]);
             expect([]._.union([], [], [])).to.eql([]);
             expect([]._.union([], ['test'], [])).to.eql(['test']);
+
+            expect([1, 2, 3]._.union([3, 4, 5, 6])).to.eql([1, 2, 3, 4, 5, 6]);
+            expect([1, 2, 3]._.union([3, 4, 5, 6], [1, 7, 8, 9])).to.eql([1, 2, 3, 4, 5, 6, 7, 8, 9]);
         });
     });
 }());
