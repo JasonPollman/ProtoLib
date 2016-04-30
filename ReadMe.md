@@ -377,7 +377,7 @@ lib.object.copy(something);
 ```
 
 #### occurrencesOf   
-**Counts the number of occurrences of *what*.*    
+**Counts the number of occurrences of *what*.**    
 
 | Context  | Signature        |
 | :------- | :--------------- |
