@@ -51,7 +51,7 @@
         _mathUid     = Math.__get_protolib_id__,
         _regexpUid   = RegExp.__get_protolib_id__;
 
-    var ProtoLib = function (handle) {
+    var ProtoLib = function ProtoLib (handle) {
         // Prevent Function.call or binding...
         if(!(this instanceof ProtoLib)) return new ProtoLib(handle);
 

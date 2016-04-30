@@ -1115,12 +1115,12 @@ var child = lib.object.findChildAtPath(someObject, 'somePath');
 
 #### clone
 **Clones an object using *JSON.stringify* and *JSON.parse*.**   
-Throws an error if the object is circular.
+Throws an error if the object is circular. The optional *replacer* argument will be passed to *JSON.stringify* (see [MDN's JSON.stringify](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#The_replacer_parameter)).
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **clone**() → *{*\**}* |
-| static   | **clone**(*{*\**}* **obj**) → *{*\**}* |
+| instance | **clone**(*{Function=}* **replacer**) → *{*\**}* |
+| static   | **clone**(*{*\**}* **obj**, *{Function=}* **replacer**) → *{*\**}* |
 
 ```js
 var foo, bar;
