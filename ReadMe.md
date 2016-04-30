@@ -4,10 +4,12 @@
 > There's nothing wrong with modifying built-in prototypes, as long as you do it right.
 
 ------
-**Some of the magic from Javascript comes from the ability to modify built-in types... but it's also taboo.**    
-It can lead to dangerous library collisions. That's where *ProtoLib* comes to the rescue. It's is a fast, Node.js and browser friendly JavaScript library that "tucks" utility methods inside a single, customizable property added to *Object.prototype*.
+**Some of the magic from Javascript comes from the ability to modify built-in types—but it's also taboo.**    
+It can lead to dangerous library collisions.     
 
-Static utility methods are cumbersome and don't lend themselves to *easy reading*. Basically, I grew tired of using static libraries, and re-writing utility methods over various projects... enter ProtoLib.
+That's where *ProtoLib* comes to the rescue. It's is a fast, Node.js and browser friendly JavaScript library that "tucks" utility methods inside a single, customizable property added to *Object.prototype*.
+
+Static utility methods are cumbersome and don't lend themselves to *easy reading*. Basically, I grew tired of using static libraries and re-writing utility methods over various projects... enter ProtoLib.
 
 Currently tested and working in Node.js, Chrome, Firefox, Safari, IE 10 & 11.
 
@@ -15,11 +17,11 @@ Currently tested and working in Node.js, Chrome, Firefox, Safari, IE 10 & 11.
 ---
 - **Over 100 library methods**
     - [See the list below...](#available-methods)
-    - Methods are attached to *Object.prototype*, which means more terse, readable code.
+    - Methods are attached to *Object.prototype*, which means terse, readable code.
     - Iterating functions like [each](#each), [every](#every), and [any](#any) work on objects, arrays, strings, numbers, and functions.
 - **Collision Free**
     - *You* define the property attached to *Object.prototype*.
-    - The default is *_* (underscore), but this can be set to any string.
+    - The default is ``_`` (underscore), but this can be set to any string.
     - No ES6 for browser compatibility.
 - **Extensible**
     - ProtoLib allows you to extend the library for any prototype.
@@ -90,8 +92,11 @@ obj.lib.invert()        // -> { hello: 'foo', world: 'bar' }
    .lib.size()          // -> 2
 ```
 
-**Do not use *new* with ProtoLib**    
-ProtoLib has a static function: *ProtoLib.get*. It should be used to prevent instantiating new *ProtoLib* instances across files. By using *ProtoLib.get* you can retrieve the same instance of the library across namespaces.
+*Any handle attached to Object.prototype by ProtoLib is both configurable and writable.*   
+
+#### Do not use *new* with ProtoLib      
+**Use ProtoLib's static function: *ProtoLib.get*.**    
+It should be used to prevent the instantiation new *ProtoLib* instances across files. By using *ProtoLib.get* you can retrieve the same instance of the library across namespaces.
 
 ```js
 // Bad, don't do it.
@@ -99,6 +104,11 @@ var lib = new ProtoLib('_');
 
 // Correct way to instantiate ProtoLib...
 var lib = ProtoLib.get('_');
+
+// You can create multiple instances using get...
+// Not sure why you'd want to, however.
+var lib  = ProtoLib.get('a');
+var lib2 = ProtoLib.get('b');
 ```
 
 **Example: Cross-file use:**   
@@ -161,7 +171,7 @@ Methods available to all *Objects* (objects, arrays, strings, functions, etc.).
 | [copy](#copy)                       | Creates a shallow copy of an object |
 | [each](#each)                       | Loops through each item in an object, with an optional start and end range |
 | [every](#every)                     | Loops through each item in an object until *false* is returned |
-| [findChildAtPath](#findchildatpath) | Walks an object's children an returns the child specified by a string path |
+| [findChildAtPath](#findchildatpath) | Walks an object's children and returns the child specified by a string path |
 | [first](#first)                     | Gets the first *n* items of an object |
 | [getCallback](#getcallback)         | Gets the callback (last) value from a set, or returns an empty function |
 | [getNumeric](#getnumeric)           | Gets an object's numeric equivalent (or *NaN*) |
@@ -201,7 +211,7 @@ Methods available to all *String* objects.
 | :---------------------------------- | :------------------------------- |
 | [addSlashes](#addslashes)           | Creates an eval-safe string, by escaping ```/['"\t\n\f\r\u0000]/``` |
 | [camelize](#camelize)               | Converts a string to camel case |
-| [decamelize](#decamelize)           | Converts a camel cased string to sentence form |
+| [decamelize](#decamelize)           | Converts a camel cased string to sentance form |
 | [ellipses](#ellipses)               | Truncates a string, adding ellipses if the string is longer than *length* |
 | [htmlDecode](#htmldecode)           | Unescapes HTML special characters |
 | [htmlEncode](#htmlencode)           | Escapes HTML special characters |
@@ -218,7 +228,7 @@ Methods available to all *String* objects.
 | [shuffle](#shuffle)                 | Shuffles a string |
 | [tabsToSpan](#tabstospan)           | Converts tab characters to a "tab" span |
 | [titleCase](#titlecase)             | Converts a string to title case |
-| [toJSValue](#tojsvalue)             | Converts 'true', 'false', 'null', 'undefined' to it's JS equivalent and parses numeric values as a number |
+| [toJSValue](#tojsvalue)             | Converts 'true', 'false', 'null', and 'undefined' to it's JS equivalent and parses numeric values as a number |
 | [ucFirst](#ucfirst)                 | Uppercases the first character of a string |
 | [withoutTrailingSlash](#withouttrailingslash) | Removes trailing slashes from a string |
 | [withTrailingSlash](#withtrailingslash)       | Adds a trailing slash to a string |
@@ -344,7 +354,7 @@ lib.object.histogram([1, 2, 3, [3, 4, 5], ['a', 'b', 'c']]);
 ```
 
 #### copy    
-**Returns a shallow copy of an object**   
+**Returns a shallow copy of an object.**   
 For non-objects, the provided value is simply returned. For objects, a shallow copy is made.
 
 | Context  | Signature        |
@@ -367,7 +377,7 @@ lib.object.copy(something);
 ```
 
 #### occurrencesOf   
-**Counts the number of occurrences of *what**    
+**Counts the number of occurrences of *what*.*    
 
 | Context  | Signature        |
 | :------- | :--------------- |
@@ -396,7 +406,7 @@ lib.object.occurrencesOf(haystack, needle);
 ```
 
 #### keys    
-**Returns the object's key set**   
+**Returns the object's key set.**   
 Note: For numbers and functions, this will *always* return an empty array.
 
 | Context  | Signature        |
@@ -728,14 +738,6 @@ lib.object.random([[1, 2, 3], ['a', 'b', 'c'], 9]);
 For each item in the collection, a callback (*onIteration*) is invoked with the following arguments:
 *this* refers to the object being iterated over within the body of *onIteration*.
 
-| Argument               | Definition       |
-| :--------------------- | :--------------- |
-| {\*} **value**         | The value of the current item being iterated over |
-| {String} **key**       | The key of the current item |
-| {Number} **iteration** | The current iteration count.<br/>For arrays *key* and *iteration* will be the same. |
-| {Function} **exit**    | A function that, when called will break the loop and return the arguments passed to it as an array (or if a single value is passed, the value itself) |
-| {\*} **parent**         | The object being iterated over. Typically, *this* and *parent* will be equal, however *parent* exists in the event *onIteration* has been bound. If using an arrow function *this* will be lexically block scoped, so *parent* should be used to be safe. |
-
 Functions and Numbers are cast to strings with *Function/Number.toString*.
 
 | Context  | Signature        |
@@ -743,7 +745,18 @@ Functions and Numbers are cast to strings with *Function/Number.toString*.
 | instance | **each**(*{Number=}* [**startRange**=0], *{Number=}* [**endRange**=obj.length - 1], *{Function}* **onInteration**) → *{*\**\|null}* |
 | static   | **each**(*{*\**}* **obj**, *{Number=}* [**startRange**=0], *{Number=}* [**endRange**=obj.length - 1], *{Function}* **onInteration**)) → *{*\**\|null}* |
 
+Arguments passed to **onInteration**:
+
+| Argument               | Definition       |
+| :--------------------- | :--------------- |
+| *{*\**}* **value**       | The value of the current item being iterated over |
+| *{String}* **key**       | The key of the current item |
+| *{Number}* **iteration** | The current iteration count.<br/>For arrays *key* and *iteration* will be the same. |
+| *{Function}* **exit**    | A function that, when called, will break the loop and return the arguments passed to it as an array (or if a single value is passed, the value itself) |
+| *{*\**}* **parent**      | The object being iterated over.<br/>Typically, *this* and *parent* will be equal, however the *parent* argument exists in the event that *onIteration* has been bound. If using an arrow function *this* will be lexically block scoped, so *parent* should be used instead. |
+
 **Note:** All ranges are inclusive. If *startRange* is greater than *endRange* it will perform a decrementing loop.
+
 ```js
 var total = 0, keyTotal = 0;
 [1, 2, 3, 4, 5]._.each((val, key) => {
@@ -804,20 +817,22 @@ lib.object.each(myArray, 0, 1 onInteration);
 Loops through each item in the object and calls *onIteration*. If *false* is returned, the loop will break and return *false*, otherwise it will return *true*. This is similar to *Array.every* except that it works for all objects, and will break only on *false* and not a *falsy* return (null, undefined, 0, etc.).
 *this* refers to the object being iterated over within the body of *onIteration*.
 
-| Argument               | Definition       |
-| :--------------------- | :--------------- |
-| {\*} **value**         | The value of the current item being iterated over |
-| {String} **key**       | The key of the current item |
-| {Number} **iteration** | The current iteration count.<br/>For arrays *key* and *iteration* will be the same. |
-| {Function} **exit**    | A function that, when called will break the loop and return the arguments passed to it as an array (or if a single value is passed, the value itself) |
-| {\*} **parent**         | The object being iterated over. Typically, *this* and *parent* will be equal, however *parent* exists in the event *onIteration* has been bound. If using an arrow function *this* will be lexically block scoped, so *parent* should be used to be safe. |
-
 Functions and Numbers are cast to strings with *Function/Number.toString*.
 
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **every**(*{Function}* **onInteration**) → *{Boolean}* |
 | static   | **every**(*{*\**}* **obj**, *{Function}* **onInteration**)) → *{Boolean}* |
+
+Arguments passed to **onInteration**:
+
+| Argument               | Definition       |
+| :--------------------- | :--------------- |
+| *{*\**}* **value**       | The value of the current item being iterated over |
+| *{String}* **key**       | The key of the current item |
+| *{Number}* **iteration** | The current iteration count.<br/>For arrays *key* and *iteration* will be the same. |
+| *{*\**}* **parent**      | The object being iterated over.<br/>Typically, *this* and *parent* will be equal, however the *parent* argument exists in the event that *onIteration* has been bound. If using an arrow function *this* will be lexically block scoped, so *parent* should be used instead. |
+
 
 ```js
 var obj = { a: 1, b: 2, c: 3 },
@@ -851,20 +866,21 @@ lib.object.every(myArray, onInteration);
 **Invokes the provided callback for every item in the collection and breaks when any value (other than undefined) is returned.**   
 Loops through each item in the object and calls *onIteration*. If a "non-undefined" value is returned, the loop will break and return that value.
 
-| Argument               | Definition       |
-| :--------------------- | :--------------- |
-| {\*} **value**         | The value of the current item being iterated over |
-| {String} **key**       | The key of the current item |
-| {Number} **iteration** | The current iteration count.<br/>For arrays *key* and *iteration* will be the same. |
-| {Function} **exit**    | A function that, when called will break the loop and return the arguments passed to it as an array (or if a single value is passed, the value itself) |
-| {\*} **parent**        | The object being iterated over. Typically, *this* and *parent* will be equal, however *parent* exists in the event *onIteration* has been bound. If using an arrow function *this* will be lexically block scoped, so *parent* should be used to be safe. |
-
 Functions and Numbers are cast to strings with *Function/Number.toString*.
 
 | Context  | Signature        |
 | :------- | :--------------- |
 | instance | **any**(*{Function}* **onInteration**) → *{*\**\|undefined}* |
 | static   | **any**(*{*\**}* **obj**, *{Function}* **onInteration**)) → *{*\**\|undefined}* |
+
+Arguments passed to **onInteration**:
+
+| Argument               | Definition       |
+| :--------------------- | :--------------- |
+| *{*\**}* **value**       | The value of the current item being iterated over |
+| *{String}* **key**       | The key of the current item |
+| *{Number}* **iteration** | The current iteration count.<br/>For arrays *key* and *iteration* will be the same. |
+| *{*\**}* **parent**      | The object being iterated over.<br/>Typically, *this* and *parent* will be equal, however the *parent* argument exists in the event that *onIteration* has been bound. If using an arrow function *this* will be lexically block scoped, so *parent* should be used instead. |
 
 ```js
 var obj = { a: 1, b: 2, c: 3 },
@@ -900,7 +916,7 @@ lib.object.any(myArray, onInteration);
 ```
 
 #### toArray
-**Converts an object to an array**   
+**Converts an object to an array.**   
 Useful for converting *arguments* objects to arrays.
 If an array is passed, a shallow copy of the array will be returned.
 
@@ -927,7 +943,7 @@ var converted = lib.object.toArray({ a: [1, 2], b: { foo: 'bar' }});
 ```
 
 #### first
-**Returns the first n items of an object**   
+**Returns the first n items of an object.**   
 If *n* is 1, the first item will be returned. If *n* is more than 1, an array/object of the first *n* items will be returned.
 IF a string is passed, a single string will always be returned... in this way it works like *String.slice*.
 Strings, numbers and functions will be cast to string using *toString*.
@@ -967,7 +983,7 @@ var staticFirst = lib.object.first([1, 2, 3]);
 ```
 
 #### last
-**Returns the last n items of an object**   
+**Returns the last n items of an object.**   
 Works similar to *first*, except it returns the last *n* items, rather than the first *n*,
 
 | Context  | Signature        |
@@ -976,7 +992,7 @@ Works similar to *first*, except it returns the last *n* items, rather than the 
 | static   | **last**(*{*\**}* **obj**, *{Number=}* [**n**=1]) → *{*\**\|Array<*\**>\|Object<*\**>}* |
 
 #### getCallback
-**Always returns a callback**   
+**Always returns a callback.**   
 If the last item in the object is a function, it will be returned, otherwise an "empty" function is returned. This is useful for ensuring that you always have a valid callback when used against an *arguments* object.
 
 This method is useless against strings, numbers, and functions. It will however, return an "empty" function if called on one.
@@ -1013,7 +1029,7 @@ var staticFirst = lib.object.getCallback(someObject);
 ```
 
 #### findChildAtPath
-**Finds the child of an object specified by the given string path**   
+**Finds the child of an object specified by the given string path.**   
 Finds the child specified by the given string "path" and delimiter (default '.') by walking the objects keys.
 
 | Context  | Signature        |
@@ -1098,7 +1114,7 @@ var child = lib.object.findChildAtPath(someObject, 'somePath');
 ```
 
 #### clone
-**Clones an object using *JSON.stringify* and *JSON.parse***   
+**Clones an object using *JSON.stringify* and *JSON.parse*.**   
 Throws an error if the object is circular.
 
 | Context  | Signature        |
@@ -1120,7 +1136,7 @@ lib.object.clone(myObject);
 ```
 
 #### only
-**Returns a new object with only the given types**   
+**Returns a new object with only the given types.**   
 Filters an object by the specified list of types ('string', 'number', 'object', 'array', 'function', 'object object'). Any *typeof* type can be used, and multiple arguments can be specified. *object* will return both arrays and objects, *object object* will return only objects, and *array* will filter only arrays.
 
 Plural forms of the types can be used as well.
@@ -1161,7 +1177,7 @@ lib.object.only(myObject, 'typeA', 'typeB', 'typeC'...);
 ```
 
 #### where
-**Returns a new object, filtering by a predicate function**   
+**Returns a new object, filtering by a predicate function.**   
 Filters an object by using a predicate function. If the predicate returns *true* the item is included in the results. The predicate function will be invoked for each item within the object with the following signature: **onItem** (*{*\**}* **item**, *{String}* **key**).
 
 | Context  | Signature        |
@@ -1194,7 +1210,7 @@ lib.object.where(myObject, predicateFunction);
 ```
 
 #### whereKeys
-**Returns a new object, filtering an object's keys by a predicate function**   
+**Returns a new object, filtering an object's keys by a predicate function.**   
 The same as *where*, except that the predicate function is invoked with the signature: **onItem** (*{String}* **key**, *{*\**}* **item**).
 
 | Context  | Signature        |
@@ -1204,9 +1220,9 @@ The same as *where*, except that the predicate function is invoked with the sign
 
 #### invert
 **Inverts an object's keys and values.**     
-For numbers it computes the mathematical inverse (x<sup>-1</sup>).
-For strings, it reverses the string.
-For functions, invert returns a new function that wraps the given function and inverts it's result.
+For numbers it computes the mathematical inverse (x<sup>-1</sup>).   
+For strings, it reverses the string.   
+For functions, *invert* returns a new function that wraps the given function and inverts it's result.
 
 | Context  | Signature        |
 | :------- | :--------------- |
@@ -1242,7 +1258,7 @@ lib.object.invert(myObject);
 ```
 
 #### max
-**Get's the highest value from an object**   
+**Get's the highest value from an object.**   
 For numbers, strings, functions, and booleans, the object is simply returned.
 An optional predicate function is available to determine the max for objects. The predicate is called with the current value in the collection, whatever is returned from the predicate is used in the evaluation to determine the if the value is the max.
 
@@ -1283,7 +1299,7 @@ var max = data._.max(function (item) {
 lib.object.max(myObject);
 ```
 #### min
-**Get's the lowest value from an object**   
+**Get's the lowest value from an object.**   
 Same as [max](#max), except it returns the minimum value.
 
 | Context  | Signature        |
@@ -1292,7 +1308,7 @@ Same as [max](#max), except it returns the minimum value.
 | static   | **min**(*{*\**}* **obj**, *{Function=}* **predicate**) → *{*\**}* |
 
 #### implements
-**Determines if an object has the given properties, and those properties are methods**   
+**Determines if an object has the given properties, and those properties are methods.**   
 
 | Context  | Signature        |
 | :------- | :--------------- |
@@ -1319,11 +1335,11 @@ y._.implements('orange'); // -> true
 y._.implements('apple'); // -> false, apple is not a method
 
 /* Static Use */
-lib.object.max(myObject);
+lib.object.implements(myObject);
 ```
 
 #### implementsOwn
-**Determines if an object has the given properties, and those properties are methods which belongs to the object**   
+**Determines if an object has the given properties, and those properties are methods which belongs to the object.**   
 Same as [implements](#implements), except with added *hasOwnProperty* check.
 
 | Context  | Signature        |
@@ -1332,7 +1348,7 @@ Same as [implements](#implements), except with added *hasOwnProperty* check.
 | static   | **implementsOwn**(*{*\**}* **obj**, *{String}* **method**) → *{*\**}* |
 
 #### uniqueId
-**Returns a unique id for non-literals**   
+**Returns a unique id for non-literals.**   
 Returns a unique hex string for objects and functions. *Throws on numbers and strings*. The id is generated on a *as requested* basis, so the first time it's called 0x0 is returned, then 0x1, etc. etc. However, once assigned to the object, the same id will *always* be returned for that object.
 
 | Context  | Signature        |
@@ -1360,7 +1376,7 @@ lib.object.uniqueId(myObject);
 ### Strings
 
 #### toJSValue
-**Converts 'true', 'false', 'null', 'undefined' to it's JS equivalent and parses numeric values as a number**
+**Converts 'true', 'false', 'null', and 'undefined' to it's JS equivalent and parses numeric values as a number.**   
 The string will be trimmed. If the string value is numeric, a number will be returned. If the trimmed string is non-numeric or doesn't evaluate to *true*, *false*, *null*, or *undefined* the original (untrimmed) string will be returned.
 
 | Context  | Signature        |
@@ -1388,7 +1404,7 @@ lib.string.toJSValue(myString);
 
 #### camelize
 **Converts a string to camel case.**   
-Replaces */[^a-z0-9$]/g* and makes the first letter of each word uppercase (except the first, of course).
+Replaces ``/[^a-z0-9$]/g`` with ``''`` and makes the first letter of each word uppercase (except the first, of course).
 
 | Context  | Signature        |
 | :------- | :--------------- |
@@ -1404,7 +1420,7 @@ myString._.camelize(); // -> 'helloWorld'
 ```
 
 #### decamelize
-**Converts a camel case string to "somewhat" sentence form.**   
+**Converts a camel case string to "somewhat" sentance form.**   
 
 | Context  | Signature        |
 | :------- | :--------------- |
@@ -1499,8 +1515,8 @@ lib.string.htmlDecode(myString);
 | static   | **addSlashes**(*{String}* **myString**) → *{String}* |
 
 ```js
-var myString = 'function () { return "hello world!"};';
-myString._.addSlashes(); // -> 'function () { return \"hello world!\"};'
+var myString = 'function () { return "hello world!" };';
+myString._.addSlashes(); // -> 'function () { return \"hello world!\" };'
 
 /* Static Use */
 lib.string.addSlashes(myString);
@@ -1579,7 +1595,7 @@ lib.string.splice(myString, index, deleteCount, stringToAppendAtIndex);
 ```
 
 #### ellipses
-**Truncates a string, adding ellipses if the string is longer than *length***   
+**Truncates a string, adding ellipses if the string is longer than *length*.**   
 Truncates the given string to length. If the string is longer than length, ellipses will be added to the end of the string.
 
 - If the optional *place* argument is set to 'front', the ellipses is prepended to the string, rather than appended.
@@ -1708,11 +1724,11 @@ Prepends slashes to ```/[-\/\\^$*+?.()|[\]{}]/g```
 var money  = '$1,000.00',
     badRegExp, safeRegexp, result;
 
-badRegexp = new Regexp(money, 'gi');
+badRegexp = new RegExp(money, 'gi');
 result = '$1,000.00 dollars would be nice.'._.replace(badRegexp, 'One thousand dollars');
 // -> Throws 'invalid regular expression'
 
-safeRegexp = new Regexp(money._.regexpSafe(), 'gi');
+safeRegexp = new RegExp(money._.regexpSafe(), 'gi');
 result = '$1,000.00 dollars would be nice.'._.replace(badRegexp, 'One thousand dollars');
 // -> 'One thousand dollars would be nice.'
 
@@ -1821,7 +1837,7 @@ lib.number.randomNumberInRange(-100.1, 5); //-> Some integer between -100.1 and 
 ```
 
 #### to   
-**Gets a random integer/float using the number as the lower range and *n* as the upper range (both inclusive)**   
+**Gets a random integer/float using the number as the lower range and *n* as the upper range (both inclusive).**   
 If *n* is omitted, *Number.MAX_VALUE* will be used. If the number is an integer, an integer will be returned; same for floats.   
 
 | Context  | Signature            |
