@@ -189,6 +189,8 @@ Methods available to all *Objects* (objects, arrays, strings, functions, etc.).
 | [isPureObject](#ispureobject)       | Determines if the given objects are all objects (and not arrays) |
 | [isString](#isstring)               | Determines if the given objects are all strings |
 | [isUndefined](#isundefined)         | Determines if the given objects are all undefined |
+| [keyOfMax](#keyofmax)               | Returns the key of the highest value in an object |
+| [keyOfMin](#keyofmin)               | Returns the key of the highest value in an object |
 | [keys](#keys)                       | Gets an object's key set |
 | [last](#last)                       | Gets the last *n* items of an object |
 | [max](#max)                         | Finds the maximum value in an object |
@@ -1306,6 +1308,24 @@ Same as [max](#max), except it returns the minimum value.
 | :------- | :--------------- |
 | instance | **min**(*{Function=}* **predicate**) → *{*\**}* |
 | static   | **min**(*{*\**}* **obj**, *{Function=}* **predicate**) → *{*\**}* |
+
+#### keyOfMax
+**Returns the key of the highest value in an object.**   
+For numbers, strings, functions, and booleans, the object is simply returned.
+An optional predicate function is available to determine the max for objects. The predicate is called with the current value in the collection, whatever is returned from the predicate is used in the evaluation to determine the if the value is the max. When a max value is found, its key is returned.
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **keyOfMax**(*{Function=}* **predicate**) → *{*\**}* |
+| static   | **keyOfMax**(*{*\**}* **obj**, *{Function=}* **predicate**) → *{*\**}* |
+
+#### keyOfMin
+Same as [keyOfMax](#keyofmax), except it returns the minimum value's key.
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **keyOfMin**(*{Function=}* **predicate**) → *{*\**}* |
+| static   | **keyOfMin**(*{*\**}* **obj**, *{Function=}* **predicate**) → *{*\**}* |
 
 #### implements
 **Determines if an object has the given properties, and those properties are methods.**   

@@ -40,6 +40,27 @@
             });
 
             expect(max).to.eql({ name: 'baz', value: 3 });
+
+            data = [
+                {
+                    name: 'foo',
+                    value: 2
+                },
+                {
+                    name: 'bar',
+                    value: 3
+                },
+                {
+                    name: 'baz',
+                    value: 1
+                }
+            ];
+
+            max = data._.max(function (item) {
+                return item.value;
+            });
+
+            expect(max).to.eql({ name: 'bar', value: 3 });
         });
 
         it('It should simply return the object if not an array or object', function () {
