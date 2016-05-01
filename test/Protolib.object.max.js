@@ -61,6 +61,114 @@
             });
 
             expect(max).to.eql({ name: 'bar', value: 3 });
+
+            data = [
+                {
+                    name: 'foo',
+                    value: 'a'
+                },
+                {
+                    name: 'bar',
+                    value: 'd'
+                },
+                {
+                    name: 'baz',
+                    value: 'x'
+                },
+                {
+                    name: 'hello',
+                    value: 'z'
+                },
+                {
+                    name: 'world',
+                    value: 'b'
+                }
+            ];
+
+            max = data._.max(function (item) {
+                return item.value;
+            });
+
+            expect(max).to.eql({ name: 'hello', value: 'z' });
+
+            data = [
+                {
+                    name: 'foo',
+                    value: [1, 2, 3, 4]
+                },
+                {
+                    name: 'bar',
+                    value: [1, 2, 3, 4]
+                },
+                {
+                    name: 'baz',
+                    value: [1, 2, 3, 4]
+                },
+                {
+                    name: 'hello',
+                    value: [1, 2, 3, 4]
+                },
+                {
+                    name: 'world',
+                    value: [1, 2, 3, 4]
+                }
+            ];
+
+            max = data._.max(function (item) {
+                return item._.max();
+            });
+
+            expect(max).to.eql({ name: 'world', value: [1, 2, 3, 4] });
+
+            data = [
+                {
+                    name: 'foo',
+                    value: [1, 2, 3, 4]
+                },
+                {
+                    name: 'bar',
+                    value: [5, 6, 7, 8]
+                },
+                {
+                    name: 'baz',
+                    value: [9, 10, 11, 12]
+                },
+                {
+                    name: 'hello',
+                    value: [13, 14, 15, 16]
+                },
+                {
+                    name: 'world',
+                    value: [17, 18, 19, 20]
+                }
+            ];
+
+            max = data._.max(function (item) {
+                return item._.max();
+            });
+
+            expect(max).to.eql({ name: 'world', value: [17, 18, 19, 20] });
+
+            data = [
+                {
+                    name: 'foo',
+                    value: 'a'
+                }
+            ];
+
+            max = data._.max(function (item) {
+                return item.value;
+            });
+
+            expect(max).to.eql({ name: 'foo', value: 'a' });
+
+            data = [];
+
+            max = data._.max(function (item) {
+                return item.value;
+            });
+
+            expect(max).to.eql(undefined);
         });
 
         it('It should simply return the object if not an array or object', function () {

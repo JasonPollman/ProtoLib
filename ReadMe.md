@@ -123,7 +123,6 @@ var ProtoLib = require('proto-lib'),
 
 ``bar.js``
 ```js
-
 // If called after foo.js, bar.js will still have the library methods attached.
 // This still works...
 'string'._.reverse();

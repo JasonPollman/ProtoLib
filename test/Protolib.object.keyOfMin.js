@@ -39,7 +39,7 @@
                 return item.value;
             });
 
-            expect(keyOfMin).to.eql('0');
+            expect(keyOfMin).to.equal('0');
 
             data = [
                 {
@@ -60,7 +60,7 @@
                 return item.value;
             });
 
-            expect(keyOfMin).to.eql('2');
+            expect(keyOfMin).to.equal('2');
 
             data = {
                 a: {
@@ -81,7 +81,115 @@
                 return item.value;
             });
 
-            expect(keyOfMin).to.eql('c');
+            expect(keyOfMin).to.equal('c');
+
+            data = [
+                {
+                    name: 'foo',
+                    value: 's'
+                },
+                {
+                    name: 'bar',
+                    value: 'a'
+                },
+                {
+                    name: 'baz',
+                    value: 'x'
+                },
+                {
+                    name: 'hello',
+                    value: 'z'
+                },
+                {
+                    name: 'world',
+                    value: 'b'
+                }
+            ];
+
+            keyOfMin = data._.keyOfMin(function (item) {
+                return item.value;
+            });
+
+            expect(keyOfMin).to.equal('1');
+
+            data = [
+                {
+                    name: 'foo',
+                    value: [1, 2, 3, 4]
+                },
+                {
+                    name: 'bar',
+                    value: [1, 2, 3, 4]
+                },
+                {
+                    name: 'baz',
+                    value: [1, 2, 3, 4]
+                },
+                {
+                    name: 'hello',
+                    value: [1, 2, 3, 4]
+                },
+                {
+                    name: 'world',
+                    value: [1, 2, 3, 4]
+                }
+            ];
+
+            keyOfMin = data._.keyOfMin(function (item) {
+                return item._.keyOfMin();
+            });
+
+            expect(keyOfMin).to.equal('4');
+
+            data = [
+                {
+                    name: 'foo',
+                    value: [1, 2, 3, 4]
+                },
+                {
+                    name: 'bar',
+                    value: [5, 6, 7, 8]
+                },
+                {
+                    name: 'baz',
+                    value: [9, 10, 11, 12]
+                },
+                {
+                    name: 'hello',
+                    value: [13, 14, 15, 16]
+                },
+                {
+                    name: 'world',
+                    value: [17, 18, 19, 20]
+                }
+            ];
+
+            keyOfMin = data._.keyOfMin(function (item) {
+                return item._.min();
+            });
+
+            expect(keyOfMin).to.eql('0');
+
+            data = [
+                {
+                    name: 'foo',
+                    value: 'a'
+                }
+            ];
+
+            keyOfMin = data._.keyOfMin(function (item) {
+                return item.value;
+            });
+
+            expect(keyOfMin).to.equal('0');
+
+            data = [];
+
+            keyOfMin = data._.keyOfMin(function (item) {
+                return item.value;
+            });
+
+            expect(keyOfMin).to.equal(undefined);
         });
 
         it('It should simply return the object if not an array or object', function () {
