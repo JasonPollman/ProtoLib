@@ -27,7 +27,7 @@
             expect(true._.last()).to.equal(true);
             expect(false._.last()).to.equal(false);
         });
-        
+
         it('It should return the last item in an object', function () {
             var o = obj._.last();
             expect(o).to.equal(false);
@@ -62,6 +62,32 @@
         it('It should return the last charcter of a function cast to a string', function () {
             var o = func._.last();
             expect(o).to.equal('}');
+        });
+
+        it('It should always return an array/object if the "n" argument is supplied', function () {
+            var arr = [1];
+            expect(arr._.last()).to.equal(1);
+            expect(arr._.last(1)).to.eql([1]);
+
+            arr = [];
+            expect(arr._.last()).to.equal(undefined);
+            expect(arr._.last(0)).to.eql([]);
+
+            arr = [1, 2, 3, 4];
+            expect(arr._.last()).to.equal(4);
+            expect(arr._.last(1)).to.eql([4]);
+
+            var obj = { foo: 1 };
+            expect(obj._.last()).to.equal(1);
+            expect(obj._.last(1)).to.eql({ foo: 1 });
+
+            obj = {};
+            expect(obj._.last()).to.equal(undefined);
+            expect(obj._.last(0)).to.eql({});
+
+            obj = obj = { foo: 1, bar: 7 };
+            expect(obj._.last()).to.equal(7);
+            expect(obj._.last(1)).to.eql({ bar: 7 });
         });
 
         it('It should return the last n items, if the a number argument is passed in as n', function () {

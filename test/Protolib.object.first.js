@@ -58,6 +58,32 @@
             expect(staticFirst).to.eql(1);
         });
 
+        it('It should always return an array/object if the "n" argument is supplied', function () {
+            var arr = [1];
+            expect(arr._.first()).to.equal(1);
+            expect(arr._.first(1)).to.eql([1]);
+
+            arr = [];
+            expect(arr._.first()).to.equal(undefined);
+            expect(arr._.first(0)).to.eql([]);
+
+            arr = [1, 2, 3, 4];
+            expect(arr._.first()).to.equal(1);
+            expect(arr._.first(1)).to.eql([1]);
+
+            var obj = { foo: 1 };
+            expect(obj._.first()).to.equal(1);
+            expect(obj._.first(1)).to.eql({ foo: 1 });
+
+            obj = {};
+            expect(obj._.first()).to.equal(undefined);
+            expect(obj._.first(0)).to.eql({});
+
+            obj = obj = { foo: 1, bar: 7 };
+            expect(obj._.first()).to.equal(1);
+            expect(obj._.first(1)).to.eql({ foo: 1 });
+        });
+
         it('It should simply return booleans', function () {
             expect(true._.first()).to.equal(true);
             expect(false._.first()).to.equal(false);
@@ -98,7 +124,7 @@
 
             expect(string._.first(2)).to.equal('st');
             expect(string._.first(-2)).to.equal('stri'); // Works like slice
-            expect(string._.first(0)).to.equal(null);
+            expect(string._.first(0)).to.equal(undefined);
         });
     });
 
