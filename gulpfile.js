@@ -1,7 +1,7 @@
 'use strict';
 var gulp       = require('gulp'),
     buffer     = require('vinyl-buffer'),
-    source = require('vinyl-source-stream'),
+    source     = require('vinyl-source-stream'),
     browserify = require('browserify'),
     uglify     = require('gulp-uglify'),
     sourcemaps = require('gulp-sourcemaps'),

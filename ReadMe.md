@@ -270,6 +270,7 @@ Methods available to all *Number* objects and their inheritors.
 | [daysFrom](#daysfrom) | Gets a date that occurs *n* days from the given date |
 | [daysFromNow](#daysfromnow) | Gets a date that occurs *n* days from the current date |
 | [factorial](#factorial) | Returns the factorial of a number |
+| [formatMoney](#formatmoney) | Returns a money formatted string |
 | [hoursAgo](#hoursago) | Gets a date that occurs *n* hours ago |
 | [hoursFrom](#hoursfrom) | Gets a date that occurs *n* hours from the given date |
 | [hoursFromNow](#hoursfromnow) | Gets a date that occurs *n* hours from the current time |
@@ -287,6 +288,7 @@ Methods available to all *Number* objects and their inheritors.
 | [secondsFrom](#secondsfrom) | Gets a date that occurs *n* seconds from the given date |
 | [secondsFromNow](#secondsfromnow) | Gets a date that occurs *n* seconds from the current time |
 | [to](#to) | Returns a random integer (if passed an int), or float (if passed a float) in the given range |
+| [withPlaceholders](#withplaceholders) | Adds commas to a number |
 | [yearsAgo](#yearsago) | Gets a date that occurs *n* years ago |
 | [yearsFrom](#yearsfrom) | Gets a date that occurs *n* years from the given date |
 | [yearsFromNow](#yearsfromnow) | Gets a date that occurs *n* years from the current date |
@@ -1828,6 +1830,53 @@ libs.string.randomString(2, 'aA'); // Possibilities: aa, aA, Aa, AA
 ```
 
 ### Numbers
+
+#### formatMoney
+**Formats a number as currency.**   
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **formatMoney**(*{String=}* [**symbol**='$']) → *{String}* |
+| static   | **formatMoney**(*{Number}* **amount**, *{String=}* [**symbol**='$']) → *{String}* |
+
+```js
+(1000)._.formatMoney();
+// -> '$1,000.00'
+
+(1234567.89)._.formatMoney();
+// -> '$1,234,567.89'
+
+(1000)._.formatMoney('£');
+// -> '£1,000.00'
+
+(1234567.89)._.formatMoney('£');
+// -> '£1,234,567.89'
+
+/* Static Use */
+lib.string.formatMoney(amount, symbol);
+```
+
+#### withPlaceholders
+**Returns a string with the number separated by commas.**   
+
+| Context  | Signature        |
+| :------- | :--------------- |
+| instance | **withPlaceholders**() → *{String}* |
+| static   | **withPlaceholders**(*{Number}* **myNumber**) → *{String}* |
+
+```js
+(1000)._.withPlaceholders();
+// -> '1,000'
+
+(1234567.89)._.withPlaceholders();
+// -> '1,234,567.89'
+
+(1234567.8912)._.withPlaceholders();
+// -> '1,234,567.8912'
+
+/* Static Use */
+lib.string.withPlaceholders(myNumber);
+```
 
 #### randomIntInRange
 **Get a random integer in the range [min, max] (inclusive)**   
