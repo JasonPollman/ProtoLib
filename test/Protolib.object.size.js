@@ -92,5 +92,23 @@
             var o = func._.size();
             expect(o).to.equal(1);
         });
+
+        it('It should return the correct number of members given an Arguments object', function () {
+            (function () {
+                expect(arguments._.size()).to.equal(6);
+            }(1, 2, 3, 4, 5, 6));
+
+            (function () {
+                expect(arguments._.size()).to.equal(1);
+            }(1));
+
+            (function () {
+                expect(arguments._.size()).to.equal(0);
+            }());
+
+            (function () {
+                expect(arguments._.size()).to.equal(10);
+            }(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+        });
     });
 }());
