@@ -23,6 +23,8 @@
             expect((123456)._.pad(15)).to.equal('000000000123456');
             expect((123456)._.pad(-1)).to.equal('23456');
             expect((123456)._.pad(0 )).to.equal('');
+            expect((5)._.pad(3)).to.equal('005');
+            expect((50)._.pad(3)).to.equal('050');
         });
     });
 }());

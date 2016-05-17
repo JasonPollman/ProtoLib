@@ -159,6 +159,7 @@ arr._.only('string')                   // -> ['hello', 'world']
 ```
 
 ## Available Methods
+#### **Note: npm truncates this file... [view the full read me on GitHub](https://github.com/JasonPollman/ProtoLib)**    
 ---
 ### [**Objects**](#objects)
 Methods available to all *Objects* (objects, arrays, strings, functions, etc.).   
@@ -1988,11 +1989,8 @@ Returns a string representation of a number padded with leading or trailing zero
 | static   | **pad**(*{Number}* **n**, *{Number}* **length**) → *{String}* |
 
 ```js
-(5)._.isInt()       // -> true
-(5.123)._.isInt()   // -> false
-(0)._.isInt()       // -> true
-(5.0)._.isInt()     // -> false
-(-1.2)._.isInt()    // -> false
+(5)._.pad(3);  // -> 005
+(50)._.pad(3); // -> 050
 
 /* Static Use */
 lib.number.pad(n, length);
@@ -2267,8 +2265,8 @@ Functions just like *rotate*.
 
 | Context  | Signature        |
 | :------- | :--------------- |
-| instance | **rotateLeft**(*{Number=}* [**amount**=1]) → *{Array}* |
-| static   | **rotateLeft**(*{Array}* **arrayToRotate**, *{Number=}* [**amount**=1]) → *{Array}* |
+| instance | **rotateRight**(*{Number=}* [**amount**=1]) → *{Array}* |
+| static   | **rotateRight**(*{Array}* **arrayToRotate**, *{Number=}* [**amount**=1]) → *{Array}* |
 
 #### makeUnique
 **Removes duplicates from the current array.**     

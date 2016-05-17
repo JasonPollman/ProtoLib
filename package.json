@@ -1,6 +1,6 @@
 {
     "name": "proto-lib",
-    "version": "0.2.7",
+    "version": "0.2.8",
     "description": "The namespace friendly prototype library for both node and browsers.",
     "author": "Jason Pollman <jasonjpollman@gmail.com>",
     "keywords": [
@@ -37,5 +37,5 @@
         "vinyl-source-stream": "^1.1.0"
     },
     "main": "index.js",
-    "license": "MIT"
+    "license": "ISC"
 }
