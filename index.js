@@ -255,7 +255,7 @@
          * @param {String} h The new handle
          * @return {ProtoLib} The current ProtoLib instance
          */
-        this.setHandle = function (h) {
+        this.setHandle = function setLibraryAccessorHandle (h) {
             self.unload();
             if(typeof h === 'string') handle = h;
             self.load();
@@ -269,7 +269,7 @@
          * @param {Function} callback The method to add.
          * @return {Boolean} True if the method was added, false otherwise.
          */
-        this.extend = function (constr, name, staticNamespace, callback) {
+        this.extend = function extend_ (constr, name, staticNamespace, callback) {
             callback = libs.object.getCallback(arguments);
 
             if(typeof constr === 'string') {
@@ -362,7 +362,7 @@
          * @param {String} name The name of the library method to remove.
          * @return {Boolean} True if the method was removed, false otherwise.
          */
-        this.remove = function (constr, name) {
+        this.remove = function removeLibraryMethod (constr, name) {
             if(typeof name !== 'string' || typeof constr !== 'function') return false;
 
             var uid = constr.__get_protolib_id__;
@@ -392,7 +392,7 @@
          * Removes the prototype library reference from the object prototype.
          * @return {ProtoLib} The current ProtoLib instance
          */
-        this.unload = function () {
+        this.unload = function unloadLibrary () {
             removeLibraryFromPrototypes();
             ProtoLib[handle] = undefined;
             delete ProtoLib[handle];
@@ -404,7 +404,7 @@
          * to the current ProtoLib instance.
          * @return {ProtoLib} The current ProtoLib instance
          */
-        this.load = function () {
+        this.load = function loadLibrary () {
             applyLibraryToPrototypes();
             attachLibraryToSelf();
             return self;
@@ -415,7 +415,7 @@
          * @param {Function=} constr The constructor function to kill the cache for.
          * @return {ProtoLib} The current ProtoLib instance.
          */
-        this.killCache = function (constr) {
+        this.killCache = function killCache (constr) {
             if(constr) {
                 if(typeof constr === 'function') {
                     cached[constr.__get_protolib_id__] = undefined;
